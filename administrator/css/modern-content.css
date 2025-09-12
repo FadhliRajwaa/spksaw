@@ -1,0 +1,1018 @@
+/* Modern Module Content Wrapper Styles */
+
+/* COMPREHENSIVE WHITE TEXT OVERRIDE - FORCE ALL TEXT TO BE WHITE */
+* {
+    color: #ffffff !important;
+}
+
+/* Global text color enforcement */
+h1, h2, h3, h4, h5, h6, p, span, div, a, label, input, select, textarea, button,
+table, th, td, thead, tbody, tfoot, tr,
+.form-control, .form-select, .form-label, .form-check-label,
+.btn, .nav-link, .navbar-nav, .navbar-text, .dropdown-item,
+.breadcrumb, .breadcrumb-item, .page-link, .pagination,
+.alert, .badge, .card, .card-title, .card-text, .card-header,
+.modal, .modal-title, .modal-body, .modal-footer,
+.box, .box-title, .box-body, .box-header, .box-footer,
+.list-group, .list-group-item, .table, .table-striped,
+.sidebar, .main-sidebar, .content-wrapper, .main-header,
+small, .small, code, pre, .text-muted, .help-block,
+.control-label, .col-form-label, .form-text,
+.nav, .nav-tabs, .nav-pills, .tab-content, .tab-pane {
+    color: #ffffff !important;
+}
+
+/* Table specific overrides - SUPER AGGRESSIVE WHITE TEXT ENFORCEMENT */
+.table, .table *, .dataTable, .dataTable *,
+table, table *, thead, thead *, tbody, tbody *, tfoot, tfoot *,
+th, th *, td, td *, tr, tr *,
+#DataTables_Table_0, #DataTables_Table_0 *,
+.dataTables_wrapper, .dataTables_wrapper *,
+.sorting, .sorting_asc, .sorting_desc,
+.DTFC_LeftWrapper, .DTFC_RightWrapper,
+.dataTable thead th, .dataTable tbody td,
+.table-striped, .table-striped *,
+.table-bordered, .table-bordered *,
+.table-hover, .table-hover * {
+    color: #ffffff !important;
+    text-decoration-color: #ffffff !important;
+}
+
+/* Form element overrides */
+.form-control, .form-select, .form-control:focus, .form-select:focus {
+    color: #ffffff !important;
+    background-color: #2a2a2a !important;
+}
+
+/* AdminLTE specific overrides */
+.main-sidebar *, .content-wrapper *, .main-header *,
+.box *, .card *, .nav *, .navbar *, .dropdown-menu *,
+.modal *, .alert *, .btn *, .pagination * {
+    color: #ffffff !important;
+}
+
+/* Global content styling */
+.modern-content-wrapper {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+/* Override old AdminLTE box styling */
+.box, .box-primary, .box-solid {
+    background: var(--card-background) !important;
+    border: 1px solid var(--border-accent) !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--shadow-sm) !important;
+    margin-bottom: 2rem !important;
+    overflow: hidden !important;
+    color: var(--text-primary) !important;
+}
+
+.box-header {
+    background: transparent !important;
+    border-bottom: 1px solid var(--border-accent) !important;
+    padding: 1.5rem !important;
+    position: relative !important;
+}
+
+.box-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-cards);
+}
+
+.box-title {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+}
+
+.box-title i {
+    color: var(--border-accent) !important;
+    font-size: 1.125rem !important;
+}
+
+.box-tools {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    float: right !important;
+}
+
+.box-tools .btn {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-left: 0.5rem !important;
+}
+
+.box-header .pull-right {
+    float: right !important;
+    margin-top: -5px !important;
+}
+
+.box-header.with-border {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+}
+
+.box-header .box-title {
+    flex: 1 !important;
+    margin-right: 1rem !important;
+}
+
+.btn {
+    border-radius: var(--border-radius-sm) !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    padding: 0.75rem 1.5rem !important;
+    border: none !important;
+    transition: var(--transition) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    text-decoration: none !important;
+}
+
+.btn-primary {
+    background: var(--gradient-primary) !important;
+    color: var(--white) !important;
+}
+
+.btn-primary:hover {
+    background: var(--sidebar-dark) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: var(--white) !important;
+}
+
+.btn-success:hover {
+    background: #059669 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    color: var(--white) !important;
+}
+
+.btn-warning:hover {
+    background: #d97706 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: var(--white) !important;
+}
+
+.btn-danger:hover {
+    background: #dc2626 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.btn-info {
+    background: linear-gradient(135deg, var(--border-accent) 0%, var(--card-background) 100%) !important;
+    color: var(--white) !important;
+}
+
+.btn-info:hover {
+    background: var(--card-background) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.8rem !important;
+}
+
+.btn-xs {
+    padding: 0.375rem 0.75rem !important;
+    font-size: 0.75rem !important;
+}
+
+/* Modern tables */
+.table {
+    background: var(--card-background) !important;
+    border-radius: var(--border-radius) !important;
+    overflow: hidden !important;
+    box-shadow: var(--shadow-sm) !important;
+    margin: 1rem 0 !important;
+    color: var(--text-primary) !important;
+}
+
+.table thead th {
+    background: var(--gradient-primary) !important;
+    color: var(--white) !important;
+    border: none !important;
+    padding: 1rem !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.025em !important;
+}
+
+.table tbody td {
+    padding: 1rem !important;
+    border-bottom: 1px solid rgba(204, 201, 220, 0.2) !important;
+    vertical-align: middle !important;
+    border-left: none !important;
+    border-right: none !important;
+    color: var(--text-primary) !important;
+}
+
+.table tbody tr:hover {
+    background: rgba(204, 201, 220, 0.05) !important;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+/* DataTables modern styling */
+.dataTables_wrapper {
+    background: var(--card-background) !important;
+    border-radius: var(--border-radius) !important;
+    padding: 1.5rem !important;
+    box-shadow: var(--shadow-sm) !important;
+    border: 1px solid rgba(204, 201, 220, 0.2) !important;
+    color: var(--text-primary) !important;
+}
+
+.dataTables_length select,
+.dataTables_filter input {
+    border: 2px solid rgba(204, 201, 220, 0.3) !important;
+    border-radius: var(--border-radius-sm) !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.875rem !important;
+    transition: var(--transition) !important;
+    background: var(--card-background) !important;
+    color: var(--text-primary) !important;
+}
+
+.dataTables_length select:focus,
+.dataTables_filter input:focus {
+    outline: none !important;
+    border-color: var(--border-accent) !important;
+    box-shadow: 0 0 0 3px rgba(50, 74, 95, 0.1) !important;
+}
+
+.dataTables_paginate .pagination {
+    margin: 0 !important;
+}
+
+.dataTables_paginate .pagination .page-link {
+    border: 1px solid rgba(204, 201, 220, 0.3) !important;
+    color: var(--text-primary) !important;
+    background: var(--card-background) !important;
+    padding: 0.5rem 0.75rem !important;
+    margin: 0 0.125rem !important;
+    border-radius: var(--border-radius-sm) !important;
+    transition: var(--transition) !important;
+}
+
+.dataTables_paginate .pagination .page-link:hover,
+.dataTables_paginate .pagination .page-item.active .page-link {
+    background: var(--border-accent) !important;
+    border-color: var(--border-accent) !important;
+    color: var(--white) !important;
+}
+
+/* DataTables text styling */
+.dataTables_length label,
+.dataTables_filter label,
+.dataTables_info,
+.dataTables_paginate {
+    color: var(--text-primary) !important;
+}
+
+.dataTables_length,
+.dataTables_filter,
+.dataTables_info,
+.dataTables_paginate {
+    color: var(--text-primary) !important;
+}
+
+/* Specific text elements */
+.small, small, .text-muted {
+    color: var(--text-subtle) !important;
+}
+
+.control-label {
+    color: var(--text-primary) !important;
+}
+
+/* Modern forms */
+.form-control {
+    border: 2px solid rgba(204, 201, 220, 0.3) !important;
+    border-radius: var(--border-radius-sm) !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+    transition: var(--transition) !important;
+    background: var(--card-background) !important;
+    color: var(--text-primary) !important;
+}
+
+.form-control:focus {
+    outline: none !important;
+    border-color: var(--border-accent) !important;
+    box-shadow: 0 0 0 3px rgba(50, 74, 95, 0.1) !important;
+}
+
+.form-group {
+    margin-bottom: 1.5rem !important;
+}
+
+.form-group label {
+    font-weight: 500 !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 0.5rem !important;
+    font-size: 0.875rem !important;
+}
+
+/* Modern alerts */
+.alert {
+    border: none !important;
+    border-radius: var(--border-radius-sm) !important;
+    padding: 1rem 1.5rem !important;
+    margin: 1rem 0 !important;
+    border-left: 4px solid !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+}
+
+.alert-success {
+    background: #f0f9ff !important;
+    border-left-color: #10b981 !important;
+    color: #065f46 !important;
+}
+
+.alert-danger {
+    background: #fef2f2 !important;
+    border-left-color: #ef4444 !important;
+    color: #991b1b !important;
+}
+
+.alert-warning {
+    background: #fffbeb !important;
+    border-left-color: #f59e0b !important;
+    color: #92400e !important;
+}
+
+.alert-info {
+    background: #f0f9ff !important;
+    border-left-color: var(--border-accent) !important;
+    color: var(--text-inverse) !important;
+}
+
+/* Modern panels */
+.panel {
+    background: var(--card-background) !important;
+    border: 1px solid rgba(204, 201, 220, 0.2) !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--shadow-sm) !important;
+    margin-bottom: 2rem !important;
+    color: var(--text-primary) !important;
+}
+
+.panel-heading {
+    background: var(--gradient-primary) !important;
+    color: var(--white) !important;
+    padding: 1rem 1.5rem !important;
+    border-bottom: 1px solid rgba(204, 201, 220, 0.2) !important;
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+    font-weight: 600 !important;
+}
+
+.panel-body {
+    padding: 1.5rem !important;
+}
+
+/* Modern tabs */
+.nav-tabs {
+    border-bottom: 2px solid rgba(204, 201, 220, 0.2) !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.nav-tabs > li > a {
+    border: none !important;
+    color: var(--text-primary) !important;
+    padding: 0.75rem 1.5rem !important;
+    margin-right: 0.5rem !important;
+    border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0 !important;
+    transition: var(--transition) !important;
+    font-weight: 500 !important;
+}
+
+.nav-tabs > li > a:hover,
+.nav-tabs > li.active > a {
+    background: var(--border-accent) !important;
+    color: var(--white) !important;
+    border: none !important;
+}
+
+/* Modern badges */
+.badge {
+    border-radius: var(--border-radius-sm) !important;
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+}
+
+.label {
+    border-radius: var(--border-radius-sm) !important;
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+}
+
+/* Modern progress bars */
+.progress {
+    background: rgba(204, 201, 220, 0.2) !important;
+    border-radius: var(--border-radius-sm) !important;
+    height: 8px !important;
+    overflow: hidden !important;
+}
+
+.progress-bar {
+    background: var(--gradient-accent) !important;
+    transition: var(--transition) !important;
+}
+
+/* Modern wells */
+.well {
+    background: rgba(204, 201, 220, 0.05) !important;
+    border: 1px solid rgba(204, 201, 220, 0.2) !important;
+    border-radius: var(--border-radius) !important;
+    padding: 1.5rem !important;
+}
+
+/* Modern modal styling */
+.modal-content {
+    border: none !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.modal-header {
+    background: var(--gradient-primary) !important;
+    color: var(--white) !important;
+    border-bottom: 1px solid rgba(204, 201, 220, 0.2) !important;
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+    padding: 1.5rem !important;
+}
+
+.modal-body {
+    padding: 1.5rem !important;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(204, 201, 220, 0.2) !important;
+    padding: 1.5rem !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .box-body {
+        padding: 1rem !important;
+    }
+    
+    .table {
+        font-size: 0.8rem !important;
+    }
+    
+    .btn {
+        padding: 0.625rem 1.25rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .dataTables_wrapper {
+        padding: 1rem !important;
+    }
+}
+
+/* Action buttons in tables */
+.btn-group .btn {
+    margin: 0 0.125rem !important;
+}
+
+/* Status indicators */
+.status-active {
+    color: #10b981 !important;
+    font-weight: 600 !important;
+}
+
+.status-inactive {
+    color: #ef4444 !important;
+    font-weight: 600 !important;
+}
+
+/* Loading states for existing elements */
+.loading {
+    position: relative !important;
+    pointer-events: none !important;
+    opacity: 0.6 !important;
+}
+
+.loading::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin: -10px 0 0 -10px !important;
+    border: 2px solid var(--border-accent) !important;
+    border-top: 2px solid transparent !important;
+    border-radius: 50% !important;
+    animation: spin 1s linear infinite !important;
+}
+
+/* Print optimizations */
+@media print {
+    .btn, .box-tools, .dataTables_length, .dataTables_filter, .dataTables_paginate {
+        display: none !important;
+    }
+    
+    .box, .table {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.box, .panel {
+    animation: fadeInUp 0.5s ease-out !important;
+}
+
+/* Calculation Steps Styling */
+.calculation-steps {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(204, 201, 220, 0.2);
+}
+
+.step-indicator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.step-indicator::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    right: 30px;
+    height: 2px;
+    background: rgba(204, 201, 220, 0.3);
+    z-index: 1;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    max-width: 120px;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(204, 201, 220, 0.3);
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    transition: var(--transition);
+}
+
+.step-text {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #64748b;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.step.active .step-number {
+    background: var(--gradient-primary);
+    color: var(--white);
+}
+
+.step.active .step-text {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.step.completed .step-number {
+    background: #10b981;
+    color: var(--white);
+}
+
+.step.completed .step-text {
+    color: #10b981;
+    font-weight: 600;
+}
+
+.calculation-step-title {
+    background: var(--gradient-primary) !important;
+    color: var(--white) !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: var(--border-radius-sm) !important;
+    margin: 2rem 0 1rem 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    font-weight: 600 !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+/* Enhanced table styling for calculations */
+.table-calculation {
+    background: var(--white) !important;
+    border-radius: var(--border-radius) !important;
+    overflow: hidden !important;
+    box-shadow: var(--shadow-md) !important;
+    margin: 1.5rem 0 !important;
+    border: 1px solid rgba(204, 201, 220, 0.2) !important;
+}
+
+.table-calculation thead th {
+    background: var(--gradient-accent) !important;
+    color: var(--white) !important;
+    border: none !important;
+    padding: 1rem 0.75rem !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.025em !important;
+    text-align: center !important;
+}
+
+.table-calculation tbody td {
+    padding: 0.875rem 0.75rem !important;
+    border-bottom: 1px solid rgba(204, 201, 220, 0.1) !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+    font-size: 0.875rem !important;
+}
+
+.table-calculation tbody tr:nth-child(even) {
+    background: rgba(204, 201, 220, 0.02) !important;
+}
+
+.table-calculation tbody tr:hover {
+    background: rgba(50, 74, 95, 0.05) !important;
+    transform: scale(1.01) !important;
+    transition: var(--transition) !important;
+}
+
+/* Score highlighting */
+.score-high {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: var(--white) !important;
+    padding: 0.375rem 0.75rem !important;
+    border-radius: var(--border-radius-sm) !important;
+    font-weight: 600 !important;
+}
+
+.score-medium {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    color: var(--white) !important;
+    padding: 0.375rem 0.75rem !important;
+    border-radius: var(--border-radius-sm) !important;
+    font-weight: 600 !important;
+}
+
+.score-low {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: var(--white) !important;
+    padding: 0.375rem 0.75rem !important;
+    border-radius: var(--border-radius-sm) !important;
+    font-weight: 600 !important;
+}
+
+/* Enhanced hover effects */
+.table-hover-highlight {
+    background: rgba(50, 74, 95, 0.08) !important;
+    transform: scale(1.005) !important;
+    box-shadow: 0 2px 8px rgba(50, 74, 95, 0.1) !important;
+}
+
+/* Modern loading states */
+.btn-loading {
+    position: relative !important;
+    pointer-events: none !important;
+    opacity: 0.7 !important;
+}
+
+.btn-loading::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin: -8px 0 0 -8px !important;
+    border: 2px solid transparent !important;
+    border-top: 2px solid var(--white) !important;
+    border-radius: 50% !important;
+    animation: spin 1s linear infinite !important;
+}
+
+/* Enhanced responsive design */
+@media (max-width: 1024px) {
+    .step-indicator {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .step {
+        max-width: none;
+        flex: 0 0 calc(50% - 0.5rem);
+    }
+    
+    .step-indicator::before {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .calculation-steps {
+        padding: 1rem;
+    }
+    
+    .step {
+        flex: 0 0 100%;
+        margin-bottom: 1rem;
+    }
+    
+    .calculation-step-title {
+        padding: 0.75rem 1rem !important;
+        font-size: 1rem !important;
+    }
+    
+    .table-calculation {
+        font-size: 0.75rem !important;
+    }
+    
+    .table-calculation thead th,
+    .table-calculation tbody td {
+        padding: 0.5rem 0.375rem !important;
+    }
+}
+
+/* Enhanced status indicators */
+.status-badge {
+    padding: 0.25rem 0.75rem !important;
+    border-radius: 1rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.025em !important;
+}
+
+.status-badge.success {
+    background: #dcfce7 !important;
+    color: #166534 !important;
+    border: 1px solid #bbf7d0 !important;
+}
+
+.status-badge.warning {
+    background: #fef3c7 !important;
+    color: #92400e !important;
+    border: 1px solid #fde68a !important;
+}
+
+.status-badge.danger {
+    background: #fee2e2 !important;
+    color: #991b1b !important;
+    border: 1px solid #fecaca !important;
+}
+
+.status-badge.info {
+    background: #e0f2fe !important;
+    color: var(--text-inverse) !important;
+    border: 1px solid #b3e5fc !important;
+}
+
+/* Enhanced form validation */
+.form-control.error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.form-control.success {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+.error-message {
+    color: #ef4444 !important;
+    font-size: 0.75rem !important;
+    margin-top: 0.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+}
+
+.success-message {
+    color: #10b981 !important;
+    font-size: 0.75rem !important;
+    margin-top: 0.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+}
+
+/* Enhanced data visualization */
+.data-card {
+    background: var(--white) !important;
+    border-radius: var(--border-radius) !important;
+    padding: 1.5rem !important;
+    box-shadow: var(--shadow-sm) !important;
+    border: 1px solid rgba(204, 201, 220, 0.2) !important;
+    margin-bottom: 1.5rem !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.data-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 4px !important;
+    background: var(--gradient-accent) !important;
+}
+
+.data-value {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.data-label {
+    color: #64748b !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.025em !important;
+}
+
+.data-change {
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    margin-top: 0.5rem !important;
+}
+
+.data-change.positive {
+    color: #10b981 !important;
+}
+
+.data-change.negative {
+    color: #ef4444 !important;
+}
+
+/* Enhanced tooltip styling */
+.modern-tooltip {
+    background: var(--sidebar-dark) !important;
+    color: var(--white) !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: var(--border-radius-sm) !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    box-shadow: var(--shadow-md) !important;
+    z-index: 10000 !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    transition: opacity 0.2s ease !important;
+    max-width: 200px !important;
+    word-wrap: break-word !important;
+}
+
+.modern-tooltip.show {
+    opacity: 1 !important;
+}
+
+/* ULTIMATE TABLE TEXT COLOR ENFORCEMENT - FORCE ALL TABLE TEXT TO WHITE */
+table, table *,
+.table, .table *,
+.dataTable, .dataTable *,
+.dataTables_wrapper, .dataTables_wrapper *,
+thead, thead *, th, th *,
+tbody, tbody *, td, td *,
+tfoot, tfoot *, tr, tr *,
+.sorting, .sorting_asc, .sorting_desc, .sorting_disabled,
+.dataTables_info, .dataTables_length, .dataTables_filter,
+.dataTables_paginate, .paginate_button,
+.table-striped, .table-bordered, .table-hover,
+.table-responsive, .table-responsive *,
+#DataTables_Table_0, #DataTables_Table_0 *,
+.DTFC_LeftWrapper *, .DTFC_RightWrapper *,
+.dataTables_scrollHead *, .dataTables_scrollBody *,
+.dataTables_scrollFoot *, .dataTables_scroll *,
+.table thead th, .table tbody td, .table tfoot td,
+.dataTable thead th, .dataTable tbody td, .dataTable tfoot td {
+    color: #ffffff !important;
+    text-decoration-color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Force table header text to be white with maximum specificity */
+table thead th,
+table thead th *,
+.table thead th,
+.table thead th *,
+.dataTable thead th,
+.dataTable thead th *,
+.sorting,
+.sorting_asc,
+.sorting_desc,
+.sorting_disabled {
+    color: #ffffff !important;
+    text-decoration-color: #ffffff !important;
+}
+
+/* Force table body text to be white */
+table tbody td,
+table tbody td *,
+.table tbody td,
+.table tbody td *,
+.dataTable tbody td,
+.dataTable tbody td * {
+    color: #ffffff !important;
+    text-decoration-color: #ffffff !important;
+}
+
+/* DataTables specific overrides */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_processing,
+.dataTables_wrapper .dataTables_paginate {
+    color: #ffffff !important;
+}
+
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Pagination buttons */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: #ffffff !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}

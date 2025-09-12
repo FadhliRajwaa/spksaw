@@ -1,0 +1,25 @@
+<svg width="200" height="80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="80" fill="#2c5aa0" rx="10"/>
+  
+  <!-- PKH Text -->
+  <text x="100" y="35" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#ffffff">PKH</text>
+  
+  <!-- Subtitle -->
+  <text x="100" y="55" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#ffffff">Program Keluarga Harapan</text>
+  
+  <!-- Government emblem style -->
+  <circle cx="30" cy="40" r="20" fill="none" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="30" cy="40" r="15" fill="none" stroke="#ffffff" stroke-width="1"/>
+  <circle cx="30" cy="40" r="10" fill="none" stroke="#ffffff" stroke-width="1"/>
+  <circle cx="30" cy="40" r="5" fill="#ffffff"/>
+  
+  <!-- Family icon -->
+  <circle cx="170" cy="30" r="3" fill="#ffffff"/>
+  <circle cx="175" cy="28" r="2" fill="#ffffff"/>
+  <circle cx="180" cy="30" r="3" fill="#ffffff"/>
+  <rect x="168" y="35" width="4" height="8" fill="#ffffff"/>
+  <rect x="173" y="32" width="3" height="11" fill="#ffffff"/>
+  <rect x="178" y="35" width="4" height="8" fill="#ffffff"/>
+  <rect x="167" y="43" width="16" height="2" fill="#ffffff"/>
+</svg>
