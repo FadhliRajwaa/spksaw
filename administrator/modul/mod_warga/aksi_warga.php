@@ -19,7 +19,7 @@ function anti_injection($data){
 }
 
 $module = $_GET['act'];
-$aksi = "index.php?module=warga";
+$aksi = "../../media_admin.php?module=warga";
 
 switch($module){
     case "input":
@@ -198,25 +198,19 @@ switch($module){
             
             $warga_data = mysqli_fetch_array($check_warga);
             
-            // Check if warga has results in tbl_hasil_saw
-            $check_hasil = mysqli_query($koneksi, "SELECT id_hasil FROM tbl_hasil_saw WHERE id_warga=$id_warga");
-            if (mysqli_num_rows($check_hasil) > 0) {
-                echo "<script>
-                        alert('Data warga tidak dapat dihapus karena sudah memiliki hasil SAW!\\nHapus hasil SAW terlebih dahulu.');
-                        window.location.href='$aksi';
-                      </script>";
-                exit;
-            }
+            // Implement cascade deletion - delete related records first
+            // 1. Delete from tbl_hasil_saw (SAW calculation results)
+            $delete_hasil_saw = mysqli_query($koneksi, "DELETE FROM tbl_hasil_saw WHERE id_warga=$id_warga");
             
-            // Delete from tbl_klasifikasi first (foreign key)
+            // 2. Delete from tbl_klasifikasi (classification data)
             $delete_klasifikasi = mysqli_query($koneksi, "DELETE FROM tbl_klasifikasi WHERE id_warga=$id_warga");
             
-            // Delete from data_warga
+            // 3. Finally delete from data_warga (main record)
             $delete_warga = mysqli_query($koneksi, "DELETE FROM data_warga WHERE id_warga=$id_warga");
             
             if ($delete_warga) {
                 echo "<script>
-                        alert('Data warga \"" . $warga_data['nama_lengkap'] . "\" berhasil dihapus!');
+                        alert('Data warga \"" . $warga_data['nama_lengkap'] . "\" dan semua data terkait berhasil dihapus!');
                         window.location.href='$aksi';
                       </script>";
             } else {

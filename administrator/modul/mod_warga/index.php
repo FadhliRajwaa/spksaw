@@ -31,7 +31,7 @@ include "../../../configurasi/fungsi_indotgl.php";
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-users"></i> Data Warga Penerima PKH</h3>
                     <div class="box-tools pull-right">
-                        <a href="warga.php?module=warga&act=tambahwarga" class="btn btn-primary">
+                        <a href="warga.php?module=warga&act=tambah" class="btn btn-primary">
                             <i class="fa fa-plus"></i> Tambah Data Warga
                         </a>
                     </div>
@@ -75,9 +75,9 @@ include "../../../configurasi/fungsi_indotgl.php";
                                         echo "<td class='text-center'>" . $row['jumlah_balita'] . "</td>";
                                         echo "<td class='text-center'>" . $row['jumlah_ibu_hamil'] . "</td>";
                                         echo "<td class='text-center'>";
-                                        echo "<a href='warga.php?module=warga&act=editwarga&id=" . $row['id_warga'] . "' class='btn btn-warning btn-xs' title='Edit Data'>";
+                                        echo "<a href='warga.php?module=warga&act=edit&id=" . $row['id_warga'] . "' class='btn btn-warning btn-xs' title='Edit Data'>";
                                         echo "<i class='fa fa-edit'></i> Edit</a> ";
-                                        echo "<a href='aksi_warga.php?act=hapus&id=" . $row['id_warga'] . "' class='btn btn-danger btn-xs' title='Hapus Data' onclick='return confirm(\"Yakin ingin menghapus data " . htmlspecialchars($row['nama_lengkap']) . "?\")'>";
+                                        echo "<a href='javascript:confirmdelete(\"aksi_warga.php?act=hapus&id=" . $row['id_warga'] . "\")' class='btn btn-danger btn-xs' title='Hapus Data'>";
                                         echo "<i class='fa fa-trash'></i> Hapus</a>";
                                         echo "</td>";
                                         echo "</tr>";
@@ -118,6 +118,12 @@ include "../../../configurasi/fungsi_indotgl.php";
 <script src="../../plugins/datatables/dataTables.bootstrap.min.js"></script>
 
 <script>
+function confirmdelete(delUrl) {
+    if (confirm("Anda yakin ingin menghapus?")) {
+        document.location = delUrl;
+    }
+}
+
 $(function () {
     $("#example1").DataTable({
         "language": {

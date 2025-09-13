@@ -51,37 +51,145 @@ else{
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
     
     <style>
+        /* Fix DataTables table duplication issues */
+        .dataTables_scrollHead,
+        .dataTables_scrollBody,
+        .dataTables_scrollFoot {
+            display: none !important;
+        }
+        
+        /* Ensure only one table is visible */
+        .dataTable + .dataTable {
+            display: none !important;
+        }
+        
+        /* Prevent DataTables header separation */
+        .dataTables_wrapper .dataTables_scroll div.dataTables_scrollHead table,
+        .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody table {
+            margin: 0 !important;
+        }
+        
+        /* Override DataTables scroll wrapper that causes duplication */
+        .dataTables_wrapper .dataTables_scroll {
+            overflow: visible !important;
+        }
+        
+        .dataTables_wrapper .dataTables_scroll div.dataTables_scrollHead,
+        .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
+            overflow: visible !important;
+        }
+        
+        /* Exclude tables from DataTables initialization */
+        .no-datatables table,
+        .himpunan-table,
+        table.no-datatable {
+            width: 100% !important;
+        }
+        
         body {
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             font-family: 'Inter', sans-serif;
+        }
+
+        /* Remove white boxes from all admin sections */
+        .box, .panel, .card, .widget-box {
+            background: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+            border-radius: 0 !important;
+        }
+        
+        .box-header, .panel-heading, .card-header {
+            background: transparent !important;
+            border-bottom: 1px solid rgba(204, 201, 220, 0.2) !important;
+            box-shadow: none !important;
+        }
+        
+        .box-body, .panel-body, .card-body {
+            background: transparent !important;
+            padding: 1rem 0 !important;
+        }
+        
+        /* Flatten form elements */
+        .form-group, .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        .well, .alert {
+            background: rgba(50, 74, 95, 0.05) !important;
+            border: 1px solid rgba(204, 201, 220, 0.2) !important;
+            border-radius: 4px !important;
+            box-shadow: none !important;
         }
 
         /* Custom Sidebar Styling */
         .modern-sidebar {
             background: var(--gradient-primary);
             box-shadow: 4px 0 20px rgba(12, 24, 33, 0.1);
+            color: white !important;
+        }
+
+        /* Ensure all text in sidebar is white */
+        .modern-sidebar,
+        .modern-sidebar *,
+        .modern-sidebar a,
+        .modern-sidebar span,
+        .modern-sidebar div,
+        .modern-sidebar li,
+        .modern-sidebar p,
+        .modern-sidebar h1,
+        .modern-sidebar h2,
+        .modern-sidebar h3,
+        .modern-sidebar h4,
+        .modern-sidebar h5,
+        .modern-sidebar h6 {
+            color: white !important;
         }
 
         .modern-sidebar-header {
             background: rgba(0, 0, 0, 0.1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: white !important;
         }
 
         .modern-sidebar-logo {
             font-size: 1.4rem;
             font-weight: 700;
+            color: white !important;
+        }
+
+        .modern-sidebar-link {
+            color: white !important;
+            text-decoration: none;
         }
 
         .modern-sidebar-link.active {
             background: rgba(255, 255, 255, 0.15);
             border-radius: 8px;
             margin: 0 0.5rem;
+            color: white !important;
         }
 
         .modern-sidebar-link:hover {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             margin: 0 0.5rem;
+            color: white !important;
+        }
+
+        /* Additional sidebar text elements */
+        .modern-sidebar .nav-link,
+        .modern-sidebar .nav-item,
+        .modern-sidebar .menu-item,
+        .modern-sidebar .sidebar-item {
+            color: white !important;
+        }
+
+        /* Sidebar icons */
+        .modern-sidebar i,
+        .modern-sidebar .fas,
+        .modern-sidebar .fa {
+            color: white !important;
         }
 
         /* Custom Header Styling */
@@ -97,6 +205,42 @@ else{
             -webkit-text-fill-color: transparent;
             background-clip: text;
             font-weight: 700;
+        }
+        
+        /* Fix icon visibility issues */
+        .modern-header .fas,
+        .modern-header i {
+            color: #374151 !important;
+        }
+        
+        .modern-header-avatar {
+            background: var(--gradient-primary) !important;
+            color: white !important;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .modern-header-user {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #374151 !important;
+            text-decoration: none;
+        }
+        
+        .modern-header-user:hover {
+            color: #1f2937 !important;
+        }
+        
+        .user-dropdown-menu .fas,
+        .user-dropdown-menu i {
+            color: #6b7280 !important;
         }
 
         /* Welcome Section */
@@ -139,31 +283,27 @@ else{
             line-height: 1.6;
         }
 
-        /* Modern Stats Cards */
+        /* Modern Stats Cards - Flat Design */
         .stat-card {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(204, 201, 220, 0.1);
+            background: transparent;
+            border-radius: 0;
+            padding: 1.5rem 0;
+            box-shadow: none;
+            border: none;
+            border-bottom: 1px solid rgba(204, 201, 220, 0.2);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
         .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
+            transform: none;
+            box-shadow: none;
+            background: rgba(50, 74, 95, 0.02);
         }
 
         .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-accent);
+            display: none;
         }
 
         .stat-header {
@@ -174,20 +314,20 @@ else{
         }
 
         .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             color: var(--white);
             background: var(--gradient-accent);
         }
 
         .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
+            font-size: 2rem;
+            font-weight: 600;
             color: var(--primary-dark);
             margin-bottom: 0.25rem;
         }
@@ -215,13 +355,14 @@ else{
             transform: translateX(4px);
         }
 
-        /* Quick Actions */
+        /* Quick Actions - Flat Design */
         .quick-actions {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(204, 201, 220, 0.1);
+            background: transparent;
+            border-radius: 0;
+            padding: 1.5rem 0;
+            box-shadow: none;
+            border: none;
+            border-bottom: 1px solid rgba(204, 201, 220, 0.2);
         }
 
         .quick-actions-title {
@@ -245,20 +386,20 @@ else{
             align-items: center;
             gap: 1rem;
             padding: 1rem;
-            background: rgba(50, 74, 95, 0.05);
-            border: 1px solid rgba(50, 74, 95, 0.1);
-            border-radius: var(--border-radius-sm);
+            background: transparent;
+            border: 1px solid rgba(50, 74, 95, 0.15);
+            border-radius: 6px;
             text-decoration: none;
             color: var(--primary-dark);
             transition: all 0.3s ease;
         }
 
         .action-btn:hover {
-            background: var(--accent-blue);
+            background: rgba(50, 74, 95, 0.05);
             border-color: var(--accent-blue);
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            color: var(--primary-dark);
+            transform: none;
+            box-shadow: none;
         }
 
         .action-icon {
@@ -275,8 +416,8 @@ else{
         }
 
         .action-btn:hover .action-icon {
-            background: var(--white);
-            color: var(--accent-blue);
+            background: var(--accent-blue);
+            color: var(--white);
         }
 
         .action-text {
@@ -383,8 +524,134 @@ else{
             border-bottom: none;
         }
 
+        /* Dropdown item styling */
         .dropdown-item:hover {
             background: rgba(50, 74, 95, 0.05);
+        }
+
+        /* White text for information boxes and alerts in admin sections */
+        .alert-info,
+        .alert-info *,
+        .box-body .alert,
+        .box-body .alert *,
+        .alert,
+        .alert * {
+            color: white !important;
+        }
+
+        /* Specific white text for perankingan and other admin content */
+        .box-body p,
+        .box-body div,
+        .box-body span,
+        .box-body strong,
+        .content p,
+        .content div,
+        .content span,
+        .content strong {
+            color: white !important;
+        }
+
+        /* Information text elements */
+        .alert-info strong,
+        .alert strong,
+        .box-body strong {
+            color: white !important;
+        }
+
+        /* Target specific informational content */
+        .modern-main p,
+        .modern-main div:not(.btn):not(.label):not(.badge),
+        .modern-main span:not(.btn):not(.label):not(.badge),
+        .modern-main strong {
+            color: white !important;
+        }
+
+        /* Table content text - keep readable */
+        .table,
+        .table *,
+        .table th,
+        .table td {
+            color: #1a202c !important;
+        }
+
+        /* Button text should remain readable */
+        .btn,
+        .btn *,
+        .label,
+        .label *,
+        .badge,
+        .badge * {
+            color: inherit !important;
+        }
+
+        /* Fix button text visibility - ensure buttons have proper contrast */
+        .btn-default,
+        .btn-default *,
+        .btn-secondary,
+        .btn-secondary * {
+            color: #374151 !important;
+            background: rgba(255, 255, 255, 0.9) !important;
+            border: 1px solid rgba(156, 163, 175, 0.5) !important;
+        }
+
+        .btn-default:hover,
+        .btn-secondary:hover {
+            color: #1f2937 !important;
+            background: rgba(255, 255, 255, 1) !important;
+            border-color: rgba(156, 163, 175, 0.8) !important;
+        }
+
+        /* Ensure other button types remain readable */
+        .btn-primary,
+        .btn-primary * {
+            color: white !important;
+        }
+
+        .btn-success,
+        .btn-success * {
+            color: white !important;
+        }
+
+        .btn-info,
+        .btn-info * {
+            color: white !important;
+        }
+
+        .btn-warning,
+        .btn-warning * {
+            color: #1f2937 !important;
+        }
+
+        .btn-danger,
+        .btn-danger * {
+            color: white !important;
+        }
+
+        /* Hide white boxes in top right corner across all admin sections */
+        .box-tools,
+        .box-tools *,
+        .pull-right .btn-group,
+        .pull-right .btn-group *,
+        .modern-header-right .btn,
+        .modern-header-right .btn-group,
+        .content-header .btn-group,
+        .content-header .box-tools {
+            display: none !important;
+        }
+
+        /* Hide floating action buttons and tool boxes */
+        .btn-group.pull-right,
+        .box-header .box-tools,
+        .content-wrapper .btn-group.pull-right,
+        .main-content .btn-group.pull-right {
+            display: none !important;
+        }
+
+        /* Ensure no white floating elements in header areas */
+        .modern-header .btn-group,
+        .modern-header .pull-right,
+        .box-header .pull-right {
+            display: none !important;
         }
     </style>
 </head>
@@ -446,7 +713,7 @@ if ($_SESSION['leveluser']=='admin'){
     <!-- Modern Header -->
     <header class="modern-header" id="header">
         <div class="modern-header-left">
-            <button class="modern-header-toggle" id="sidebarToggle" type="button">
+            <button class="mobile-menu-toggle" id="sidebarToggle" type="button">
                 <i class="fas fa-bars"></i>
             </button>
             <h1 class="modern-header-title">
@@ -458,6 +725,7 @@ if ($_SESSION['leveluser']=='admin'){
                         case 'kriteria': echo 'Data Kriteria'; break;
                         case 'laporan': echo 'Perhitungan SAW'; break;
                         case 'perankingan': echo 'Hasil Perankingan'; break;
+                        case 'pembobotan': echo 'Pembobotan Kriteria'; break;
                         default: echo 'Dashboard';
                     }
                 } else {
@@ -480,10 +748,6 @@ if ($_SESSION['leveluser']=='admin'){
                     <a href="?module=profil" class="dropdown-item">
                         <i class="fas fa-user"></i>
                         <span>Profil Saya</span>
-                    </a>
-                    <a href="?module=pengaturan" class="dropdown-item">
-                        <i class="fas fa-cog"></i>
-                        <span>Pengaturan</span>
                     </a>
                     <a href="logout.php" onclick="return confirm('Apakah Anda yakin ingin logout?')" class="dropdown-item">
                         <i class="fas fa-sign-out-alt"></i>
@@ -525,37 +789,46 @@ elseif ($_SESSION['leveluser']=='pengajar'){
 
             // Initialize DataTables with modern styling
             if ($.fn.DataTable) {
+                // Set error mode to silent
+                $.fn.dataTable.ext.errMode = 'none';
+                
+                // Exclude tables that should not be DataTables
+                var excludeSelectors = '.no-datatables table, .himpunan-table, table.no-datatable';
+                
                 // Configure specific tables separately
-                if ($('#example1').length > 0) {
-                    // Data Warga table with all columns visible
+                if ($('#example1').length > 0 && !$('#example1').closest('.no-datatables, .himpunan-table').length) {
+                    // Data tables without scrollX to prevent duplication
                     $('#example1').DataTable({
-                        responsive: false,
-                        scrollX: true,
-                        pageLength: 10,
-                        language: {
-                            url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
-                        },
-                        dom: '<"d-flex justify-content-between align-items-center mb-3"<"d-flex align-items-center"l><"d-flex align-items-center"f>>rtip',
-                        drawCallback: function() {
-                            $('.pagination').addClass('modern-pagination');
-                            $('.page-link').addClass('modern-pagination-btn');
-                        }
-                    });
-                } else {
-                    // Other tables with responsive mode
-                    $('.modern-table, #example2, #example3, #example4').DataTable({
                         responsive: true,
+                        scrollX: false,
                         pageLength: 10,
                         language: {
                             url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
                         },
                         dom: '<"d-flex justify-content-between align-items-center mb-3"<"d-flex align-items-center"l><"d-flex align-items-center"f>>rtip',
+                        destroy: true,
                         drawCallback: function() {
                             $('.pagination').addClass('modern-pagination');
                             $('.page-link').addClass('modern-pagination-btn');
                         }
                     });
                 }
+                
+                // Other tables with responsive mode (excluding certain classes)
+                $('.modern-table:not(.no-datatable), #example2, #example3, #example4').not(excludeSelectors).DataTable({
+                    responsive: true,
+                    scrollX: false,
+                    pageLength: 10,
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+                    },
+                    dom: '<"d-flex justify-content-between align-items-center mb-3"<"d-flex align-items-center"l><"d-flex align-items-center"f>>rtip',
+                    destroy: true,
+                    drawCallback: function() {
+                        $('.pagination').addClass('modern-pagination');
+                        $('.page-link').addClass('modern-pagination-btn');
+                    }
+                });
             }
 
             // Add modern styling to existing elements
@@ -700,6 +973,113 @@ elseif ($_SESSION['leveluser']=='pengajar'){
             });
         }
 
+        // DataTable enhancements
+        function initDataTableEnhancements() {
+            // Initialize DataTables with responsive design
+            if ($.fn.DataTable) {
+                // Check if table exists and destroy existing instance
+                if ($.fn.DataTable.isDataTable('#example1')) {
+                    $('#example1').DataTable().destroy();
+                }
+                
+                // Initialize new DataTable
+                $('#example1').DataTable({
+                    responsive: true,
+                    lengthChange: false,
+                    autoWidth: false,
+                    pageLength: 10,
+                    language: {
+                        search: "Cari:",
+                        lengthMenu: "Tampilkan _MENU_ data",
+                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                        infoEmpty: "Tidak ada data",
+                        infoFiltered: "(difilter dari _MAX_ total data)",
+                        paginate: {
+                            first: "Pertama",
+                            last: "Terakhir",
+                            next: "Selanjutnya",
+                            previous: "Sebelumnya"
+                        }
+                    }
+                });
+            }
+            
+            // Add confirmation to delete actions
+            $('a[href*="hapus"], a[href*="delete"]').on('click', function(e) {
+                if (!confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                    e.preventDefault();
+                }
+            });
+
+            // Enhanced CSV/PDF export buttons
+            $('a[href*="export"], a[href*="pdf"]').on('click', function() {
+                showNotification('info', 'Memproses export data...');
+            });
+        }
+
+        // Mobile responsive enhancements
+        function initMobileEnhancements() {
+            // Add mobile menu toggle functionality
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const sidebar = document.querySelector('.modern-sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            if (mobileToggle && sidebar) {
+                mobileToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                    
+                    // Create overlay if it doesn't exist
+                    if (!overlay) {
+                        const newOverlay = document.createElement('div');
+                        newOverlay.className = 'sidebar-overlay';
+                        document.body.appendChild(newOverlay);
+                        
+                        newOverlay.addEventListener('click', function() {
+                            sidebar.classList.remove('active');
+                            newOverlay.classList.remove('active');
+                        });
+                    }
+                    
+                    const currentOverlay = document.querySelector('.sidebar-overlay');
+                    if (currentOverlay) {
+                        currentOverlay.classList.toggle('active');
+                    }
+                });
+            }
+            
+            // Close mobile menu when clicking menu items
+            const sidebarLinks = document.querySelectorAll('.modern-sidebar-link');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('active');
+                        const currentOverlay = document.querySelector('.sidebar-overlay');
+                        if (currentOverlay) {
+                            currentOverlay.classList.remove('active');
+                        }
+                    }
+                });
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('active');
+                    const currentOverlay = document.querySelector('.sidebar-overlay');
+                    if (currentOverlay) {
+                        currentOverlay.classList.remove('active');
+                    }
+                }
+            });
+        }
+
+        // Initialize all enhancements when DOM is ready
+        $(document).ready(function() {
+            initMobileEnhancements();
+            initDataTableEnhancements();
+            initCalculationEnhancements();
+        });
+
         // Global function for showing notifications
         function showNotification(type, message) {
             if (window.modernFramework) {
@@ -720,12 +1100,14 @@ elseif ($_SESSION['leveluser']=='pengajar'){
             document.getElementById('loadingOverlay').classList.remove('show');
         }
     </script>
+    
+    <!-- Print Functions -->
+    <script src="assets/js/print-functions.js"></script>
 </body>
 </html>
 <?php
 }
 }
 }
-?>	
-	
-		
+?>
+

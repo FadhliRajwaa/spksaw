@@ -19,7 +19,7 @@ function anti_injection($data){
 }
 
 $module = $_GET['act'];
-$aksi = "index.php?module=kriteria";
+$aksi = "../../media_admin.php?module=kriteria";
 
 switch($module){
     case "update":
@@ -28,11 +28,12 @@ switch($module){
             $id_kriteria = (int)$_POST['id_kriteria'];
             $kode_kriteria = anti_injection($_POST['kode_kriteria']);
             $keterangan = anti_injection($_POST['keterangan']);
-            $nilai = (float)$_POST['nilai'];
+            $nilai_persen = (int)$_POST['nilai']; // Input dalam persen 1-100
+            $nilai = $nilai_persen / 100; // Konversi ke desimal 0.01-1.00
             $jenis = anti_injection($_POST['jenis']);
             
             // Validate required fields
-            if (empty($keterangan) || $nilai <= 0) {
+            if (empty($keterangan) || $nilai_persen <= 0) {
                 echo "<script>
                         alert('Keterangan dan nilai kriteria harus diisi dengan benar!');
                         window.history.back();
@@ -40,10 +41,10 @@ switch($module){
                 exit;
             }
             
-            // Validate nilai range
-            if ($nilai < 0.1 || $nilai > 1.0) {
+            // Validate nilai range (dalam persen)
+            if ($nilai_persen < 1 || $nilai_persen > 100) {
                 echo "<script>
-                        alert('Nilai kriteria harus antara 0.1 - 1.0!');
+                        alert('Nilai kriteria harus antara 1% - 100%!');
                         window.history.back();
                       </script>";
                 exit;
@@ -80,7 +81,7 @@ switch($module){
                 $log_message = "Kriteria $kode_kriteria diupdate: keterangan='$keterangan', nilai=$nilai, jenis='$jenis'";
                 
                 echo "<script>
-                        alert('Kriteria berhasil diupdate!\\n\\nPerubahan:\\n- Keterangan: $keterangan\\n- Bobot Nilai: $nilai\\n- Jenis: $jenis');
+                        alert('Kriteria berhasil diupdate!\\n\\nPerubahan:\\n- Keterangan: $keterangan\\n- Bobot Nilai: $nilai_persen%\\n- Jenis: $jenis');
                         window.location.href='$aksi';
                       </script>";
             } else {
@@ -138,6 +139,133 @@ switch($module){
         }
         break;
         
+    case "add_himpunan":
+        // Process add himpunan data
+        if ($_SESSION['leveluser']=='admin') {
+            $id_kriteria = (int)$_POST['id_kriteria'];
+            $keterangan = anti_injection($_POST['keterangan']);
+            $nilai = (int)$_POST['nilai'];
+            
+            // Allow zero: only invalid if negative
+            if (empty($keterangan) || $nilai < 0) {
+                echo "<script>
+                        alert('Keterangan harus diisi dan nilai tidak boleh negatif!');
+                        window.history.back();
+                      </script>";
+                exit;
+            }
+            
+            // Check if table exists, if not create it
+            $check_table = mysqli_query($koneksi, "SHOW TABLES LIKE 'tbl_himpunan'");
+            if (mysqli_num_rows($check_table) == 0) {
+                $create_table = mysqli_query($koneksi, "
+                    CREATE TABLE tbl_himpunan (
+                        id_himpunan int(11) NOT NULL AUTO_INCREMENT,
+                        id_kriteria int(11) NOT NULL,
+                        keterangan varchar(100) NOT NULL,
+                        nilai int(11) NOT NULL,
+                        PRIMARY KEY (id_himpunan),
+                        FOREIGN KEY (id_kriteria) REFERENCES tbl_kriteria(id_kriteria) ON DELETE CASCADE
+                    )
+                ");
+            }
+            
+            // Insert new himpunan data
+            $insert = mysqli_query($koneksi, "
+                INSERT INTO tbl_himpunan (id_kriteria, keterangan, nilai) 
+                VALUES ('$id_kriteria', '$keterangan', '$nilai')
+            ");
+            
+            if ($insert) {
+                echo "<script>
+                        alert('Data himpunan berhasil ditambahkan!');
+                        window.location.href='$aksi&act=input&id=$id_kriteria';
+                      </script>";
+            } else {
+                echo "<script>
+                        alert('Gagal menambahkan data himpunan! Error: " . mysqli_error($koneksi) . "');
+                        window.history.back();
+                      </script>";
+            }
+        } else {
+            echo "<script>
+                    alert('Anda tidak memiliki akses untuk menambah data!');
+                    window.history.back();
+                  </script>";
+        }
+        break;
+        
+    case "update_himpunan":
+        // Process update himpunan data
+        if ($_SESSION['leveluser']=='admin') {
+            $id_himpunan = (int)$_POST['id_himpunan'];
+            $id_kriteria = (int)$_POST['id_kriteria'];
+            $keterangan = anti_injection($_POST['keterangan']);
+            $nilai = (int)$_POST['nilai'];
+            
+            if (empty($keterangan) || $nilai < 0) {
+                echo "<script>
+                        alert('Keterangan harus diisi dan nilai tidak boleh negatif!');
+                        window.history.back();
+                      </script>";
+                exit;
+            }
+            
+            // Update himpunan data
+            $update = mysqli_query($koneksi, "
+                UPDATE tbl_himpunan SET 
+                keterangan='$keterangan', 
+                nilai='$nilai' 
+                WHERE id_himpunan='$id_himpunan'
+            ");
+            
+            if ($update) {
+                echo "<script>
+                        alert('Data himpunan berhasil diupdate!');
+                        window.location.href='$aksi&act=input&id=$id_kriteria';
+                      </script>";
+            } else {
+                echo "<script>
+                        alert('Gagal mengupdate data himpunan! Error: " . mysqli_error($koneksi) . "');
+                        window.history.back();
+                      </script>";
+            }
+        } else {
+            echo "<script>
+                    alert('Anda tidak memiliki akses untuk mengupdate data!');
+                    window.history.back();
+                  </script>";
+        }
+        break;
+        
+    case "delete_himpunan":
+        // Process delete himpunan data
+        if ($_SESSION['leveluser']=='admin') {
+            $id_himpunan = (int)$_GET['id'];
+            $id_kriteria = (int)$_GET['kriteria_id'];
+            
+            // Delete himpunan data
+            $delete = mysqli_query($koneksi, "DELETE FROM tbl_himpunan WHERE id_himpunan='$id_himpunan'");
+            
+            if ($delete) {
+                echo "<script>
+                        alert('Data himpunan berhasil dihapus!');
+                        window.location.href='$aksi&act=input&id=$id_kriteria';
+                      </script>";
+            } else {
+                echo "<script>
+                        alert('Gagal menghapus data himpunan! Error: " . mysqli_error($koneksi) . "');
+                        window.location.href='$aksi&act=input&id=$id_kriteria';
+                      </script>";
+            }
+        } else {
+            echo "<script>
+                    alert('Anda tidak memiliki akses untuk menghapus data!');
+                    window.location.href='$aksi&act=input&id=$id_kriteria';
+                  </script>";
+        }
+        break;
+
     case "validasi_bobot":
         // Validate that total weights equal 1.0
         if ($_SESSION['leveluser']=='admin') {

@@ -23,12 +23,31 @@ if ($_GET['module']=='home' || !isset($_GET['module'])){
   if ($_SESSION['leveluser']=='admin'){
 	?>
 	
-	<!-- Modern Welcome Section -->
+	<!-- Modern Welcome Section with Profile -->
 	<div class="welcome-section">
 		<div class="welcome-content">
-			<h1 class="welcome-title">
-				Selamat Datang, <?php echo $_SESSION['namalengkap']; ?>! 👋
-			</h1>
+			<div class="profile-header">
+				<div class="profile-info">
+					<div class="profile-avatar">
+						<i class="fas fa-user-circle"></i>
+					</div>
+					<div class="profile-details">
+						<h1 class="welcome-title">
+							Selamat Datang, <?php echo $_SESSION['namalengkap']; ?>! 👋
+						</h1>
+						<div class="profile-meta">
+							<span class="profile-role">
+								<i class="fas fa-shield-alt"></i>
+								Administrator PKH
+							</span>
+							<span class="profile-login-time">
+								<i class="fas fa-clock"></i>
+								Login: <?php echo date('d/m/Y H:i'); ?>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
 			<p class="welcome-subtitle">
 				Anda berada di Sistem Pendukung Keputusan Program Keluarga Harapan (PKH) 
 				menggunakan metode Simple Additive Weighting (SAW). Kelola data warga, kriteria penilaian, 
@@ -101,105 +120,6 @@ if ($_GET['module']=='home' || !isset($_GET['module'])){
 				<span>Hitung SAW</span>
 				<i class="fas fa-arrow-right"></i>
 			</a>
-		</div>
-	</div>
-
-	<!-- Quick Actions Section -->
-	<div class="quick-actions">
-		<h2 class="quick-actions-title">
-			<i class="fas fa-bolt"></i>
-			Aksi Cepat
-		</h2>
-		<div class="action-grid">
-			<a href="?module=warga&act=tambahwarga" class="action-btn">
-				<div class="action-icon">
-					<i class="fas fa-user-plus"></i>
-				</div>
-				<div class="action-text">Tambah Data Warga</div>
-			</a>
-			
-			<a href="?module=kriteria&act=tambahkriteria" class="action-btn">
-				<div class="action-icon">
-					<i class="fas fa-plus-circle"></i>
-				</div>
-				<div class="action-text">Tambah Kriteria</div>
-			</a>
-			
-			<a href="?module=laporan" class="action-btn">
-				<div class="action-icon">
-					<i class="fas fa-calculator"></i>
-				</div>
-				<div class="action-text">Proses Perhitungan SAW</div>
-			</a>
-			
-			<a href="?module=perankingan" class="action-btn">
-				<div class="action-icon">
-					<i class="fas fa-trophy"></i>
-				</div>
-				<div class="action-text">Lihat Ranking</div>
-			</a>
-			
-			<a href="?module=perankingan&act=pdf" class="action-btn" target="_blank">
-				<div class="action-icon">
-					<i class="fas fa-file-pdf"></i>
-				</div>
-				<div class="action-text">Export PDF</div>
-			</a>
-			
-			<a href="?module=backup" class="action-btn">
-				<div class="action-icon">
-					<i class="fas fa-database"></i>
-				</div>
-				<div class="action-text">Backup Data</div>
-			</a>
-		</div>
-	</div>
-
-	<!-- Recent Activity or System Info -->
-	<div class="modern-card" style="margin-top: 2rem;">
-		<div class="modern-card-header">
-			<h3 class="modern-card-title">
-				<i class="fas fa-info-circle"></i>
-				Informasi Sistem
-			</h3>
-		</div>
-		<div class="modern-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-			<div>
-				<h4 style="color: var(--primary-dark); margin-bottom: 1rem;">Tentang Sistem</h4>
-				<ul style="list-style: none; padding: 0; space-y: 0.5rem;">
-					<li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-						<i class="fas fa-check-circle" style="color: #10b981; width: 16px;"></i>
-						<span>Metode Simple Additive Weighting (SAW)</span>
-					</li>
-					<li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-						<i class="fas fa-check-circle" style="color: #10b981; width: 16px;"></i>
-						<span>Multi-kriteria kebutuhan ekonomi dan sosial</span>
-					</li>
-					<li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-						<i class="fas fa-check-circle" style="color: #10b981; width: 16px;"></i>
-						<span>Perankingan otomatis dan akurat</span>
-					</li>
-					<li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-						<i class="fas fa-check-circle" style="color: #10b981; width: 16px;"></i>
-						<span>Export laporan dalam format PDF</span>
-					</li>
-				</ul>
-			</div>
-			<div>
-				<h4 style="color: var(--primary-dark); margin-bottom: 1rem;">Panduan Penggunaan</h4>
-				<ol style="padding-left: 1.25rem; space-y: 0.5rem;">
-					<li style="margin-bottom: 0.5rem;">Input data warga dan kriteria penilaian</li>
-					<li style="margin-bottom: 0.5rem;">Lakukan proses perhitungan SAW</li>
-					<li style="margin-bottom: 0.5rem;">Review hasil ranking yang dihasilkan</li>
-					<li style="margin-bottom: 0.5rem;">Export laporan untuk dokumentasi</li>
-				</ol>
-				<div style="margin-top: 1rem;">
-					<a href="#" class="modern-btn modern-btn-outline modern-btn-sm">
-						<i class="fas fa-book"></i>
-						Panduan Lengkap
-					</a>
-				</div>
-			</div>
 		</div>
 	</div>
 	
@@ -403,6 +323,13 @@ elseif ($_GET['module']=='admin'){
   }
 }
 
+// Bagian Profil Administrator
+elseif ($_GET['module']=='profil'){
+  if ($_SESSION['leveluser']=='admin'){
+    include "modul/mod_profil/profil.php";
+  }
+}
+
 // Bagian user admin
 elseif ($_GET['module']=='detailpengajar'){
   if ($_SESSION['leveluser']=='admin'){
@@ -425,7 +352,12 @@ elseif ($_GET['module']=='kriteria'){
     include "modul/mod_kriteria/kriteria.php";
   }
 }
-
+// Bagian Pembobotan Kriteria PKH
+elseif ($_GET['module']=='pembobotan'){
+  if ($_SESSION['leveluser']=='admin'){
+    include "modul/mod_pembobotan/pembobotan.php";
+  }
+}
 // Bagian Data Klasifikasi PKH
 elseif ($_GET['module']=='klasifikasi'){
   if ($_SESSION['leveluser']=='admin'){

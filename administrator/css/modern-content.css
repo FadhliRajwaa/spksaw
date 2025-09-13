@@ -1,53 +1,78 @@
-/* Modern Module Content Wrapper Styles */
+/* Modern Module Content Wrapper Styles with Smart Contrast */
 
-/* COMPREHENSIVE WHITE TEXT OVERRIDE - FORCE ALL TEXT TO BE WHITE */
-* {
+/* AGGRESSIVE WHITE TEXT ENFORCEMENT for Dark Backgrounds */
+/* Dashboard and all dark background areas */
+body, html,
+.welcome-section, .welcome-section *,
+.welcome-title, .welcome-subtitle,
+.modern-stats-grid, .modern-stats-grid *,
+.stat-card, .stat-card *,
+.stat-value, .stat-label, .stat-link,
+.quick-actions, .quick-actions *,
+.quick-actions-title,
+.action-grid, .action-grid *,
+.action-btn, .action-btn *,
+.info-section, .info-section *,
+.system-info, .system-info *,
+.usage-guide, .usage-guide *,
+.modern-content, .modern-content *,
+h1, h2, h3, h4, h5, h6, p, span, div, a, label,
+.box-title, .calculation-step-title,
+/* Perankingan specific elements */
+.ranking-stats, .ranking-stats *,
+.summary-card, .summary-card *,
+.total-warga, .layak-pkh, .tidak-layak, .skor-tertinggi {
     color: #ffffff !important;
 }
 
-/* Global text color enforcement */
-h1, h2, h3, h4, h5, h6, p, span, div, a, label, input, select, textarea, button,
-table, th, td, thead, tbody, tfoot, tr,
-.form-control, .form-select, .form-label, .form-check-label,
-.btn, .nav-link, .navbar-nav, .navbar-text, .dropdown-item,
-.breadcrumb, .breadcrumb-item, .page-link, .pagination,
-.alert, .badge, .card, .card-title, .card-text, .card-header,
-.modal, .modal-title, .modal-body, .modal-footer,
-.box, .box-title, .box-body, .box-header, .box-footer,
-.list-group, .list-group-item, .table, .table-striped,
-.sidebar, .main-sidebar, .content-wrapper, .main-header,
-small, .small, code, pre, .text-muted, .help-block,
-.control-label, .col-form-label, .form-text,
-.nav, .nav-tabs, .nav-pills, .tab-content, .tab-pane {
+/* Dark backgrounds get white text */
+.modern-sidebar, .modern-sidebar *,
+.modern-header, .modern-header *,
+.dark-bg, .dark-bg *,
+.bg-dark, .bg-dark * {
     color: #ffffff !important;
 }
 
-/* Table specific overrides - SUPER AGGRESSIVE WHITE TEXT ENFORCEMENT */
-.table, .table *, .dataTable, .dataTable *,
-table, table *, thead, thead *, tbody, tbody *, tfoot, tfoot *,
-th, th *, td, td *, tr, tr *,
-#DataTables_Table_0, #DataTables_Table_0 *,
+/* Light backgrounds get dark text - ONLY for tables and forms */
+.table, .table *,
+.dataTable, .dataTable *,
 .dataTables_wrapper, .dataTables_wrapper *,
-.sorting, .sorting_asc, .sorting_desc,
-.DTFC_LeftWrapper, .DTFC_RightWrapper,
-.dataTable thead th, .dataTable tbody td,
-.table-striped, .table-striped *,
-.table-bordered, .table-bordered *,
-.table-hover, .table-hover * {
-    color: #ffffff !important;
-    text-decoration-color: #ffffff !important;
+thead, thead *, tbody, tbody *, tfoot, tfoot *,
+th, th *, td, td *, tr, tr *,
+.form-control, .form-select, .form-label,
+.modal-content, .modal-content *,
+.dropdown-menu, .dropdown-menu * {
+    color: #000000 !important;
 }
 
-/* Form element overrides */
-.form-control, .form-select, .form-control:focus, .form-select:focus {
-    color: #ffffff !important;
-    background-color: #2a2a2a !important;
+/* Form elements with smart backgrounds */
+.form-control, .form-select {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+    border: 1px solid #dee2e6 !important;
 }
 
-/* AdminLTE specific overrides */
-.main-sidebar *, .content-wrapper *, .main-header *,
-.box *, .card *, .nav *, .navbar *, .dropdown-menu *,
-.modal *, .alert *, .btn *, .pagination * {
+.form-control:focus, .form-select:focus {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+    border-color: #86b7fe !important;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
+}
+
+/* Button styling */
+.btn {
+    color: #ffffff !important;
+}
+
+.btn-primary {
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+    color: #ffffff !important;
+}
+
+.btn-secondary {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
     color: #ffffff !important;
 }
 

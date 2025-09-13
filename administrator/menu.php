@@ -42,6 +42,15 @@ if ($_SESSION['leveluser']=='admin'){
             </a>
           </li>";
   }
+  
+  // Add Profile menu item
+  $profile_active = ($module_name == 'profil') ? 'active' : '';
+  echo "<li class='modern-sidebar-item'>
+          <a href='?module=profil' class='modern-sidebar-link $profile_active'>
+            <i class='fas fa-user-cog modern-sidebar-icon'></i> 
+            <span class='modern-sidebar-text'>Profil Admin</span>
+          </a>
+        </li>";
 }
 elseif ($_SESSION['leveluser']=='pengajar'){
   $sql=mysqli_query($koneksi, "select * from modul where status='pengajar' and aktif='Y' and type <> 'Report' order by urutan");

@@ -432,7 +432,7 @@
 
           <button type="submit" class="login-btn" id="loginBtn">
             <i class="fas fa-sign-in-alt"></i>
-            <span>Masuk ke Sistem</span>
+            <span style="color: #ffffff !important;">Masuk ke Sistem</span>
           </button>
         </form>
 

@@ -283,24 +283,114 @@ switch($_GET['act']){
                     
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Sangat Layak (Top 30%)</span>
-                                    <span class="info-box-number"><?php echo ceil($total_hasil * 0.3); ?> warga</span>
+                            <div class="stat-card-modern layak">
+                                <div class="stat-header-modern">
+                                    <div>
+                                        <div class="stat-value-modern"><?php echo ceil($total_hasil * 0.3); ?></div>
+                                        <div class="stat-label-modern">Sangat Layak (Top 30%)</div>
+                                        <div class="stat-trend">
+                                            <i class="fas fa-check-circle"></i>
+                                            Prioritas utama penerima PKH
+                                        </div>
+                                    </div>
+                                    <div class="stat-icon-modern layak">
+                                        <i class="fas fa-check"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Total Dianalisa</span>
-                                    <span class="info-box-number"><?php echo $total_hasil; ?> warga</span>
+                            <div class="stat-card-modern total">
+                                <div class="stat-header-modern">
+                                    <div>
+                                        <div class="stat-value-modern"><?php echo $total_hasil; ?></div>
+                                        <div class="stat-label-modern">Total Dianalisa</div>
+                                        <div class="stat-trend">
+                                            <i class="fas fa-users"></i>
+                                            Warga yang telah dianalisis
+                                        </div>
+                                    </div>
+                                    <div class="stat-icon-modern total">
+                                        <i class="fas fa-users"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <style>
+                    /* Flat Laporan Stats - Same as Perankingan */
+                    .stat-card-modern {
+                        background: transparent;
+                        border-radius: 0;
+                        padding: 1rem 0;
+                        box-shadow: none;
+                        border: none;
+                        border-bottom: 2px solid rgba(204, 201, 220, 0.3);
+                        transition: all 0.3s ease;
+                        position: relative;
+                        overflow: hidden;
+                        margin-bottom: 1rem;
+                    }
+                    
+                    .stat-card-modern:hover {
+                        transform: none;
+                        box-shadow: none;
+                        background: rgba(50, 74, 95, 0.02);
+                    }
+                    
+                    .stat-header-modern {
+                        display: flex;
+                        align-items: flex-start;
+                        justify-content: flex-start;
+                        margin-bottom: 0.5rem;
+                        gap: 1rem;
+                    }
+                    
+                    .stat-icon-modern {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 6px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 1.2rem;
+                        color: white;
+                        box-shadow: none;
+                    }
+                    
+                    .stat-icon-modern.total {
+                        background: #3B82F6;
+                    }
+                    
+                    .stat-icon-modern.layak {
+                        background: #10B981;
+                    }
+                    
+                    .stat-value-modern {
+                        font-size: 2rem;
+                        font-weight: 600;
+                        color: white;
+                        margin-bottom: 0.25rem;
+                        line-height: 1;
+                    }
+                    
+                    .stat-label-modern {
+                        color: rgba(255, 255, 255, 0.9);
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        margin-bottom: 0.25rem;
+                    }
+                    
+                    .stat-trend {
+                        font-size: 0.75rem;
+                        color: rgba(255, 255, 255, 0.7);
+                        font-weight: 400;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.25rem;
+                    }
+                    </style>
                     
                     <?php else: ?>
                     <div class="alert alert-warning">

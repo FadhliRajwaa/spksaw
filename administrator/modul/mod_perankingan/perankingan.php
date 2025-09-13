@@ -44,6 +44,9 @@ switch($act){
                                 <a href='modul/mod_perankingan/export_pdf.php' class='btn btn-success btn-flat' target='_blank' title='Download Laporan PDF'>
                                     <i class='fa fa-file-pdf-o'></i> Export PDF
                                 </a>
+                                <button class='btn btn-info btn-flat' onclick='printPerankingan()' title='Cetak Hasil Perankingan'>
+                                    <i class='fa fa-print'></i> Cetak Data
+                                </button>
                                 <a href='?module=laporan&act=hitung_saw' class='btn btn-primary btn-flat' title='Hitung Ulang Ranking'>
                                     <i class='fa fa-calculator'></i> Hitung Ulang
                                 </a>
@@ -56,7 +59,7 @@ switch($act){
                       </div>";
                 
                 echo "<div class='table-responsive'>
-                        <table class='table table-bordered table-striped table-hover'>
+                        <table class='table table-bordered table-striped table-hover' id='rankingTable'>
                             <thead class='bg-primary'>
                                 <tr>
                                     <th width='10%' class='text-center'>Ranking</th>
@@ -126,44 +129,191 @@ switch($act){
                 ");
                 $stat = mysqli_fetch_array($stats);
                 
-                echo "<div class='row'>
-                        <div class='col-md-3'>
-                            <div class='info-box bg-aqua'>
-                                <span class='info-box-icon'><i class='fa fa-users'></i></span>
-                                <div class='info-box-content'>
-                                    <span class='info-box-text'>Total Warga</span>
-                                    <span class='info-box-number'>{$stat['total']}</span>
+                echo "<style>
+                /* Flat Perankingan Stats */
+                .perankingan-stats {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 2rem;
+                    margin: 2rem 0;
+                    padding: 1rem 0;
+                }
+                
+                .stat-card-modern {
+                    background: transparent;
+                    border-radius: 0;
+                    padding: 1rem 0;
+                    box-shadow: none;
+                    border: none;
+                    border-bottom: 2px solid rgba(204, 201, 220, 0.3);
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .stat-card-modern::before {
+                    display: none;
+                }
+                
+                .stat-card-modern.total::before {
+                    display: none;
+                }
+                
+                .stat-card-modern.layak::before {
+                    display: none;
+                }
+                
+                .stat-card-modern.tidak-layak::before {
+                    display: none;
+                }
+                
+                .stat-card-modern.skor::before {
+                    display: none;
+                }
+                
+                .stat-card-modern:hover {
+                    transform: none;
+                    box-shadow: none;
+                    background: rgba(50, 74, 95, 0.02);
+                }
+                
+                .stat-header-modern {
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: flex-start;
+                    margin-bottom: 0.5rem;
+                    gap: 1rem;
+                }
+                
+                .stat-icon-modern {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 6px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.2rem;
+                    color: white;
+                    box-shadow: none;
+                }
+                
+                .stat-icon-modern.total {
+                    background: #3B82F6;
+                }
+                
+                .stat-icon-modern.layak {
+                    background: #10B981;
+                }
+                
+                .stat-icon-modern.tidak-layak {
+                    background: #EF4444;
+                }
+                
+                .stat-icon-modern.skor {
+                    background: #F59E0B;
+                }
+                
+                .stat-value-modern {
+                    font-size: 2rem;
+                    font-weight: 600;
+                    color: #1E293B;
+                    margin-bottom: 0.25rem;
+                    line-height: 1;
+                }
+                
+                .stat-label-modern {
+                    color: #64748B;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    margin-bottom: 0.25rem;
+                }
+                
+                .stat-trend {
+                    font-size: 0.75rem;
+                    color: #64748B;
+                    font-weight: 400;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.25rem;
+                }
+                
+                @media (max-width: 768px) {
+                    .perankingan-stats {
+                        grid-template-columns: 1fr;
+                        gap: 1rem;
+                    }
+                    
+                    .stat-value-modern {
+                        font-size: 1.75rem;
+                    }
+                }
+                </style>
+                
+                <div class='perankingan-stats'>
+                    <div class='stat-card-modern total'>
+                        <div class='stat-header-modern'>
+                            <div>
+                                <div class='stat-value-modern'>{$stat['total']}</div>
+                                <div class='stat-label-modern'>Total Warga</div>
+                                <div class='stat-trend'>
+                                    <i class='fas fa-users'></i>
+                                    Terdaftar dalam sistem
                                 </div>
                             </div>
-                        </div>
-                        <div class='col-md-3'>
-                            <div class='info-box bg-green'>
-                                <span class='info-box-icon'><i class='fa fa-check'></i></span>
-                                <div class='info-box-content'>
-                                    <span class='info-box-text'>Layak PKH</span>
-                                    <span class='info-box-number'>{$stat['layak']}</span>
-                                </div>
+                            <div class='stat-icon-modern total'>
+                                <i class='fas fa-users'></i>
                             </div>
                         </div>
-                        <div class='col-md-3'>
-                            <div class='info-box bg-red'>
-                                <span class='info-box-icon'><i class='fa fa-times'></i></span>
-                                <div class='info-box-content'>
-                                    <span class='info-box-text'>Tidak Layak</span>
-                                    <span class='info-box-number'>{$stat['tidak_layak']}</span>
+                    </div>
+                    
+                    <div class='stat-card-modern layak'>
+                        <div class='stat-header-modern'>
+                            <div>
+                                <div class='stat-value-modern'>{$stat['layak']}</div>
+                                <div class='stat-label-modern'>Layak PKH</div>
+                                <div class='stat-trend'>
+                                    <i class='fas fa-check-circle'></i>
+                                    Memenuhi kriteria
                                 </div>
                             </div>
-                        </div>
-                        <div class='col-md-3'>
-                            <div class='info-box bg-yellow'>
-                                <span class='info-box-icon'><i class='fa fa-star'></i></span>
-                                <div class='info-box-content'>
-                                    <span class='info-box-text'>Skor Tertinggi</span>
-                                    <span class='info-box-number'>" . number_format($stat['skor_max'], 3) . "</span>
-                                </div>
+                            <div class='stat-icon-modern layak'>
+                                <i class='fas fa-check'></i>
                             </div>
                         </div>
-                      </div>";
+                    </div>
+                    
+                    <div class='stat-card-modern tidak-layak'>
+                        <div class='stat-header-modern'>
+                            <div>
+                                <div class='stat-value-modern'>{$stat['tidak_layak']}</div>
+                                <div class='stat-label-modern'>Tidak Layak</div>
+                                <div class='stat-trend'>
+                                    <i class='fas fa-times-circle'></i>
+                                    Tidak memenuhi kriteria
+                                </div>
+                            </div>
+                            <div class='stat-icon-modern tidak-layak'>
+                                <i class='fas fa-times'></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class='stat-card-modern skor'>
+                        <div class='stat-header-modern'>
+                            <div>
+                                <div class='stat-value-modern'>" . number_format($stat['skor_max'], 3) . "</div>
+                                <div class='stat-label-modern'>Skor Tertinggi</div>
+                                <div class='stat-trend'>
+                                    <i class='fas fa-trophy'></i>
+                                    Penilaian terbaik
+                                </div>
+                            </div>
+                            <div class='stat-icon-modern skor'>
+                                <i class='fas fa-star'></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>";
             }
             
             echo "</div>
@@ -378,6 +528,7 @@ switch($act){
         // Output PDF
         echo $dompdf->output();
         exit();
-        break;
 }
 ?>
+
+<script src="../assets/js/print-functions.js"></script>
