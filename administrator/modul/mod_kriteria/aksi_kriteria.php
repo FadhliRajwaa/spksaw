@@ -33,18 +33,18 @@ switch($module){
             $jenis = anti_injection($_POST['jenis']);
             
             // Validate required fields
-            if (empty($keterangan) || $nilai_persen <= 0) {
+            if (empty($keterangan) || $nilai_persen < 0) {
                 echo "<script>
-                        alert('Keterangan dan nilai kriteria harus diisi dengan benar!');
+                        alert('Keterangan harus diisi dan nilai tidak boleh negatif!');
                         window.history.back();
                       </script>";
                 exit;
             }
             
-            // Validate nilai range (dalam persen)
-            if ($nilai_persen < 1 || $nilai_persen > 100) {
+            // Validate nilai range (dalam persen) - allow 0
+            if ($nilai_persen < 0 || $nilai_persen > 100) {
                 echo "<script>
-                        alert('Nilai kriteria harus antara 1% - 100%!');
+                        alert('Nilai kriteria harus antara 0% - 100%!');
                         window.history.back();
                       </script>";
                 exit;

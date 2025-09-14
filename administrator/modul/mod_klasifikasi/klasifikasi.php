@@ -51,14 +51,14 @@ switch($_GET['act']){
                     </div>
                     <br>
                     
-                    <div class="table-responsive">
-                        <table id="example1" class="table table-bordered table-striped">
+                    <div class="table-scroll-wrapper" style="overflow-x: scroll; overflow-y: visible; width: 100%; max-width: 100%; border: 1px solid #ddd;">
+                        <table id="klasifikasi-table" class="table table-bordered table-striped" style="width: 1600px; white-space: nowrap;">
                             <thead>
                                 <tr>
                                     <th rowspan="2">No</th>
                                     <th rowspan="2">Nama Warga</th>
                                     <th rowspan="2">Alamat</th>
-                                    <th colspan="8" class="text-center">Kriteria PKH</th>
+                                    <th colspan="<?php echo mysqli_num_rows($kriteria); ?>" class="text-center">Kriteria PKH</th>
                                     <th rowspan="2">Aksi</th>
                                 </tr>
                                 <tr>
@@ -77,16 +77,20 @@ switch($_GET['act']){
                                     echo "<tr>
                                             <td>$no</td>
                                             <td><strong>$r[nama_lengkap]</strong></td>
-                                            <td>$r[alamat]</td>
-                                            <td class='text-center'><span class='label label-info'>$r[C1]</span></td>
-                                            <td class='text-center'><span class='label label-warning'>$r[C2]</span></td>
-                                            <td class='text-center'><span class='label label-success'>$r[C3]</span></td>
-                                            <td class='text-center'><span class='label label-success'>$r[C4]</span></td>
-                                            <td class='text-center'><span class='label label-success'>$r[C5]</span></td>
-                                            <td class='text-center'><span class='label label-primary'>$r[C6]</span></td>
-                                            <td class='text-center'><span class='label label-danger'>$r[C7]</span></td>
-                                            <td class='text-center'><span class='label label-default'>$r[C8]</span></td>
-                                            <td>
+                                            <td>$r[alamat]</td>";
+                                            
+                                    // Dynamic criteria columns
+                                    mysqli_data_seek($kriteria, 0);
+                                    $badge_colors = ['info', 'warning', 'success', 'primary', 'danger', 'default', 'info', 'warning'];
+                                    $color_index = 0;
+                                    while($k = mysqli_fetch_array($kriteria)) {
+                                        $badge_color = $badge_colors[$color_index % count($badge_colors)];
+                                        $nilai = isset($r[$k['kode_kriteria']]) ? $r[$k['kode_kriteria']] : 0;
+                                        echo "<td class='text-center'><span class='label label-$badge_color'>$nilai</span></td>";
+                                        $color_index++;
+                                    }
+                                    
+                                    echo "<td>
                                                 <a href='?module=klasifikasi&act=detail&id=$r[id_klasifikasi]' class='btn btn-info btn-xs'>
                                                     <i class='fa fa-eye'></i> Detail
                                                 </a>

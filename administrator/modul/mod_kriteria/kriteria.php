@@ -34,7 +34,7 @@ switch($_GET['act']){
                                         <td>$no</td>
                                         <td>$r[keterangan]</td>
                                         <td>
-                                            <button class='btn btn-info btn-sm' onclick=\"window.location.href='?module=kriteria&act=tambahhimpunan&id=$r[id_kriteria]'\">
+                                            <button class='btn btn-sm' style='background-color: #000; color: #fff; border: none;' onclick=\"window.location.href='?module=kriteria&act=input&id=$r[id_kriteria]'\">
                                                 Input Data Kriteria
                                             </button>
                                         </td>
@@ -75,26 +75,20 @@ switch($_GET['act']){
                   <form method='POST' action='modul/mod_kriteria/aksi_kriteria.php?act=add_himpunan' class='form-horizontal'>
                     <input type='hidden' name='id_kriteria' value='<?= $kriteria['id_kriteria']; ?>'>
                     <div class='form-group'>
-                      <label class='col-sm-3 control-label'>Masukan Data</label>
-                      <div class='col-sm-5'>
-                        <input type='text' name='nama' class='form-control' placeholder='Masukan Data' required>
-                      </div>
-                    </div>
-                    <div class='form-group'>
                       <label class='col-sm-3 control-label'>Keterangan</label>
                       <div class='col-sm-5'>
-                        <input type='text' name='ket' class='form-control' placeholder='Keterangan' required>
+                        <input type='text' name='keterangan' class='form-control' placeholder='Keterangan' required>
                       </div>
                     </div>
                     <div class='form-group'>
                       <label class='col-sm-3 control-label'>Nilai</label>
                       <div class='col-sm-3'>
-                        <input type='number' name='nilai' class='form-control' placeholder='Nilai' min='1' max='100' required>
+                        <input type='number' name='nilai' class='form-control' placeholder='Nilai' min='0' max='100' required>
                       </div>
                     </div>
                     <div class='buttons'>
-                      <button type='submit' class='btn btn-primary'>Simpan</button>
-                      <a href='?module=kriteria' class='btn btn-danger'>Batal</a>
+                      <button type='submit' class='btn' style='background-color: #000; color: #fff; border: none;'>Simpan</button>
+                      <a href='?module=kriteria' class='btn' style='background-color: #000; color: #fff; border: none; text-decoration: none;'>Batal</a>
                     </div>
                   </form>
                 </div>
@@ -134,174 +128,107 @@ switch($_GET['act']){
             }
             </style>
             
-            <div class="row no-datatables">
-                <!-- Left Column: Kriteria Info -->
-                <div class="col-md-6">
-                    <div class="box box-primary box-solid">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-info-circle"></i> <?php echo $r['keterangan']; ?></h3>
-                        </div>
-                        <div class="box-body">
-                            <p><strong>Kode:</strong> <?php echo $r['kode_kriteria']; ?></p>
-                            <p><strong>Jenis:</strong> <?php echo $r['jenis']; ?></p>
-                            <p><strong>Bobot:</strong> <?php echo ($r['nilai'] * 100); ?>%</p>
-                        </div>
-                    </div>
+            <div class="box box-primary box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Data Himpunan Kriteria <?php echo $r['keterangan']; ?></h3>
                 </div>
-                
-                <!-- Right Column: Himpunan Data -->
-                <div class="col-md-6">
-                    <div class="box box-success box-solid">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-table"></i> Data Himpunan Kriteria <?php echo $r['keterangan']; ?></h3>
-                            <div class="box-tools pull-right">
-                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addModal">
-                                <i class="fa fa-plus"></i> Tambah Data
-                            </button>
-                            <br><br>
-                            
-                            <table class="table table-bordered table-striped himpunan-table">
-                                <thead>
-                                    <tr>
-                                        <th width="15%">No</th>
-                                        <th width="25%">Keterangan</th>
-                                        <th width="20%">Nilai</th>
-                                        <th width="40%">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php 
-                                    $no = 1;
-                                    if (mysqli_num_rows($himpunan) > 0) {
-                                        while ($h = mysqli_fetch_array($himpunan)){
-                                            echo "<tr>
-                                                    <td>$no</td>
-                                                    <td>$h[keterangan]</td>
-                                                    <td>$h[nilai]</td>
-                                                    <td>
-                                                        <button class='btn btn-warning btn-xs' onclick=\"editData($h[id_himpunan], '$h[keterangan]', '$h[nilai]')\">
-                                                            <i class='fa fa-edit'></i> Edit
-                                                        </button>
-                                                        <button class='btn btn-danger btn-xs' onclick=\"deleteData($h[id_himpunan])\">
-                                                            <i class='fa fa-trash'></i> Hapus
-                                                        </button>
-                                                    </td>
-                                                </tr>";
-                                            $no++;
-                                        }
-                                    } else {
-                                        echo "<tr><td colspan='4' class='text-center'>Belum ada data himpunan</td></tr>";
-                                    }
-                                ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="box-footer">
-                            <button type="button" class="btn btn-default" onclick="history.back()">
-                                <i class="fa fa-arrow-left"></i> Kembali
-                            </button>
-                        </div>
-                    </div>
+                <div class="box-body">
+                    <button class="btn btn-success btn-sm" onclick="window.location.href='?module=kriteria&act=tambahhimpunan&id=<?php echo $_GET['id']; ?>'">
+                        Tambah Data
+                    </button>
+                    <br><br>
+                    
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th width="10%">No</th>
+                                <th width="50%">Keterangan</th>
+                                <th width="15%">Nilai</th>
+                                <th width="25%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php 
+                            $no = 1;
+                            if (mysqli_num_rows($himpunan) > 0) {
+                                while ($h = mysqli_fetch_array($himpunan)){
+                                    echo "<tr>
+                                            <td>$no</td>
+                                            <td>$h[keterangan]</td>
+                                            <td>$h[nilai]</td>
+                                            <td>
+                                                <button class='btn btn-xs' style='background-color: #000; color: #fff; border: none; margin-right: 5px;' onclick=\"window.location.href='?module=kriteria&act=edithimpunan&id=$h[id_himpunan]&kriteria_id=$_GET[id]'\">
+                                                    Edit
+                                                </button>
+                                                <button class='btn btn-xs' style='background-color: #000; color: #fff; border: none;' onclick=\"deleteData($h[id_himpunan])\">
+                                                    Hapus
+                                                </button>
+                                            </td>
+                                          </tr>";
+                                    $no++;
+                                }
+                            } else {
+                                echo "<tr><td colspan='4' class='text-center'>Belum ada data himpunan</td></tr>";
+                            }
+                        ?>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-
-            <!-- Add Modal -->
-            <div class="modal fade" id="addModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <form method="POST" action="<?php echo $aksi; ?>?act=add_himpunan">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Tambah Data Himpunan</h4>
-                            </div>
-                            <div class="modal-body">
-                                <input type="hidden" name="id_kriteria" value="<?php echo $_GET['id']; ?>">
-                                
-                                <div class="form-group">
-                                    <label>Keterangan</label>
-                                    <input type="text" name="keterangan" class="form-control" placeholder="Contoh: Sangat Baik" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>Nilai</label>
-                                    <input type="number" name="nilai" class="form-control" placeholder="Contoh: 5" min="1" max="10" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-success">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Edit Modal -->
-            <div class="modal fade" id="editModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <form method="POST" action="<?php echo $aksi; ?>?act=update_himpunan">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Edit Data Himpunan</h4>
-                            </div>
-                            <div class="modal-body">
-                                <input type="hidden" name="id_himpunan" id="edit_id">
-                                <input type="hidden" name="id_kriteria" value="<?php echo $_GET['id']; ?>">
-                                
-                                <div class="form-group">
-                                    <label>Keterangan</label>
-                                    <input type="text" name="keterangan" id="edit_keterangan" class="form-control" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>Nilai</label>
-                                    <input type="number" name="nilai" id="edit_nilai" class="form-control" min="1" max="10" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-warning">Update</button>
-                            </div>
-                        </form>
-                    </div>
+                <div class="box-footer">
+                    <button type="button" class="btn" style="background-color: #000; color: #fff; border: none;" onclick="window.location.href='?module=kriteria'">
+                        <i class="fa fa-arrow-left"></i> Kembali
+                    </button>
                 </div>
             </div>
 
             <script>
-            // Wait for document ready and jQuery to load
-            document.addEventListener('DOMContentLoaded', function() {
-                // Disable DataTables initialization on this page if jQuery and DataTables are available
-                if (typeof $ !== 'undefined' && $.fn.DataTable) {
-                    $('.himpunan-table').removeClass('table-striped');
-                    $.fn.dataTable.ext.errMode = 'none';
-                }
-            });
-            
-            function editData(id, keterangan, nilai) {
-                if (typeof $ !== 'undefined') {
-                    $('#edit_id').val(id);
-                    $('#edit_keterangan').val(keterangan);
-                    $('#edit_nilai').val(nilai);
-                    $('#editModal').modal('show');
-                } else {
-                    // Fallback if jQuery is not available
-                    document.getElementById('edit_id').value = id;
-                    document.getElementById('edit_keterangan').value = keterangan;
-                    document.getElementById('edit_nilai').value = nilai;
-                }
-            }
-
             function deleteData(id) {
                 if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                     window.location.href = '<?php echo $aksi; ?>?act=delete_himpunan&id=' + id + '&kriteria_id=<?php echo $_GET['id']; ?>';
                 }
             }
             </script>
+            <?php
+        }
+        break;
+
+    case 'edithimpunan':
+        if ($_SESSION['leveluser']=='admin'){
+            $himpunan = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM tbl_himpunan WHERE id_himpunan='$_GET[id]'"));
+            $kriteria = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM tbl_kriteria WHERE id_kriteria='$_GET[kriteria_id]'"));
+            ?>
+            <div class='col-md-8'>
+              <div class='box box-warning box-solid'>
+                <div class='box-header with-border'>
+                  <h3 class='box-title'>Edit Data Himpunan Kriteria <?= htmlspecialchars($kriteria['keterangan']); ?></h3>
+                  <div class='box-tools pull-right'>
+                    <button class='btn btn-box-tool' data-widget='collapse'><i class='fa fa-minus'></i></button>
+                  </div>
+                </div>
+                <div class='box-body'>
+                  <form method='POST' action='modul/mod_kriteria/aksi_kriteria.php?act=update_himpunan' class='form-horizontal'>
+                    <input type='hidden' name='id_himpunan' value='<?= $himpunan['id_himpunan']; ?>'>
+                    <input type='hidden' name='id_kriteria' value='<?= $himpunan['id_kriteria']; ?>'>
+                    <div class='form-group'>
+                      <label class='col-sm-3 control-label'>Keterangan</label>
+                      <div class='col-sm-5'>
+                        <input type='text' name='keterangan' class='form-control' placeholder='Keterangan' value='<?= htmlspecialchars($himpunan['keterangan']); ?>' required>
+                      </div>
+                    </div>
+                    <div class='form-group'>
+                      <label class='col-sm-3 control-label'>Nilai</label>
+                      <div class='col-sm-3'>
+                        <input type='number' name='nilai' class='form-control' placeholder='Nilai' min='0' max='100' value='<?= $himpunan['nilai']; ?>' required>
+                      </div>
+                    </div>
+                    <div class='buttons'>
+                      <button type='submit' class='btn' style='background-color: #000; color: #fff; border: none;'>Update</button>
+                      <a href='?module=kriteria&act=input&id=<?= $himpunan['id_kriteria']; ?>' class='btn' style='background-color: #000; color: #fff; border: none; text-decoration: none;'>Batal</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
             <?php
         }
         break;
@@ -348,10 +275,10 @@ switch($_GET['act']){
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="nilai" 
                                            value="<?php echo ($r['nilai'] * 100); ?>" 
-                                           min="1" max="100" step="1" required>
+                                           min="0" max="100" step="1" required>
                                     <span class="input-group-addon">%</span>
                                 </div>
-                                <small class="text-muted">Bobot kriteria antara 1% - 100%. Semakin tinggi semakin penting dalam penilaian PKH.</small>
+                                <small class="text-muted">Bobot kriteria antara 0% - 100%. Semakin tinggi semakin penting dalam penilaian PKH.</small>
                                 <small class="text-info">Contoh: Lansia = 15%, Disabilitas = 20%, Anak SD = 15%, dll. Total semua kriteria harus = 100%</small>
                             </div>
                         </div>

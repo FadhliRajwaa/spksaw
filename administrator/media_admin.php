@@ -921,13 +921,6 @@ elseif ($_SESSION['leveluser']=='pengajar'){
                 }
             });
 
-            // Add confirmation to delete actions
-            $('a[href*="hapus"], a[href*="delete"]').on('click', function(e) {
-                if (!confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                    e.preventDefault();
-                }
-            });
-
             // Enhanced CSV/PDF export buttons
             $('a[href*="export"], a[href*="pdf"]').on('click', function() {
                 showNotification('info', 'Memproses export data...');
@@ -977,40 +970,62 @@ elseif ($_SESSION['leveluser']=='pengajar'){
         function initDataTableEnhancements() {
             // Initialize DataTables with responsive design
             if ($.fn.DataTable) {
-                // Check if table exists and destroy existing instance
-                if ($.fn.DataTable.isDataTable('#example1')) {
-                    $('#example1').DataTable().destroy();
+                // Only initialize DataTables for specific safe modules
+                const currentModule = new URLSearchParams(window.location.search).get('module');
+                const safeModules = ['ranking', 'admin', 'siswa'];
+                
+                if (!safeModules.includes(currentModule)) {
+                    return; // Skip DataTable initialization for problematic modules
                 }
                 
-                // Initialize new DataTable
-                $('#example1').DataTable({
-                    responsive: true,
-                    lengthChange: false,
-                    autoWidth: false,
-                    pageLength: 10,
-                    language: {
-                        search: "Cari:",
-                        lengthMenu: "Tampilkan _MENU_ data",
-                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                        infoEmpty: "Tidak ada data",
-                        infoFiltered: "(difilter dari _MAX_ total data)",
-                        paginate: {
-                            first: "Pertama",
-                            last: "Terakhir",
-                            next: "Selanjutnya",
-                            previous: "Sebelumnya"
+                try {
+                    const $tables = $('#example1').filter(function() {
+                        const isCustomScroll = $(this).closest('[style*="overflow-x: scroll"]').length > 0;
+                        const isKlasifikasiTable = $(this).attr('id') === 'klasifikasi-table';
+                        return !isCustomScroll && !isKlasifikasiTable;
+                    });
+                    
+                    $tables.each(function() {
+                        const $table = $(this);
+                        
+                        // Skip if table is already a DataTable
+                        if ($.fn.DataTable.isDataTable($table)) {
+                            return;
                         }
-                    }
-                });
+                        
+                        setTimeout(function() {
+                            if ($table.length && $table.is(':visible') && $table.find('tbody tr').length > 0) {
+                                try {
+                                    $table.DataTable({
+                                        responsive: false,
+                                        lengthChange: false,
+                                        autoWidth: true,
+                                        pageLength: 10,
+                                        language: {
+                                            search: "Cari:",
+                                            lengthMenu: "Tampilkan _MENU_ data",
+                                            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                                            infoEmpty: "Tidak ada data",
+                                            infoFiltered: "(difilter dari _MAX_ total data)",
+                                            paginate: {
+                                                first: "Pertama",
+                                                last: "Terakhir",
+                                                next: "Selanjutnya",
+                                                previous: "Sebelumnya"
+                                            }
+                                        }
+                                    });
+                                } catch (e) {
+                                    // Silent fail
+                                }
+                            }
+                        }, 100);
+                    });
+                } catch (e) {
+                    // Silent fail
+                }
             }
             
-            // Add confirmation to delete actions
-            $('a[href*="hapus"], a[href*="delete"]').on('click', function(e) {
-                if (!confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                    e.preventDefault();
-                }
-            });
-
             // Enhanced CSV/PDF export buttons
             $('a[href*="export"], a[href*="pdf"]').on('click', function() {
                 showNotification('info', 'Memproses export data...');

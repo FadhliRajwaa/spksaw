@@ -65,14 +65,14 @@ switch($_GET['act']){
                     <?php if ($total_hasil > 0): ?>
                     
                     <!-- 1. Matriks Nilai Dasar -->
-                    <h4><i class="fa fa-table"></i> 1. Matriks Nilai Dasar</h4>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
+                    <h4 style="color: white !important;"><i class="fa fa-table"></i> 1. Matriks Nilai Dasar</h4>
+                    <div style="overflow-x: scroll; overflow-y: visible; width: 100%; max-width: 100%; border: 1px solid #ddd;">
+                        <table class="table table-bordered table-striped" style="width: 1600px; white-space: nowrap;">
                             <thead>
                                 <tr>
                                     <th rowspan="2">No</th>
                                     <th rowspan="2">Nama Warga</th>
-                                    <th colspan="8" class="text-center">Kriteria PKH</th>
+                                    <th colspan="<?php echo count($kriteria_data); ?>" class="text-center">Kriteria PKH</th>
                                 </tr>
                                 <tr>
                                     <?php foreach($kriteria_data as $k): ?>
@@ -95,16 +95,12 @@ switch($_GET['act']){
                             while($data = mysqli_fetch_array($klasifikasi_query)) {
                                 echo "<tr>
                                         <td>$no</td>
-                                        <td><strong>{$data['nama_lengkap']}</strong></td>
-                                        <td class='text-center'>{$data['C1']}</td>
-                                        <td class='text-center'>{$data['C2']}</td>
-                                        <td class='text-center'>{$data['C3']}</td>
-                                        <td class='text-center'>{$data['C4']}</td>
-                                        <td class='text-center'>{$data['C5']}</td>
-                                        <td class='text-center'>{$data['C6']}</td>
-                                        <td class='text-center'>{$data['C7']}</td>
-                                        <td class='text-center'>{$data['C8']}</td>
-                                      </tr>";
+                                        <td><strong>{$data['nama_lengkap']}</strong></td>";
+                                foreach($kriteria_data as $k) {
+                                    $nilai = isset($data[$k['kode_kriteria']]) ? $data[$k['kode_kriteria']] : 0;
+                                    echo "<td class='text-center'>$nilai</td>";
+                                }
+                                echo "</tr>";
                                 $no++;
                             }
                             ?>
@@ -113,14 +109,14 @@ switch($_GET['act']){
                     </div>
                     
                     <!-- 2. Matriks Normalisasi -->
-                    <h4><i class="fa fa-calculator"></i> 2. Matriks Normalisasi</h4>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
+                    <h4 style="color: white !important;"><i class="fa fa-calculator"></i> 2. Matriks Normalisasi</h4>
+                    <div style="overflow-x: scroll; overflow-y: visible; width: 100%; max-width: 100%; border: 1px solid #ddd;">
+                        <table class="table table-bordered table-striped" style="width: 1600px; white-space: nowrap;">
                             <thead>
                                 <tr>
                                     <th rowspan="2">No</th>
                                     <th rowspan="2">Nama Warga</th>
-                                    <th colspan="8" class="text-center">Nilai Normalisasi</th>
+                                    <th colspan="<?php echo count($kriteria_data); ?>" class="text-center">Nilai Normalisasi</th>
                                 </tr>
                                 <tr>
                                     <?php foreach($kriteria_data as $k): ?>
@@ -137,16 +133,13 @@ switch($_GET['act']){
                             while($data = mysqli_fetch_array($hasil_saw)) {
                                 echo "<tr>
                                         <td>$no</td>
-                                        <td><strong>{$data['nama_lengkap']}</strong></td>
-                                        <td class='text-center'>" . number_format($data['C1_norm'], 3) . "</td>
-                                        <td class='text-center'>" . number_format($data['C2_norm'], 3) . "</td>
-                                        <td class='text-center'>" . number_format($data['C3_norm'], 3) . "</td>
-                                        <td class='text-center'>" . number_format($data['C4_norm'], 3) . "</td>
-                                        <td class='text-center'>" . number_format($data['C5_norm'], 3) . "</td>
-                                        <td class='text-center'>" . number_format($data['C6_norm'], 3) . "</td>
-                                        <td class='text-center'>" . number_format($data['C7_norm'], 3) . "</td>
-                                        <td class='text-center'>" . number_format($data['C8_norm'], 3) . "</td>
-                                      </tr>";
+                                        <td><strong>{$data['nama_lengkap']}</strong></td>";
+                                foreach($kriteria_data as $k) {
+                                    $norm_field = $k['kode_kriteria'] . '_norm';
+                                    $nilai_norm = isset($data[$norm_field]) ? number_format($data[$norm_field], 3) : '0.000';
+                                    echo "<td class='text-center'>$nilai_norm</td>";
+                                }
+                                echo "</tr>";
                                 $no++;
                             }
                             ?>
@@ -155,20 +148,20 @@ switch($_GET['act']){
                     </div>
                     
                     <!-- 3. Matriks Terbobot -->
-                    <h4><i class="fa fa-balance-scale"></i> 3. Matriks Terbobot</h4>
+                    <h4 style="color: white !important;"><i class="fa fa-balance-scale"></i> 3. Matriks Terbobot</h4>
                     <div class="alert alert-warning">
                         <strong>Bobot Kriteria:</strong>
                         <?php foreach($kriteria_data as $k): ?>
                             <span class="label label-primary"><?php echo $k['kode_kriteria']; ?>: <?php echo $k['nilai']; ?></span>
                         <?php endforeach; ?>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
+                    <div style="overflow-x: scroll; overflow-y: visible; width: 100%; max-width: 100%; border: 1px solid #ddd;">
+                        <table class="table table-bordered table-striped" style="width: 1600px; white-space: nowrap;">
                             <thead>
                                 <tr>
                                     <th rowspan="2">No</th>
                                     <th rowspan="2">Nama Warga</th>
-                                    <th colspan="8" class="text-center">Nilai Terbobot</th>
+                                    <th colspan="<?php echo count($kriteria_data); ?>" class="text-center">Nilai Terbobot</th>
                                     <th rowspan="2">Total SAW</th>
                                 </tr>
                                 <tr>
@@ -184,28 +177,19 @@ switch($_GET['act']){
                             $no = 1;
                             mysqli_data_seek($hasil_saw, 0);
                             while($data = mysqli_fetch_array($hasil_saw)) {
-                                // Hitung nilai terbobot
-                                $w1 = $data['C1_norm'] * $kriteria_data['C1']['nilai'];
-                                $w2 = $data['C2_norm'] * $kriteria_data['C2']['nilai'];
-                                $w3 = $data['C3_norm'] * $kriteria_data['C3']['nilai'];
-                                $w4 = $data['C4_norm'] * $kriteria_data['C4']['nilai'];
-                                $w5 = $data['C5_norm'] * $kriteria_data['C5']['nilai'];
-                                $w6 = $data['C6_norm'] * $kriteria_data['C6']['nilai'];
-                                $w7 = $data['C7_norm'] * $kriteria_data['C7']['nilai'];
-                                $w8 = $data['C8_norm'] * $kriteria_data['C8']['nilai'];
-                                
                                 echo "<tr>
                                         <td>$no</td>
-                                        <td><strong>{$data['nama_lengkap']}</strong></td>
-                                        <td class='text-center'>" . number_format($w1, 3) . "</td>
-                                        <td class='text-center'>" . number_format($w2, 3) . "</td>
-                                        <td class='text-center'>" . number_format($w3, 3) . "</td>
-                                        <td class='text-center'>" . number_format($w4, 3) . "</td>
-                                        <td class='text-center'>" . number_format($w5, 3) . "</td>
-                                        <td class='text-center'>" . number_format($w6, 3) . "</td>
-                                        <td class='text-center'>" . number_format($w7, 3) . "</td>
-                                        <td class='text-center'>" . number_format($w8, 3) . "</td>
-                                        <td class='text-center'><strong>" . number_format($data['skor_akhir'], 4) . "</strong></td>
+                                        <td><strong>{$data['nama_lengkap']}</strong></td>";
+                                
+                                // Hitung nilai terbobot untuk setiap kriteria
+                                foreach($kriteria_data as $k) {
+                                    $norm_field = $k['kode_kriteria'] . '_norm';
+                                    $nilai_norm = isset($data[$norm_field]) ? $data[$norm_field] : 0;
+                                    $nilai_terbobot = $nilai_norm * $k['nilai'];
+                                    echo "<td class='text-center'>" . number_format($nilai_terbobot, 3) . "</td>";
+                                }
+                                
+                                echo "<td class='text-center'><strong>" . number_format($data['skor_akhir'], 4) . "</strong></td>
                                       </tr>";
                                 $no++;
                             }
@@ -215,7 +199,7 @@ switch($_GET['act']){
                     </div>
                     
                     <!-- 4. Hasil Ranking Final -->
-                    <h4><i class="fa fa-trophy"></i> 4. Ranking Akhir</h4>
+                    <h4 style="color: white !important;"><i class="fa fa-trophy"></i> 4. Ranking Akhir</h4>
                     <div class="row">
                         <div class="col-md-12">
                             <a class='btn btn-danger btn-flat' href='?module=laporan&act=export_pdf' target="_blank">
