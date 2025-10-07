@@ -14,79 +14,99 @@ $options = new \Dompdf\Options();
 $options->set('isRemoteEnabled', true);
 $dompdf = new \Dompdf\Dompdf($options);
 
-$tampil_kriteria = mysqli_query($koneksi, "SELECT * FROM tbl_kriteria ORDER BY id_kriteria");
+// Ambil data kriteria persis seperti di aplikasi (kode_kriteria, keterangan, nilai)
+$tampil_kriteria = mysqli_query($koneksi, "SELECT kode_kriteria, keterangan, nilai FROM tbl_kriteria ORDER BY id_kriteria");
 
+// Build HTML dengan kolom: KODE | KRITERIA | BOBOT | KETERANGAN
 $html = '
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Data Kriteria PKH</title>
+    <title>Penjelasan Kriteria Penilaian</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 12px; }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { margin: 0; color: #2c3e50; }
-        .header h2 { margin: 5px 0; color: #34495e; }
-        .info { background-color: #ecf0f1; padding: 10px; margin: 10px 0; border-radius: 5px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #bdc3c7; padding: 8px; text-align: left; }
-        th { background-color: #3498db; color: white; font-weight: bold; }
-        tr:nth-child(even) { background-color: #f8f9fa; }
-        .benefit { color: #27ae60; font-weight: bold; }
-        .cost { color: #e74c3c; font-weight: bold; }
-        .footer { margin-top: 20px; font-size: 10px; color: #7f8c8d; }
+        body { font-family: Arial, sans-serif; font-size: 12px; color: #1f2937; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .title { font-size: 16px; font-weight: 700; color: #1f4e79; margin: 0 0 2px 0; }
+        .subtitle { font-size: 11px; color: #64748b; margin: 0 0 6px 0; }
+        .header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+        .meta { text-align: right; font-size: 10px; color: #6b7280; }
+        .divider { height: 3px; background: #1f4e79; width: 100%; margin: 0 0 10px 0; }
+        .table-wrap { border: 1px solid #cbd5e1; border-radius: 6px; padding: 0; page-break-inside: avoid; }
+        table { width: 100%; border-collapse: collapse; margin: 0; page-break-inside: avoid; }
+        thead { display: table-header-group; }
+        tfoot { display: table-row-group; }
+        tr { page-break-inside: avoid; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
+        th { background: #1f4e79; color: #ffffff; font-weight: 700; }
+        thead th:nth-child(3), tbody td:nth-child(3) { text-align: right; }
+        tfoot td { background: #f8fafc; font-weight: 700; }
+        tbody tr:nth-child(even) { background: #f8fafc; }
+        .notes { font-size: 11px; color: #374151; text-align: left; margin-top: 12px; }
+        .notes-title { font-weight: 700; margin-bottom: 6px; }
     </style>
-</head>
+    </head>
 <body>
     <div class="header">
-        <h1>SISTEM PENDUKUNG KEPUTUSAN</h1>
-        <h2>Data Kriteria Program Keluarga Harapan (PKH)</h2>
-        <h3>Metode Simple Additive Weighting (SAW)</h3>
+        <div class="brand">
+            <h3 class="title">Penjelasan Kriteria Penilaian</h3>
+            <div class="subtitle">Sistem Pendukung Keputusan PKH - Metode SAW</div>
+        </div>
+        <div class="meta">
+            <div>Tanggal: '.date('d F Y').'</div>
+            <div>Dicetak: '.date('d F Y H:i').'</div>
+        </div>
     </div>
-    
-    <div class="info">
-        <strong>Informasi:</strong> Kriteria PKH menggunakan 8 kriteria tetap sesuai standar pemerintah untuk menentukan kelayakan penerima bantuan.
-    </div>
-    
+    <div class="divider"></div>
+
+    <div class="table-wrap">
     <table>
         <thead>
             <tr>
-                <th width="10%">Kode</th>
-                <th width="50%">Keterangan Kriteria</th>
-                <th width="15%">Bobot Nilai</th>
-                <th width="15%">Jenis</th>
-                <th width="10%">Status</th>
+                <th style="width:10%">KODE</th>
+                <th style="width:50%">KRITERIA</th>
+                <th style="width:15%">BOBOT (%)</th>
+                <th style="width:25%">KETERANGAN</th>
             </tr>
         </thead>
         <tbody>';
 
-$no = 1;
-while($kriteria = mysqli_fetch_array($tampil_kriteria)) {
-    $jenis_class = ($kriteria['jenis'] == 'benefit') ? 'benefit' : 'cost';
+$totalPct = 0;
+while($row = mysqli_fetch_assoc($tampil_kriteria)) {
+    // Bobot diambil apa adanya dari DB agar konsisten dengan tampilan aplikasi
+    $kode = htmlspecialchars($row['kode_kriteria']);
+    $ket  = htmlspecialchars($row['keterangan']);
+    $p = intval($row['nilai']*100);
+    $totalPct += $p;
+    $bobot = $p . '%'; // samakan dengan tampilan pembobotan (persen)
     $html .= '
             <tr>
-                <td>K'.$no.'</td>
-                <td>'.$kriteria['keterangan'].'</td>
-                <td>'.$kriteria['bobot'].'</td>
-                <td class="'.$jenis_class.'">'.strtoupper($kriteria['jenis']).'</td>
-                <td>Aktif</td>
+                <td><strong>'.$kode.'</strong></td>
+                <td>'.$ket.'</td>
+                <td>'.$bobot.'</td>
+                <td>Semakin tinggi nilai, semakin prioritas</td>
             </tr>';
-    $no++;
 }
 
 $html .= '
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2" style="text-align:right"><strong>Total</strong></td>
+                <td style="text-align:right"><strong>'.$totalPct.'%</strong></td>
+                <td></td>
+            </tr>
+        </tfoot>
     </table>
-    
-    <div class="info">
-        <strong>Keterangan Jenis Kriteria:</strong><br>
-        <span class="benefit">BENEFIT:</span> Semakin tinggi nilai, semakin baik (kriteria yang menguntungkan)<br>
-        <span class="cost">COST:</span> Semakin rendah nilai, semakin baik (kriteria yang merugikan)
     </div>
-    
-    <div class="footer">
-        <p>Dicetak pada: '.date('d/m/Y H:i:s').' | Sistem PKH - Dinas Sosial</p>
-        <p>Total Kriteria: '.($no-1).' kriteria | Dokumen ini digenerate secara otomatis</p>
+
+    <div class="notes">
+        <div class="notes-title">Keterangan:</div>
+        <ul style="margin: 0 0 0 16px; padding: 0;">
+            <li>Nilai bobot sesuai dengan data di aplikasi (tanpa perubahan format).</li>
+            <li>PDF ini dihasilkan otomatis oleh sistem menggunakan metode SAW.</li>
+            <li>Jika tabel muat satu halaman, sistem akan menghindari pemisahan tabel.</li>
+        </ul>
+        <div style="margin-top:8px;">Dicetak pada: '.date('d/m/Y H:i:s').'</div>
     </div>
 </body>
 </html>';
@@ -94,5 +114,5 @@ $html .= '
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-$dompdf->stream("Data_Kriteria_PKH_".date('Y-m-d').".pdf", array("Attachment" => false));
+$dompdf->stream("Penjelasan_Kriteria_PKH_".date('Y-m-d').".pdf", array("Attachment" => false));
 ?>

@@ -252,11 +252,17 @@ switch($_GET['act']){
             // Get kriteria info
             $kriteria = mysqli_query($koneksi, "SELECT * FROM tbl_kriteria ORDER BY id_kriteria");
             
-            echo "<div class='box box-info box-solid'>
+            echo "<div class='box box-info box-solid saw-detail'>
                     <div class='box-header with-border'>
-                        <h3 class='box-title'><i class='fa fa-calculator'></i> Detail Perhitungan Metode SAW</h3>
+                        <h3 class='box-title' style='color:#fff !important;'><i class='fa fa-calculator' style='color:#fff !important;'></i> Detail Perhitungan Metode SAW</h3>
                     </div>
                     <div class='box-body'>
+                        <style>
+                            /* Scope only for SAW detail page */
+                            .saw-detail .box-header, .saw-detail .box-title, .saw-detail .box-title i { color:#fff !important; }
+                            .saw-detail table tfoot tr, .saw-detail table tfoot th { color:#fff !important; opacity:1 !important; }
+                            .saw-detail h4, .saw-detail h4 i { color:#fff !important; }
+                        </style>
                         <div class='alert alert-info'>
                             <h4><i class='fa fa-info-circle'></i> Metode Simple Additive Weighting (SAW)</h4>
                             <p>Metode SAW menggunakan formula: <code>Ri = Σ(wj × rij)</code></p>
@@ -292,10 +298,10 @@ switch($_GET['act']){
             
             echo "          </tbody>
                             <tfoot>
-                                <tr>
-                                    <th colspan='2'>Total Bobot</th>
+                                <tr style='color:#fff !important; opacity:1 !important;'>
+                                    <th colspan='2' style='color:#fff !important;'>Total Bobot</th>
                                     <th><span class='label label-" . (($total_bobot == 1.0) ? 'success' : 'danger') . "'>{$total_bobot}</span></th>
-                                    <th>" . (($total_bobot == 1.0) ? '<i class="fa fa-check text-success"></i> Valid' : '<i class="fa fa-times text-danger"></i> Invalid') . "</th>
+                                    <th>" . (($total_bobot == 1.0) ? '<i class="fa fa-check text-success"></i> Valid' : '<i class="fa fa-times text-danger"></i> <span style="color:#fff !important;">Invalid</span>') . "</th>
                                 </tr>
                             </tfoot>
                         </table>

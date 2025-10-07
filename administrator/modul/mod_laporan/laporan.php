@@ -36,7 +36,7 @@ switch($_GET['act']){
                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="box-body" id="analisaContent">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="alert alert-info">
@@ -49,17 +49,25 @@ switch($_GET['act']){
                     
                     <div class="row">
                         <div class="col-md-12">
-                            <a class='btn btn-success btn-flat' href='?module=laporan&act=hitung_saw'>
-                                <i class="fa fa-calculator"></i> Hitung Ulang SAW
-                            </a>
-                            <a class='btn btn-info btn-flat' href='?module=laporan&act=detail_perhitungan'>
-                                <i class="fa fa-list"></i> Detail Perhitungan
-                            </a>
-                            <a class='btn btn-warning btn-flat' href='?module=perankingan'>
-                                <i class="fa fa-trophy"></i> Lihat Perankingan
-                            </a>
-                        </div>
-                    </div>
+                            <div class="action-btns" style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+                                <a class='btn btn-success btn-flat action-btn' href='?module=laporan&act=hitung_saw'>
+                                    <i class="fa fa-calculator"></i> Hitung Ulang SAW
+                                </a>
+                                <a class='btn btn-info btn-flat action-btn' href='?module=laporan&act=detail_perhitungan'>
+                                    <i class="fa fa-list"></i> Detail Perhitungan
+                                </a>
+                                <a class='btn btn-warning btn-flat action-btn' href='?module=perankingan'>
+                                    <i class="fa fa-trophy"></i> Lihat Perankingan
+                                </a>
+                                <button class="btn btn-default btn-flat action-btn" onclick="printRankingTable()">
+                                    <i class="fa fa-print"></i> Print
+                                </button>
+                                <a class='btn btn-primary btn-flat action-btn' href='modul/mod_perankingan/export_pdf.php' target="_blank">
+                                    <i class='fa fa-file-pdf-o'></i> Save PDF
+                                </a>
+                            </div>
+                         </div>
+                     </div>
                     <br>
                     
                     <?php if ($total_hasil > 0): ?>
@@ -202,7 +210,7 @@ switch($_GET['act']){
                     <h4 style="color: white !important;"><i class="fa fa-trophy"></i> 4. Ranking Akhir</h4>
                     <div class="row">
                         <div class="col-md-12">
-                            <a class='btn btn-danger btn-flat' href='?module=laporan&act=export_pdf' target="_blank">
+                            <a class='btn btn-danger btn-flat' href='modul/mod_perankingan/export_pdf.php' target="_blank">
                                 <i class="fa fa-file-pdf-o"></i> Export PDF
                             </a>
                             <a class='btn btn-primary btn-flat' href='?module=laporan&act=detail_perhitungan'>
@@ -384,6 +392,214 @@ switch($_GET['act']){
                         <p>Pastikan data warga dan kriteria sudah lengkap sebelum melakukan perhitungan.</p>
                     </div>
                     <?php endif; ?>
+
+                    <!-- 5. Daftar Perankingan - New Ranking Table -->
+                    <?php if ($total_hasil > 0): ?>
+                    <br><br>
+                    <h4 style="color: white !important;"><i class="fa fa-list-ol"></i> 5. Daftar Perankingan</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="btn-group pull-right" style="margin-bottom: 15px;">
+                                <button class="btn btn-info btn-flat" onclick="printRankingTable()">
+                                    <i class="fa fa-print"></i> Print
+                                </button>
+                                <a href="modul/mod_perankingan/export_pdf.php" class="btn btn-success btn-flat" target="_blank">
+                                    <i class="fa fa-file-pdf-o"></i> Save PDF
+                                </a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover" id="rankingTable">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th width="15%" class="text-center">Ranking</th>
+                                    <th width="50%">Nama</th>
+                                    <th width="35%" class="text-center">Total Nilai</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            // Reset hasil_saw pointer and get ranking data
+                            mysqli_data_seek($hasil_saw, 0);
+                            $ranking = 1;
+                            while ($row = mysqli_fetch_array($hasil_saw)) {
+                                $nama_warga = htmlspecialchars($row['nama_lengkap']);
+                                $total_nilai = number_format($row['skor_akhir'], 4);
+
+                                // Add ranking styling
+                                $rank_badge_class = '';
+                                if ($ranking == 1) {
+                                    $rank_badge_class = 'style="background: linear-gradient(45deg, #FFD700, #FFA500); color: #000;"';
+                                } elseif ($ranking == 2) {
+                                    $rank_badge_class = 'style="background: linear-gradient(45deg, #C0C0C0, #A8A8A8); color: #000;"';
+                                } elseif ($ranking == 3) {
+                                    $rank_badge_class = 'style="background: linear-gradient(45deg, #CD7F32, #A0522D); color: #000;"';
+                                } else {
+                                    $rank_badge_class = 'style="background: #337ab7;"';
+                                }
+
+                                echo "<tr>
+                                        <td class='text-center'>
+                                            <span class='badge' {$rank_badge_class}>
+                                                <strong>#{$ranking}</strong>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <strong>{$nama_warga}</strong>
+                                        </td>
+                                        <td class='text-center'>
+                                            <span class='label label-info' style='font-size: 14px; padding: 5px 10px;'>
+                                                {$total_nilai}
+                                            </span>
+                                        </td>
+                                      </tr>";
+                                $ranking++;
+                            }
+                            ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Print and PDF JavaScript -->
+                    <script>
+                    function printRankingTable() {
+                        // Get the ranking table content
+                        var tableContent = document.getElementById('rankingTable').outerHTML;
+
+                        // Create a new window for printing
+                        var printWindow = window.open('', '_blank', 'width=1000,height=800');
+
+                        // Modern styled print layout
+                        printWindow.document.write(`
+                            <!doctype html>
+                            <html>
+                            <head>
+                                <meta charset="utf-8">
+                                <title>Daftar Perankingan Penerima PKH</title>
+                                <meta name="viewport" content="width=device-width,initial-scale=1">
+                                <style>
+                                    /* Page setup for printing */
+                                    @page { size: A4 portrait; margin: 10mm; }
+
+                                    :root{ --brand:#0f62fe; --muted:#6b7280; --card:#ffffff; --accent:#eef2ff; }
+                                    html,body{height:100%;}
+
+                                    /* Base layout */
+                                    body{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#f3f4f6; margin:0; padding:0; color:#0f172a}
+
+                                    /* Container uses small padding so printed area maximizes */
+                                    .print-wrap{max-width:1000px; margin:0 auto; padding:8mm;}
+                                    .print-card{background:var(--card); border-radius:8px; box-shadow:0 6px 18px rgba(15,23,42,0.06); padding:14px;}
+
+                                    .brand-row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px}
+                                    .brand-left{display:flex; align-items:center; gap:12px}
+                                    .brand-logo{width:48px; height:48px; border-radius:6px; background:linear-gradient(135deg,var(--brand),#0366d6); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:16px}
+                                    .brand-title h1{margin:0; font-size:16px; letter-spacing:0.2px}
+                                    .brand-title p{margin:0; color:var(--muted); font-size:11px}
+                                    .meta{ text-align:right; color:var(--muted); font-size:11px }
+                                    .stats-row{display:flex; gap:8px; margin-bottom:12px}
+                                    .stat{flex:1; background:var(--accent); padding:10px; border-radius:8px; text-align:center}
+                                    .stat .value{font-size:18px; font-weight:700; color:var(--brand)}
+                                    .stat .label{font-size:10px; color:var(--muted); margin-top:4px}
+
+                                    /* Modern table, compact spacing for print */
+                                    table.modern-table{width:100%; border-collapse:separate; border-spacing:0; border-radius:6px; overflow:hidden; font-size:12px}
+                                    table.modern-table thead th{background-color:var(--brand) !important; background-image: linear-gradient(135deg,var(--brand),#0366d6); color:#fff !important; padding:10px 8px; text-transform:uppercase; font-size:10px; letter-spacing:0.5px; text-align:left}
+                                    table.modern-table tbody td{background:#fff; padding:9px 8px; vertical-align:middle}
+                                    table.modern-table tbody tr:nth-child(even) td{background:#fbfdff}
+
+                                    /* Ensure printed colors are preserved where possible */
+                                    table.modern-table thead th, .brand-logo { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+                                    .ranking-badge{display:inline-block; min-width:34px; height:34px; line-height:34px; border-radius:17px; background:#0f172a; color:#fff; text-align:center; font-weight:700}
+                                    .pill{display:inline-block; padding:6px 10px; border-radius:999px; font-size:12px; color:#fff}
+                                    .pill.layak{background:#10b981}
+                                    .pill.tidak{background:#ef4444}
+                                    .table-caption{font-size:12px; color:var(--muted); margin-bottom:6px}
+
+                                    /* Print-specific tweaks */
+                                    @media print{
+                                        html, body { height: auto; }
+                                        body{background:#fff;}
+                                        .print-wrap{padding:4mm}
+                                        .print-card{box-shadow:none; border-radius:0}
+                                        .brand-logo{width:44px; height:44px}
+                                        .brand-title h1{font-size:15px}
+                                        /* Reduce table cell padding when printing to fit more */
+                                        table.modern-table thead th{padding:8px 6px}
+                                        table.modern-table tbody td{padding:6px 6px}
+                                    }
+                                </style>
+                            </head>
+                            <body>
+                                <div class="print-wrap">
+                                    <div class="print-card">
+                                        <div class="brand-row">
+                                            <div class="brand-left">
+                                                <div class="brand-logo">PKH</div>
+                                                <div class="brand-title">
+                                                    <h1>Sistem Pendukung Keputusan PKH</h1>
+                                                    <p>Daftar Perankingan - Metode SAW</p>
+                                                </div>
+                                            </div>
+                                            <div class="meta">
+                                                <div>Tanggal: ${new Date().toLocaleString('id-ID')}</div>
+                                                <div>Total: <?php echo $total_hasil; ?> warga</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="stats-row">
+                                            <div class="stat">
+                                                <div class="value"><?php echo $total_hasil; ?></div>
+                                                <div class="label">Total Dianalisis</div>
+                                            </div>
+                                            <div class="stat">
+                                                <div class="value"><?php echo $layak_count; ?></div>
+                                                <div class="label">Layak (Rekomendasi)</div>
+                                            </div>
+                                            <div class="stat">
+                                                <div class="value"><?php echo ($total_hasil - $layak_count); ?></div>
+                                                <div class="label">Tidak Layak</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="table-caption">Tabel di bawah menampilkan perankingan penerima PKH berdasarkan skor SAW.</div>
+
+                                        ${tableContent.replace(/class=\"table table-bordered table-striped table-hover\"/g, 'class="modern-table"')}
+
+                                        <div style="margin-top:12px; font-size:12px; color:var(--muted)">
+                                            <strong>Catatan:</strong> Dokumen ini bersifat informatif. Skor tertinggi menandakan prioritas penerimaan PKH.
+                                        </div>
+                                    </div>
+                                </div>
+                            </body>
+                            </html>
+                        `);
+
+                        // Close the document writing
+                        printWindow.document.close();
+
+                        // Wait for content to load, then print
+                        printWindow.onload = function() {
+                            printWindow.focus();
+                            printWindow.print();
+                            setTimeout(function() { printWindow.close(); }, 800);
+                        };
+
+                        // Fallback: print immediately if onload doesn't fire
+                        setTimeout(function() {
+                            if (!printWindow.closed) {
+                                printWindow.print();
+                                setTimeout(function() { printWindow.close(); }, 800);
+                            }
+                        }, 600);
+                    }
+                    </script>
+
+                    <?php endif; ?>
                 </div>
             </div>
             <?php
@@ -498,19 +714,41 @@ switch($_GET['act']){
                 }
             }
             
-            // 5. Update rankings
-            $hasil_ordered = mysqli_query($koneksi, "SELECT id_hasil FROM tbl_hasil_saw ORDER BY skor_akhir DESC");
+            // 5. Update rankings with error checking
+            echo "<p>🔄 Updating rankings...</p>";
+            flush();
+            
+            $hasil_ordered = mysqli_query($koneksi, "SELECT id_hasil, nama_warga, skor_akhir FROM tbl_hasil_saw ORDER BY skor_akhir DESC");
             if (!$hasil_ordered) {
                 echo "<p>❌ Error retrieving results: " . mysqli_error($koneksi) . "</p>";
                 flush();
                 break;
             }
             
+            // Initialize ranking counter
             $rank = 1;
+            $updated_count = 0;
+            
+            // Clear any existing rankings first to avoid conflicts
+            mysqli_query($koneksi, "UPDATE tbl_hasil_saw SET ranking = NULL");
+            
             while($row = mysqli_fetch_array($hasil_ordered)) {
-                mysqli_query($koneksi, "UPDATE tbl_hasil_saw SET ranking = $rank WHERE id_hasil = {$row['id_hasil']}");
+                $update_result = mysqli_query($koneksi, "UPDATE tbl_hasil_saw SET ranking = $rank WHERE id_hasil = {$row['id_hasil']}");
+                
+                if ($update_result) {
+                    $updated_count++;
+                    echo "<p style='color: #666; font-size: 12px;'>Rank $rank: {$row['nama_warga']} (Score: " . number_format($row['skor_akhir'], 4) . ")</p>";
+                    flush();
+                } else {
+                    echo "<p>❌ Error updating rank for {$row['nama_warga']}: " . mysqli_error($koneksi) . "</p>";
+                    flush();
+                }
+                
                 $rank++;
             }
+            
+            echo "<p>✅ Updated $updated_count rankings successfully!</p>";
+            flush();
             
             echo "<p>✅ Ranking berhasil dihitung!</p>";
             flush();
@@ -583,11 +821,23 @@ switch($_GET['act']){
                 ORDER BY w.nama_lengkap
             ");
             ?>
-            <div class="box box-info box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-calculator"></i> Detail Perhitungan Metode SAW</h3>
+            <div class="box box-info box-solid saw-detail">
+                <div class="box-header with-border" style="color: #fff !important;">
+                    <h3 class="box-title" style="color: #fff !important;"><i class="fa fa-calculator" style="color: #fff !important;"></i> Detail Perhitungan Metode SAW</h3>
                 </div>
                 <div class="box-body">
+                    <style>
+                        /* Scope only for SAW detail page */
+                        .saw-detail .box-header, .saw-detail .box-title, .saw-detail .box-title i {
+                            color: #fff !important;
+                        }
+                        .saw-detail table tfoot tr,
+                        .saw-detail table tfoot th {
+                            color: #fff !important;
+                            opacity: 1 !important;
+                        }
+                        .saw-detail h4, .saw-detail h4 i { color: #fff !important; }
+                    </style>
                     <div class="alert alert-info">
                         <h4><i class="fa fa-info-circle"></i> Metode Simple Additive Weighting (SAW)</h4>
                         <p>Metode SAW menggunakan formula: <code>Ri = Σ(wj × rij)</code></p>
@@ -624,15 +874,15 @@ switch($_GET['act']){
                         ?>
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <th colspan="2">Total Bobot</th>
+                            <tr style="color: #fff !important; opacity: 1 !important;">
+                                <th colspan="2" style="color: #fff !important;">Total Bobot</th>
                                 <th><span class="label label-<?php echo ($total_bobot == 1.0) ? 'success' : 'danger'; ?>"><?php echo $total_bobot; ?></span></th>
-                                <th><?php echo ($total_bobot == 1.0) ? '<i class="fa fa-check text-success"></i> Valid' : '<i class="fa fa-times text-danger"></i> Invalid'; ?></th>
+                                <th><?php echo ($total_bobot == 1.0) ? '<i class="fa fa-check text-success"></i> Valid' : '<i class="fa fa-times text-danger"></i> <span style="color:#fff !important;">Invalid</span>'; ?></th>
                             </tr>
                         </tfoot>
                     </table>
                     
-                    <h4><i class="fa fa-table"></i> 2. Matriks Data Awal</h4>
+                    <h4 style="color: white !important;"><i class="fa fa-table"></i> 2. Matriks Data Awal</h4>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -758,6 +1008,87 @@ switch($_GET['act']){
                 </div>
             </div>
             <?php
+        }
+        break;
+
+    case "export_pdf":
+        if ($_SESSION['leveluser']=='admin') {
+            // Redirect to aksi_laporan.php for export
+            header("Location: modul/mod_laporan/aksi_laporan.php?act=export_pdf");
+            exit;
+        }
+        break;
+
+    case "export_ranking_pdf":
+        if ($_SESSION['leveluser']=='admin'){
+            // Use Dompdf
+            require_once('../../../vendor/autoload.php');
+
+            // Get ranking data
+            $hasil_saw = mysqli_query($koneksi, "
+                SELECT h.*, w.nama_lengkap
+                FROM tbl_hasil_saw h
+                JOIN data_warga w ON h.id_warga = w.id_warga
+                ORDER BY h.skor_akhir DESC
+            ");
+-
+-            $options = new Options();
+-            $options->set('isRemoteEnabled', true);
+-            $dompdf = new Dompdf($options);
++            $options = new \Dompdf\Options();
++            $options->set('isRemoteEnabled', true);
++            $options->set('defaultFont', 'DejaVu Sans');
++            $dompdf = new \Dompdf\Dompdf($options);
+
+            ob_start();
+            ?>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <title>Daftar Perankingan Penerima PKH</title>
+                <style>
+                    body { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color:#222; }
+                    h1 { text-align: center; margin: 0 0 8px; }
+                    h3 { text-align: center; margin: 0 0 14px; color:#555; }
+                    .meta { font-size: 10px; margin-bottom: 10px; }
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { border: 1px solid #ddd; padding: 6px 8px; }
+                    thead th { background: #3498db; color: #fff; text-align: center; }
+                    .text-center { text-align: center; }
+                </style>
+            </head>
+            <body>
+                <h1>DAFTAR PERANKINGAN PENERIMA PKH</h1>
+                <h3>SPK Metode SAW</h3>
+                <div class="meta">Tanggal: <?= date('d/m/Y'); ?></div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="20%">Ranking</th>
+                            <th width="55%">Nama</th>
+                            <th width="25%">Total Nilai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $ranking = 1; mysqli_data_seek($hasil_saw, 0); while($row = mysqli_fetch_array($hasil_saw)): ?>
+                            <tr>
+                                <td class="text-center">#<?= $ranking++; ?></td>
+                                <td><?= htmlspecialchars($row['nama_lengkap']); ?></td>
+                                <td class="text-center"><?= number_format((float)$row['skor_akhir'], 4); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </body>
+            </html>
+            <?php
+            $html = ob_get_clean();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $dompdf->stream('Perankingan_PKH_' . date('Y-m-d') . '.pdf', ['Attachment' => true]);
+            exit;
         }
         break;
 }

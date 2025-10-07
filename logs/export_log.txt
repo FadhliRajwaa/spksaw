@@ -1,0 +1,28 @@
+[2025-09-18 17:21:25] export_file=Laporan_Perankingan_PKH_2025-09-18_17-21-25.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 17:25:51] export_file=Laporan_Perankingan_PKH_2025-09-18_17-25-51.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 17:26:08] export_file=Laporan_Perankingan_PKH_2025-09-18_17-26-08.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 17:26:17] export_file=Laporan_Perankingan_PKH_2025-09-18_17-26-17.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 17:36:23] export_file=Laporan_Perankingan_PKH_2025-09-18_17-36-23.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 17:36:25] export_file=Laporan_Perankingan_PKH_2025-09-18_17-36-25.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 20:15:19] export_file=Laporan_Perankingan_PKH_2025-09-18_20-15-19.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 20:15:22] export_file=Laporan_Perankingan_PKH_2025-09-18_20-15-22.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 20:20:18] export_file=Laporan_Perankingan_PKH_2025-09-18_20-20-18.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 20:20:21] export_file=Laporan_Perankingan_PKH_2025-09-18_20-20-21.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 20:24:23] export_file=Laporan_Perankingan_PKH_2025-09-18_20-24-23.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 20:24:26] export_file=Laporan_Perankingan_PKH_2025-09-18_20-24-26.pdf; total=5; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, Rina Wati
+[2025-09-18 22:17:24] export_file=Laporan_Perankingan_PKH_2025-09-18_22-17-24.pdf; total=6; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-18 22:17:27] export_file=Laporan_Perankingan_PKH_2025-09-18_22-17-27.pdf; total=6; names=Budi Santoso, Fadhli Rajwaa Rahmanaa, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 04:39:53] export_file=Laporan_Perankingan_PKH_2025-09-19_04-39-53.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 04:39:57] export_file=Laporan_Perankingan_PKH_2025-09-19_04-39-57.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 11:23:39] export_file=Laporan_Perankingan_PKH_2025-09-19_11-23-39.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 11:23:44] export_file=Laporan_Perankingan_PKH_2025-09-19_11-23-44.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 11:30:46] export_file=Laporan_Perankingan_PKH_2025-09-19_11-30-46.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 11:30:48] export_file=Laporan_Perankingan_PKH_2025-09-19_11-30-48.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 12:02:46] export_file=Laporan_Perankingan_PKH_2025-09-19_12-02-46.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 12:02:48] export_file=Laporan_Perankingan_PKH_2025-09-19_12-02-48.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 12:12:44] export_file=Laporan_Perankingan_PKH_2025-09-19_12-12-44.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 12:12:46] export_file=Laporan_Perankingan_PKH_2025-09-19_12-12-46.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 12:21:59] export_file=Laporan_Perankingan_PKH_2025-09-19_12-21-59.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 12:22:01] export_file=Laporan_Perankingan_PKH_2025-09-19_12-22-01.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 12:22:18] export_file=Laporan_Perankingan_PKH_2025-09-19_12-22-18.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati
+[2025-09-19 12:22:20] export_file=Laporan_Perankingan_PKH_2025-09-19_12-22-20.pdf; total=5; names=Budi Santoso, Dewi Sartika, Siti Aminah, dzaky, Rina Wati

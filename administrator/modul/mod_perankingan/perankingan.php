@@ -10,9 +10,6 @@ switch($act){
                             <a href='modul/mod_perankingan/export_pdf.php' class='btn btn-success btn-flat' target='_blank' title='Download Laporan PDF'>
                                 <i class='fa fa-file-pdf-o'></i> Export PDF
                             </a>
-                            <a href='?module=laporan&act=hitung_saw' class='btn btn-primary btn-flat' title='Hitung Ulang Ranking'>
-                                <i class='fa fa-calculator'></i> Hitung Ulang
-                            </a>
                         </div>
                     </div>
                     <div class='box-body'>";
@@ -40,19 +37,13 @@ switch($act){
                 // Export and action buttons section
                 echo "<div class='row' style='margin-bottom: 20px;'>
                         <div class='col-md-12'>
-                            <div class='btn-group pull-right'>
-                                <a href='modul/mod_perankingan/export_pdf.php' class='btn btn-success btn-flat' target='_blank' title='Download Laporan PDF'>
+                            <div class='btn-action-group pull-right' style='display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end;'>
+                                <a href='modul/mod_perankingan/export_pdf.php' class='btn btn-success btn-flat action-btn' target='_blank' title='Download Laporan PDF' style='background: #28a745 !important; color: white !important; text-decoration: none; padding: 8px 14px; line-height: 1;'>
                                     <i class='fa fa-file-pdf-o'></i> Export PDF
                                 </a>
-                                <button class='btn btn-info btn-flat' onclick='printPerankingan()' title='Cetak Hasil Perankingan'>
+                                <button class='btn btn-info btn-flat action-btn' onclick='printPerankingan()' title='Cetak Hasil Perankingan' style='background: #17a2b8 !important; color: white !important; border: none; padding: 8px 14px; line-height: 1;'>
                                     <i class='fa fa-print'></i> Cetak Data
                                 </button>
-                                <a href='?module=laporan&act=hitung_saw' class='btn btn-primary btn-flat' title='Hitung Ulang Ranking'>
-                                    <i class='fa fa-calculator'></i> Hitung Ulang
-                                </a>
-                                <a href='?module=perankingan&act=analisa' class='btn btn-info btn-flat' title='Lihat Analisa Detail'>
-                                    <i class='fa fa-bar-chart'></i> Analisa
-                                </a>
                             </div>
                             <div class='clearfix'></div>
                         </div>
@@ -325,12 +316,17 @@ switch($act){
         if($_SESSION['leveluser']=='admin'){
             $id = $_GET['id'];
             $detail = mysqli_query($koneksi, "
-                SELECT h.*, w.alamat, w.no_kk, w.no_ktp 
+                SELECT h.*, w.alamat, w.nama_lengkap 
                 FROM tbl_hasil_saw h 
                 JOIN data_warga w ON h.id_warga = w.id_warga 
                 WHERE h.id_hasil = '$id'
             ");
             $data = mysqli_fetch_array($detail);
+            
+            if(!$data) {
+                echo "<div class='alert alert-danger'>Data tidak ditemukan!</div>";
+                break;
+            }
             
             // Get original criteria values
             $klasifikasi = mysqli_query($koneksi, "
@@ -359,43 +355,65 @@ switch($act){
                     <div class='box-body'>
                         <div class='row'>
                             <div class='col-md-6'>
-                                <h4>Informasi Warga</h4>
+                                <h4><i class='fa fa-user'></i> Informasi Warga</h4>
                                 <table class='table table-bordered'>
-                                    <tr><td><strong>Nama</strong></td><td>{$data['nama_warga']}</td></tr>
-                                    <tr><td><strong>No. KK</strong></td><td>{$data['no_kk']}</td></tr>
-                                    <tr><td><strong>No. KTP</strong></td><td>{$data['no_ktp']}</td></tr>
+                                    <tr><td width='30%'><strong>Nama Lengkap</strong></td><td>{$data['nama_warga']}</td></tr>
                                     <tr><td><strong>Alamat</strong></td><td>{$data['alamat']}</td></tr>
-                                    <tr><td><strong>Ranking</strong></td><td><span class='label label-primary'>#{$data['ranking']}</span></td></tr>
-                                    <tr><td><strong>Skor Akhir</strong></td><td><span class='label label-info'>" . number_format($data['skor_akhir'], 4) . "</span></td></tr>
-                                    <tr><td><strong>Rekomendasi</strong></td><td><span class='label label-" . ($data['rekomendasi'] == 'Ya' ? 'success' : 'danger') . "'>{$data['rekomendasi']}</span></td></tr>
+                                    <tr><td><strong>Ranking</strong></td><td><span class='label label-primary' style='font-size: 14px;'>#{$data['ranking']}</span></td></tr>
+                                    <tr><td><strong>Skor Akhir</strong></td><td><span class='label label-info' style='font-size: 14px;'>" . number_format($data['skor_akhir'], 4) . "</span></td></tr>
+                                    <tr><td><strong>Rekomendasi</strong></td><td><span class='label label-" . ($data['rekomendasi'] == 'Ya' ? 'success' : 'danger') . "' style='font-size: 14px;'>{$data['rekomendasi']}</span></td></tr>
                                 </table>
                             </div>
                             <div class='col-md-6'>
-                                <h4>Detail Perhitungan</h4>
+                                <h4><i class='fa fa-calculator'></i> Detail Perhitungan SAW</h4>
                                 <table class='table table-bordered table-striped'>
-                                    <thead>
+                                    <thead class='bg-primary'>
                                         <tr>
                                             <th>Kriteria</th>
-                                            <th>Nilai Asli</th>
-                                            <th>Normalisasi</th>
+                                            <th width='20%' class='text-center'>Nilai Asli</th>
+                                            <th width='20%' class='text-center'>Normalisasi</th>
                                         </tr>
                                     </thead>
                                     <tbody>";
             
-            for($i = 1; $i <= 8; $i++) {
-                $col = 'C' . $i;
-                $col_norm = 'C' . $i . '_norm';
-                echo "<tr>
-                        <td>{$kriteria_names[$col]}</td>
-                        <td class='text-center'>{$klasif[$col]}</td>
-                        <td class='text-center'>" . number_format($data[$col_norm], 4) . "</td>
-                      </tr>";
+            // Display criteria if klasifikasi data exists
+            if($klasif) {
+                for($i = 1; $i <= 8; $i++) {
+                    $col = 'C' . $i;
+                    $col_norm = 'C' . $i . '_norm';
+                    $kriteria_name = isset($kriteria_names[$col]) ? $kriteria_names[$col] : "Kriteria $col";
+                    
+                    echo "<tr>
+                            <td><strong>$kriteria_name</strong></td>
+                            <td class='text-center'><span class='label label-default'>{$klasif[$col]}</span></td>
+                            <td class='text-center'><span class='label label-primary'>" . number_format($data[$col_norm], 4) . "</span></td>
+                          </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='3' class='text-center text-muted'>Data klasifikasi tidak ditemukan</td></tr>";
             }
             
             echo "</tbody>
                   </table>
                   </div>
                   </div>
+                  
+                  <div class='row'>
+                    <div class='col-md-12'>
+                        <div class='callout callout-info'>
+                            <h4><i class='fa fa-info-circle'></i> Penjelasan Perhitungan</h4>
+                            <p>Sistem menggunakan metode <strong>Simple Additive Weighting (SAW)</strong> untuk menghitung ranking:</p>
+                            <ol>
+                                <li><strong>Normalisasi:</strong> Nilai asli dikonversi ke skala 0-1</li>
+                                <li><strong>Pembobotan:</strong> Setiap kriteria diberikan bobot sesuai kepentingan</li>
+                                <li><strong>Penjumlahan:</strong> Nilai ternormalisasi dikalikan bobot, lalu dijumlahkan</li>
+                                <li><strong>Ranking:</strong> Skor tertinggi mendapat ranking #1</li>
+                            </ol>
+                            <p class='text-muted'><small>Rekomendasi 'Ya' diberikan jika skor ≥ threshold yang ditentukan sistem.</small></p>
+                        </div>
+                    </div>
+                  </div>
+                  
                   </div>
                   </div>";
         }
@@ -532,3 +550,59 @@ switch($act){
 ?>
 
 <script src="../assets/js/print-functions.js"></script>
+<script>
+// Fallback print function if print-functions.js is not loaded
+if (typeof printPerankingan === 'undefined') {
+    function printPerankingan() {
+        var table = document.getElementById('rankingTable') || document.querySelector('.table');
+        if (!table) {
+            alert('Tidak ada data untuk dicetak.');
+            return;
+        }
+
+        // Open a blank window and build a safe printable document by cloning DOM nodes
+        var printWindow = window.open('', '_blank', 'width=1200,height=800');
+        var doc = printWindow.document;
+        doc.open();
+        doc.write('<!doctype html><html lang="id"><head><meta charset="utf-8"><title>Hasil Perankingan PKH - Cetak</title>');
+        doc.write('<meta name="viewport" content="width=device-width,initial-scale=1">');
+        doc.write('<style>\n');
+        doc.write('@page{size:A4;margin:2cm;}\n');
+        doc.write('body{font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#222;margin:0;padding:20px;}\n');
+        doc.write('h1,h2{margin:0;padding:0;text-align:center;}\n');
+        doc.write('table{width:100%;border-collapse:collapse;margin-top:10px}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#2c5aa0;color:#fff}');
+        doc.write('</style></head><body>');
+
+        doc.write('<div style="text-align:center;margin-bottom:12px">');
+        doc.write('<h1 style="font-size:18px;margin-bottom:4px">LAPORAN PERANKINGAN PENERIMA PKH</h1>');
+        doc.write('<p style="margin:0 0 6px 0;color:#666">Dicetak: ' + new Date().toLocaleString('id-ID') + '</p>');
+        doc.write('</div>');
+
+        // Clone the table and clean interactive elements
+        var cloned = table.cloneNode(true);
+        // Remove buttons, links and elements not relevant for print
+        var rem = cloned.querySelectorAll('a, button, .no-print, .btn');
+        for (var i = rem.length - 1; i >= 0; i--) {
+            rem[i].parentNode && rem[i].parentNode.removeChild(rem[i]);
+        }
+
+        // Serialize cloned table to HTML and write into document
+        doc.body.appendChild(cloned);
+
+        doc.write('<div style="text-align:center;margin-top:20px;color:#666;font-size:11px">Laporan ini dibuat otomatis oleh Sistem PKH SAW</div>');
+        doc.write('</body></html>');
+        doc.close();
+
+        // Print after the content has loaded in the new window
+        printWindow.focus();
+        printWindow.onload = function () {
+            try {
+                printWindow.print();
+            } catch (e) {
+                console.warn('Print failed', e);
+            }
+            setTimeout(function () { printWindow.close(); }, 1000);
+        };
+    }
+}
+</script>

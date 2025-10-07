@@ -32,6 +32,11 @@ else{
     <title>SPK PKH SAW - Sistem Pendukung Keputusan</title>
     <meta name="description" content="Sistem Pendukung Keputusan Rekomendasi Penerima Bantuan PKH dengan Metode Simple Additive Weighting">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23212529'/%3E%3Cpath d='M38 25c-4 0-7 3-7 7 0 2 1 4 2 5l7 7 7-7c1-1 2-3 2-5 0-4-3-7-7-7zm0 4c1 0 2 1 2 2s-1 2-2 2-2-1-2-2 1-2 2-2zM20 55h8c2 0 4 2 4 4v12c0 2-2 4-4 4h-8c-2 0-4-2-4-4V59c0-2 2-4 4-4zm28 0h28c2 0 4 2 4 4v12c0 2-2 4-4 4H48c-2 0-4-2-4-4V59c0-2 2-4 4-4z' fill='white'/%3E%3C/svg%3E">
+    <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23212529'/%3E%3Cpath d='M38 25c-4 0-7 3-7 7 0 2 1 4 2 5l7 7 7-7c1-1 2-3 2-5 0-4-3-7-7-7zm0 4c1 0 2 1 2 2s-1 2-2 2-2-1-2-2 1-2 2-2zM20 55h8c2 0 4 2 4 4v12c0 2-2 4-4 4h-8c-2 0-4-2-4-4V59c0-2 2-4 4-4zm28 0h28c2 0 4 2 4 4v12c0 2-2 4-4 4H48c-2 0-4-2-4-4V59c0-2 2-4 4-4z' fill='white'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23212529'/%3E%3Cpath d='M38 25c-4 0-7 3-7 7 0 2 1 4 2 5l7 7 7-7c1-1 2-3 2-5 0-4-3-7-7-7zm0 4c1 0 2 1 2 2s-1 2-2 2-2-1-2-2 1-2 2-2zM20 55h8c2 0 4 2 4 4v12c0 2-2 4-4 4h-8c-2 0-4-2-4-4V59c0-2 2-4 4-4zm28 0h28c2 0 4 2 4 4v12c0 2-2 4-4 4H48c-2 0-4-2-4-4V59c0-2 2-4 4-4z' fill='white'/%3E%3C/svg%3E">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,13 +54,19 @@ else{
     <!-- DataTables Modern Styling -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+
+    <!-- Admin custom theme (system-aware) -->
+    <link rel="stylesheet" href="css/admin-theme.css">
     
     <style>
         /* Fix DataTables table duplication issues */
-        .dataTables_scrollHead,
-        .dataTables_scrollBody,
-        .dataTables_scrollFoot {
-            display: none !important;
+        /* NOTE: Allow DataTables native scroll containers to be visible for horizontal scrolling */
+        /* The old rule hid these and prevented scrollX from working */
+        /* Re-enable specifically for #example1 to avoid side effects */
+        #example1_wrapper .dataTables_scrollHead,
+        #example1_wrapper .dataTables_scrollBody,
+        #example1_wrapper .dataTables_scrollFoot {
+            display: block !important;
         }
         
         /* Ensure only one table is visible */
@@ -69,21 +80,11 @@ else{
             margin: 0 !important;
         }
         
-        /* Override DataTables scroll wrapper that causes duplication */
-        .dataTables_wrapper .dataTables_scroll {
-            overflow: visible !important;
-        }
-        
-        .dataTables_wrapper .dataTables_scroll div.dataTables_scrollHead,
-        .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
-            overflow: visible !important;
-        }
-        
-        /* Exclude tables from DataTables initialization */
-        .no-datatables table,
-        .himpunan-table,
-        table.no-datatable {
-            width: 100% !important;
+        /* Enable overflow on DataTables scroll containers for #example1 */
+        #example1_wrapper .dataTables_scroll,
+        #example1_wrapper .dataTables_scroll div.dataTables_scrollHead,
+        #example1_wrapper .dataTables_scroll div.dataTables_scrollBody {
+            overflow: auto !important;
         }
         
         body {
@@ -574,6 +575,25 @@ else{
             color: #1a202c !important;
         }
 
+        /* Modern table visual fixes - unify header/body and borders in dark theme */
+        .modern-main .table {
+            border-collapse: collapse !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        }
+        .modern-main .table thead th {
+            background: rgba(255, 255, 255, 0.06);
+            color: #e5e7eb !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            white-space: nowrap;
+            vertical-align: middle;
+            font-weight: 600;
+        }
+        .modern-main .table th,
+        .modern-main .table td {
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            color: #e5e7eb !important;
+        }
+
         /* Button text should remain readable */
         .btn,
         .btn *,
@@ -710,13 +730,17 @@ if ($_SESSION['leveluser']=='admin'){
         </ul>
     </aside>
 
+    <!-- Overlay for mobile sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
     <!-- Modern Header -->
     <header class="modern-header" id="header">
         <div class="modern-header-left">
-            <button class="mobile-menu-toggle" id="sidebarToggle" type="button">
-                <i class="fas fa-bars"></i>
+            <button class="mobile-menu-toggle" id="sidebarToggle" type="button" aria-label="Toggle navigation">
+                <i class="fas fa-bars" aria-hidden="true"></i>
             </button>
             <h1 class="modern-header-title">
+                <i class="fas fa-hand-holding-heart" style="margin-right: 0.5rem; color: #3b82f6;"></i>
                 <?php 
                 if (isset($_GET['module'])) {
                     switch($_GET['module']) {
@@ -797,10 +821,12 @@ elseif ($_SESSION['leveluser']=='pengajar'){
                 
                 // Configure specific tables separately
                 if ($('#example1').length > 0 && !$('#example1').closest('.no-datatables, .himpunan-table').length) {
-                    // Data tables without scrollX to prevent duplication
+                    // Data tables without horizontal scroll to keep header/body unified
                     $('#example1').DataTable({
-                        responsive: true,
+                        responsive: false,
                         scrollX: false,
+                        scrollCollapse: false,
+                        autoWidth: true,
                         pageLength: 10,
                         language: {
                             url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
@@ -1035,52 +1061,54 @@ elseif ($_SESSION['leveluser']=='pengajar'){
         // Mobile responsive enhancements
         function initMobileEnhancements() {
             // Add mobile menu toggle functionality
-            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const mobileToggle = document.querySelector('#sidebarToggle');
             const sidebar = document.querySelector('.modern-sidebar');
-            const overlay = document.querySelector('.sidebar-overlay');
+            const overlay = document.querySelector('#sidebarOverlay');
             
             if (mobileToggle && sidebar) {
                 mobileToggle.addEventListener('click', function() {
+                    // Toggle class names that CSS recognizes
+                    sidebar.classList.toggle('open');
                     sidebar.classList.toggle('active');
                     
                     // Create overlay if it doesn't exist
                     if (!overlay) {
                         const newOverlay = document.createElement('div');
-                        newOverlay.className = 'sidebar-overlay';
+                        newOverlay.id = 'sidebarOverlay';
+                        newOverlay.className = 'sidebar-overlay active';
                         document.body.appendChild(newOverlay);
-                        
                         newOverlay.addEventListener('click', function() {
+                            sidebar.classList.remove('open');
                             sidebar.classList.remove('active');
                             newOverlay.classList.remove('active');
                         });
-                    }
-                    
-                    const currentOverlay = document.querySelector('.sidebar-overlay');
-                    if (currentOverlay) {
-                        currentOverlay.classList.toggle('active');
+                    } else {
+                        overlay.classList.toggle('active');
                     }
                 });
             }
-            
+
             // Close mobile menu when clicking menu items
             const sidebarLinks = document.querySelectorAll('.modern-sidebar-link');
             sidebarLinks.forEach(link => {
                 link.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
+                    if (window.innerWidth <= 991) {
+                        sidebar.classList.remove('open');
                         sidebar.classList.remove('active');
-                        const currentOverlay = document.querySelector('.sidebar-overlay');
+                        const currentOverlay = document.querySelector('#sidebarOverlay');
                         if (currentOverlay) {
                             currentOverlay.classList.remove('active');
                         }
                     }
                 });
             });
-            
+
             // Handle window resize
             window.addEventListener('resize', function() {
-                if (window.innerWidth > 768) {
+                if (window.innerWidth > 991) {
+                    sidebar.classList.remove('open');
                     sidebar.classList.remove('active');
-                    const currentOverlay = document.querySelector('.sidebar-overlay');
+                    const currentOverlay = document.querySelector('#sidebarOverlay');
                     if (currentOverlay) {
                         currentOverlay.classList.remove('active');
                     }

@@ -42,20 +42,50 @@ switch($_GET['act']){
                     </div>
                     <br>
                     
-                    <table id="example1" class="table table-bordered table-striped">
+                    <div class="table-scroll-wrap">
+                    <style>
+                        /* Scope styling only for Data Warga table */
+                        .table-scroll-wrap { overflow-x: auto; }
+                        .warga-table { 
+                            width: 100%; 
+                            border-collapse: collapse; 
+                            border: 1px solid rgba(255, 255, 255, 0.12);
+                        }
+                        .warga-table thead th {
+                            color: #e5e7eb !important;
+                            background: rgba(255, 255, 255, 0.06);
+                            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+                            white-space: nowrap;
+                            vertical-align: middle;
+                            font-weight: 600;
+                        }
+                        .warga-table tbody tr { background: rgba(255,255,255,0.02); }
+                        .warga-table tbody tr:hover { background: rgba(255,255,255,0.05); }
+                        .warga-table th, .warga-table td { 
+                            vertical-align: middle; 
+                            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+                        }
+                        .warga-table td { color: #e5e7eb !important; }
+                        /* Center numeric columns (Lansia..Ibu Hamil) -> columns 4..10 */
+                        .warga-table td:nth-child(n+4):nth-child(-n+10),
+                        .warga-table th:nth-child(n+4):nth-child(-n+10) { text-align: center; }
+                        /* Keep action column aligned center */
+                        .warga-table th:last-child, .warga-table td:last-child { text-align: center; white-space: nowrap; }
+                    </style>
+                    <table id="example1" class="table table-bordered table-striped warga-table">
                         <thead>
                             <tr>
-                                <th>No</th>
-                                <th>Nama Lengkap</th>
-                                <th>Alamat</th>
-                                <th>Lansia</th>
-                                <th>Disabilitas</th>
-                                <th>Anak SD</th>
-                                <th>Anak SMP</th>
-                                <th>Anak SMA</th>
-                                <th>Balita</th>
-                                <th>Ibu Hamil</th>
-                                <th>Aksi</th>
+                                <th width="6%">No</th>
+                                <th width="24%">Nama Lengkap (sesuai KK)</th>
+                                <th width="26%">Alamat Lengkap</th>
+                                <th width="7%">Lansia (≥60 th)</th>
+                                <th width="9%">Disabilitas Berat</th>
+                                <th width="7%">Anak usia SD</th>
+                                <th width="7%">Anak usia SMP</th>
+                                <th width="7%">Anak usia SMA</th>
+                                <th width="7%">Balita (0–5 th)</th>
+                                <th width="7%">Ibu Hamil</th>
+                                <th width="13%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,8 +120,9 @@ switch($_GET['act']){
                         ?>
                         </tbody>
                     </table>
-                </div>
-            </div>
+                    </div>
+                 </div>
+             </div>
             
             <?php
         }

@@ -1,0 +1,378 @@
+/* Administrator system-theme-aware stylesheet
+   - Uses system preference (prefers-color-scheme) and does NOT force dark/light
+   - Defines CSS variables and applies them to admin components
+   - Adds responsive sidebar -> mobile hamburger behavior
+   - Intentionally loaded after other admin CSS to override problematic rules
+*/
+:root{
+  /* Light theme variables (default) */
+  --bg: #f7fafc;
+  --card-bg: #ffffff;
+  --text-primary: #1f2937; /* slate-800 */
+  --text-subtle: #6b7280;  /* slate-500 */
+  --border-accent: rgba(15,23,42,0.06);
+  --accent: #2563eb; /* blue-600 */
+  --sidebar-bg: linear-gradient(180deg,#2563eb 0%,#7c3aed 100%);
+  --header-bg: #ffffff;
+  --shadow-sm: 0 6px 18px rgba(15,23,42,0.06);
+  --shadow-md: 0 12px 36px rgba(15,23,42,0.08);
+  --border-radius: 8px;
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg: #0b1220;
+    --card-bg: #071021;
+    --text-primary: #e6eef8;
+    --text-subtle: #9aa6b2;
+    --border-accent: rgba(255,255,255,0.04);
+    --accent: #60a5fa; /* lighter blue for contrast */
+    --sidebar-bg: linear-gradient(180deg,#0f1724 0%,#031025 100%);
+    --header-bg: rgba(8,11,20,0.6);
+    --shadow-sm: 0 6px 18px rgba(2,6,23,0.6);
+    --shadow-md: 0 12px 36px rgba(2,6,23,0.7);
+    --border-radius: 8px;
+  }
+}
+
+/* High-specificity neutralization of aggressive global color enforcement in other CSS */
+html body .modern-content, html body .modern-content * {
+  color: var(--text-primary) !important;
+}
+
+/* Apply background & global font (override older CSS) */
+body, html {
+  background: var(--bg) !important;
+  color: var(--text-primary) !important;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif !important;
+}
+
+/* Sidebar */
+.modern-sidebar {
+  background: var(--sidebar-bg) !important;
+  color: var(--card-bg) !important;
+  width: 260px !important;
+  min-height: 100vh !important;
+  box-shadow: var(--shadow-sm) !important;
+  padding-top: 1rem !important;
+}
+
+.modern-sidebar .modern-sidebar-link {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.75rem 1rem !important;
+  color: var(--card-bg) !important;
+  text-decoration: none !important;
+  border-radius: 8px !important;
+}
+
+.modern-sidebar .modern-sidebar-link i.modern-sidebar-icon {
+  width: 34px !important;
+  height: 34px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.95rem !important;
+}
+
+.modern-sidebar .modern-sidebar-link.active,
+.modern-sidebar .modern-sidebar-link:hover{
+  background: rgba(255,255,255,0.08) !important;
+  color: var(--card-bg) !important;
+}
+
+/* Sidebar text overflow handling */
+.modern-sidebar .modern-sidebar-text {
+  display: inline-block;
+  max-width: calc(100% - 56px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Header */
+.modern-header{
+  background: var(--header-bg) !important;
+  border-bottom: 1px solid var(--border-accent) !important;
+  box-shadow: none !important;
+}
+
+.modern-header .modern-header-title{
+  color: var(--text-primary) !important;
+}
+
+.modern-header-user, .modern-header-avatar{
+  color: var(--text-primary) !important;
+}
+
+/* Content wrapper */
+.modern-content-wrapper, .modern-content{
+  background: transparent !important;
+  color: var(--text-primary) !important;
+}
+
+/* Cards / panels */
+.box, .card, .panel, .widget-box{
+  background: var(--card-bg) !important;
+  border: 1px solid var(--border-accent) !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--shadow-sm) !important;
+  color: var(--text-primary) !important;
+}
+
+.box-header, .card-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--border-accent) !important;
+}
+
+/* Tables */
+.table, .dataTable, .dataTables_wrapper{
+  background: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border-radius: 8px !important;
+  overflow: auto !important;
+}
+
+.table thead th{
+  background: linear-gradient(90deg, rgba(0,0,0,0.03), rgba(0,0,0,0.00)) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Form controls */
+.form-control, input[type="text"], textarea, select{
+  background: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-accent) !important;
+}
+
+/* Buttons */
+.btn, a.button{
+  border-radius: 8px !important;
+}
+
+.btn-primary, .action-btn, .stat-link{
+  background: linear-gradient(90deg, var(--accent), rgba(124,58,237,0.85)) !important;
+  color: white !important;
+}
+
+/* Small responsive tweaks for layout */
+.modern-page {
+  display: flex !important;
+}
+
+.modern-sidebar + .modern-content-wrapper {
+  margin-left: 260px !important;
+  transition: margin-left 0.2s ease !important;
+}
+
+/* Mobile: collapse sidebar into topbar with hamburger */
+@media (max-width: 991px){
+  .modern-sidebar{ position: fixed !important; left: 0; top: 0; transform: translateX(-110%); transition: transform 0.25s ease; z-index: 9999; }
+  .modern-sidebar.open { transform: translateX(0) !important; }
+  .modern-sidebar + .modern-content-wrapper{ margin-left: 0 !important; }
+  .modern-header{ position: sticky; top: 0; z-index: 10000; }
+  .mobile-hamburger{ display: inline-flex !important; cursor: pointer; align-items: center; justify-content: center; width:44px; height:44px; }
+}
+
+/* Inserted: support for `.active` toggle and overlay classes used by JS */
+.modern-sidebar.active { transform: translateX(0) !important; }
+
+/* Overlay used by JS (two possible class names) */
+.sidebar-overlay,
+.admin-sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(2,6,23,0.45);
+  z-index: 9998;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.sidebar-overlay.active,
+.admin-sidebar-overlay.show,
+.sidebar-overlay.show {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Ensure mobile toggle button used in template is visible */
+.mobile-menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  width:44px;
+  height:44px;
+  align-items:center;
+  justify-content:center;
+}
+
+@media (max-width: 991px){
+  .mobile-menu-toggle { display: inline-flex !important; }
+}
+
+/* Make sure links inside sidebar close the sidebar when in mobile mode */
+@media (max-width: 991px){
+  .modern-sidebar .modern-sidebar-link { width: 100%; }
+}
+
+/* Small devices: tighten spacing */
+@media (max-width: 576px){
+  .modern-sidebar{ width: 100% !important; }
+  .modern-sidebar .modern-sidebar-link{ padding: 0.65rem 0.85rem !important; }
+  .modern-sidebar .modern-sidebar-text{ font-size: 0.95rem !important; }
+}
+
+/* Utility: visually pleasant scroll for tables */
+.dataTables_wrapper{ -webkit-overflow-scrolling:touch; }
+
+/* Ensure contrast for any element forced white by older CSS - use higher specificity */
+html body *{ color: inherit !important; }
+
+/* Improve focus styles for keyboard users */
+:focus {
+  outline: 2px solid rgba(37,99,235,0.25) !important;
+  outline-offset: 2px !important;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Horizontal scroll wrapper for wide tables */
+.table-responsive {
+  width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important; /* prevent vertical scroll inside wrapper */
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: thin; /* Firefox */
+  padding-bottom: 6px; /* ensure scrollbar doesn't overlap content */
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 999px;
+}
+
+/* Make sure tables inside responsive wrapper size to their content so horizontal scroll exposes all columns */
+.table-responsive table,
+.table-responsive .dataTable {
+  display: inline-table !important;    /* keep intrinsic column widths */
+  width: auto !important;
+  min-width: -webkit-max-content !important; /* fallback for webkit */
+  min-width: -moz-max-content !important;
+  min-width: max-content !important;   /* allow table to be as wide as needed */
+  white-space: nowrap !important;
+}
+
+/* Ensure the table container stretches to full available width while allowing scroll */
+.table-responsive { display: block; }
+
+/* Ensure admin tables (warga/DataTables) can scroll horizontally and do not clip the last column */
+.table-responsive {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 18px; /* room for scrollbar */
+  padding-right: 24px; /* ensure last column not hidden under scrollbar */
+}
+.table-responsive::-webkit-scrollbar {
+  height: 10px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.25);
+  border-radius: 6px;
+}
+.table-responsive table {
+  display: inline-table !important;
+  min-width: -webkit-max-content !important;
+  min-width: -moz-max-content !important;
+  min-width: max-content !important; /* allow table to expand to content */
+   white-space: nowrap !important;
+   table-layout: auto !important;
+}
+
+/* Keep cell content on one line */
+.table-responsive th,
+.table-responsive td {
+  white-space: nowrap !important;
+}
+
+/* Neutralize previous overflow override that blocked DataTables scroll */
+/* Remove global visible overflow on DataTables containers */
+/* Keep default unless specifically overridden per-table */
+/* .dataTables_wrapper, .dataTables_scroll { overflow: visible !important; } */
+
+/* Style DataTables wrapper so the outer box encloses header+body+scrollbar */
+#example1_wrapper {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--border-accent) !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--shadow-sm) !important;
+  padding: 12px !important;
+}
+#example1_wrapper .dataTables_scroll {
+  border: 1px solid var(--border-accent) !important;
+  border-radius: var(--border-radius) !important;
+  background: var(--card-bg) !important;
+}
+#example1_wrapper .dataTables_scrollHead,
+#example1_wrapper .dataTables_scrollFoot {
+  overflow: hidden !important; /* no top scrollbars */
+}
+#example1_wrapper .dataTables_scrollBody {
+  overflow-x: auto !important;  /* only body scrolls horizontally */
+  overflow-y: auto !important;
+  max-height: none !important;
+}
+#example1_wrapper .dataTables_scrollHead::-webkit-scrollbar,
+#example1_wrapper .dataTables_scrollFoot::-webkit-scrollbar { display: none; }
+#example1_wrapper .dataTables_scrollHeadInner { width: auto !important; }
+
+/* Remove extra padding that misaligned header/body widths */
+/* #example1_wrapper .dataTables_scrollBody { padding-right: 12px; } */
+
+/* Let DataTables manage table width; no forced min-width */
+#example1 { width: 100% !important; min-width: 0 !important; }
+
+/* Disable sticky-last-column for now to avoid clipping with scroll containers */
+#example1 td:last-child,
+#example1 th:last-child {
+  position: static !important;
+  right: auto !important;
+  z-index: auto !important;
+  background: inherit !important;
+}
+
+/* Optional: small right padding to ensure last column clears rounded border */
+/* #example1_wrapper .dataTables_scrollBody { padding-right: 12px; } */
+
+/* Keterangan header row: allow wrapping so it expands downward, not sideways */
+#example1 thead tr.keterangan th {
+  white-space: normal !important;   /* allow multi-line */
+  font-weight: 500 !important;
+  color: var(--text-subtle) !important;
+  background: transparent !important;
+  border-top: none !important;
+}
+#example1 thead tr.keterangan th:last-child {
+  white-space: normal !important;
+}
+/* Keep tbody cells on one line for horizontal scroll */
+#example1 tbody td { white-space: nowrap !important; }
+
+/* end of admin table scroll fixes */
+/* End of admin-theme.css */

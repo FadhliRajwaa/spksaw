@@ -81,7 +81,7 @@ switch($_GET['act']){
                                             
                                     // Dynamic criteria columns
                                     mysqli_data_seek($kriteria, 0);
-                                    $badge_colors = ['info', 'warning', 'success', 'primary', 'danger', 'default', 'info', 'warning'];
+                                    $badge_colors = ['info', 'warning', 'success', 'primary', 'danger', 'info', 'success', 'warning'];
                                     $color_index = 0;
                                     while($k = mysqli_fetch_array($kriteria)) {
                                         $badge_color = $badge_colors[$color_index % count($badge_colors)];
@@ -187,9 +187,9 @@ switch($_GET['act']){
                                         case 'C1': $badge_color = 'info'; break;
                                         case 'C2': $badge_color = 'warning'; break;
                                         case 'C3': case 'C4': case 'C5': $badge_color = 'success'; break;
-                                        case 'C6': $badge_color = 'primary'; break;
+                                        case 'C6': $badge_color = 'info'; break;
                                         case 'C7': $badge_color = 'danger'; break;
-                                        case 'C8': $badge_color = 'default'; break;
+                                        case 'C8': $badge_color = 'warning'; break;
                                     }
                                     echo "<tr>
                                             <td width='15%'><strong>{$k['kode_kriteria']}</strong></td>

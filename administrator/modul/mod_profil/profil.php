@@ -1,16 +1,22 @@
 <?php
 session_start();
-if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])){
+if (empty($_SESSION['namauser']) AND empty($_SESSION['passuser'])){
     echo "<link href=../css/style.css rel=stylesheet type=text/css>";
     echo "<div class='error msg'>Untuk mengakses Modul anda harus login.</div>";
     exit;
 }
-include "../../../configurasi/koneksi.php";
+include "../../configurasi/koneksi.php";
 
-// Ambil data admin dari session dan database
-$username = $_SESSION['username'];
+// Ambil data admin dari session dan database dengan sanitasi
+$username = mysqli_real_escape_string($koneksi, $_SESSION['namauser']);
 $query_admin = mysqli_query($koneksi, "SELECT * FROM admin WHERE username='$username'");
 $data_admin = mysqli_fetch_array($query_admin);
+
+// Cek jika data admin tidak ditemukan
+if (!$data_admin) {
+    echo "<div class='error msg'>Data admin tidak ditemukan. Silakan login kembali.</div>";
+    exit;
+}
 
 // Hitung beberapa statistik
 $total_warga = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM data_warga"));
@@ -279,64 +285,143 @@ switch(@$_GET['act']){
     
     case 'edit':
         if ($_SESSION['leveluser']=='admin'){
-            if (isset($_POST['submit'])) {
-                // Proses update profil
-                $nama_lengkap = mysqli_real_escape_string($koneksi, $_POST['nama_lengkap']);
-                $email = mysqli_real_escape_string($koneksi, $_POST['email']);
-                $no_telp = mysqli_real_escape_string($koneksi, $_POST['no_telp']);
-                $alamat = mysqli_real_escape_string($koneksi, $_POST['alamat']);
+            // Check if this is a POST request with form data
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nama_lengkap'])) {
+                // Validasi input
+                $errors = array();
                 
-                $update = mysqli_query($koneksi, "UPDATE admin SET 
-                    nama_lengkap='$nama_lengkap',
-                    email='$email',
-                    no_telp='$no_telp',
-                    alamat='$alamat',
-                    updated_at=NOW()
-                    WHERE username='$username'");
+                if (empty(trim($_POST['nama_lengkap']))) {
+                    $errors[] = "Nama lengkap harus diisi";
+                }
+                if (empty(trim($_POST['email'])) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+                    $errors[] = "Email tidak valid";
+                }
+                if (empty(trim($_POST['no_telp']))) {
+                    $errors[] = "No. telepon harus diisi";
+                }
+                if (empty(trim($_POST['alamat']))) {
+                    $errors[] = "Alamat harus diisi";
+                }
+                
+                if (empty($errors)) {
+                    // Proses update profil dengan sanitasi
+                    $nama_lengkap = mysqli_real_escape_string($koneksi, trim($_POST['nama_lengkap']));
+                    $email = mysqli_real_escape_string($koneksi, trim($_POST['email']));
+                    $no_telp = mysqli_real_escape_string($koneksi, trim($_POST['no_telp']));
+                    $alamat = mysqli_real_escape_string($koneksi, trim($_POST['alamat']));
                     
-                if ($update) {
-                    echo "<script>alert('Profil berhasil diupdate!'); window.location.href='?module=profil';</script>";
+                    $update_query = "UPDATE admin SET 
+                        nama_lengkap='$nama_lengkap',
+                        email='$email',
+                        no_telp='$no_telp',
+                        alamat='$alamat',
+                        updated_at=NOW()
+                        WHERE username='$username'";
+                    
+                    $update = mysqli_query($koneksi, $update_query);
+                    
+                    if ($update) {
+                        // Update session jika nama lengkap berubah
+                        $_SESSION['namalengkap'] = $nama_lengkap;
+                        
+                        echo "<script>
+                            alert('Profil berhasil diupdate!'); 
+                            window.location.href='?module=profil';
+                        </script>";
+                    } else {
+                        echo "<script>
+                            alert('Gagal update profil: " . mysqli_error($koneksi) . "');
+                        </script>";
+                    }
                 } else {
-                    echo "<script>alert('Gagal update profil!');</script>";
+                    $error_message = implode("\\n", $errors);
+                    echo "<script>
+                        alert('Error:\\n$error_message');
+                    </script>";
                 }
             }
             ?>
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-edit"></i> Edit Profil Administrator</h3>
+            <style>
+            /* Dark theme styling untuk form edit */
+            .edit-container { background:#1a1a1a; min-height:100vh; padding:20px; margin:-20px; }
+            .edit-wrapper { max-width:800px; margin:0 auto; }
+            .edit-card { background:#2a2a2a; border:1px solid #404040; border-radius:10px; padding:25px; box-shadow:0 4px 12px rgba(255,255,255,.05); }
+            .edit-header { text-align:center; margin-bottom:25px; color:#ffffff; }
+            .edit-title { font-size:1.5rem; font-weight:600; margin:0; color:#ffffff; }
+            .form-group { margin-bottom:20px; }
+            .form-label { display:block; margin-bottom:8px; font-weight:600; color:#cccccc; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; }
+            .form-control { width:100%; padding:12px 15px; border:1px solid #404040; border-radius:8px; background:#333333; color:#ffffff; font-size:0.95rem; transition:all 0.3s ease; }
+            .form-control:focus { outline:none; border-color:#3498db; box-shadow:0 0 0 3px rgba(52,152,219,0.1); background:#3a3a3a; }
+            .form-control::placeholder { color:#888888; }
+            textarea.form-control { resize:vertical; min-height:80px; }
+            .button-group { display:flex; gap:12px; justify-content:center; margin-top:25px; }
+            .btn { padding:12px 24px; border:none; border-radius:8px; font-weight:600; font-size:0.9rem; text-decoration:none; display:inline-flex; align-items:center; gap:8px; transition:all 0.3s ease; cursor:pointer; }
+            .btn-back { background:#666666; color:#ffffff; }
+            .btn-primary { background:linear-gradient(45deg,#3498db,#2980b9); color:#ffffff; }
+            .btn:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(255,255,255,0.1); }
+            .btn i { font-size:0.9rem; }
+            @media (max-width:768px){ .edit-container{padding:15px;} .button-group{flex-direction:column;} .btn{width:100%; justify-content:center;} }
+            </style>
+            
+            <div class="edit-container">
+                <div class="edit-wrapper">
+                    <div class="edit-card">
+                        <div class="edit-header">
+                            <h2 class="edit-title">
+                                <i class="fas fa-user-edit"></i>
+                                Edit Profil Administrator
+                            </h2>
+                        </div>
+                        
+                        <form method="POST">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-user"></i> Nama Lengkap
+                                </label>
+                                <input type="text" name="nama_lengkap" class="form-control" 
+                                       value="<?= htmlspecialchars($data_admin['nama_lengkap']); ?>" 
+                                       placeholder="Masukkan nama lengkap" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-envelope"></i> Email
+                                </label>
+                                <input type="email" name="email" class="form-control" 
+                                       value="<?= htmlspecialchars($data_admin['email']); ?>" 
+                                       placeholder="Masukkan email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-phone"></i> No. Telepon
+                                </label>
+                                <input type="text" name="no_telp" class="form-control" 
+                                       value="<?= htmlspecialchars($data_admin['no_telp']); ?>" 
+                                       placeholder="Masukkan no. telepon" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-map-marker-alt"></i> Alamat
+                                </label>
+                                <textarea name="alamat" class="form-control" rows="4" 
+                                          placeholder="Masukkan alamat lengkap" required><?= htmlspecialchars($data_admin['alamat']); ?></textarea>
+                            </div>
+                            
+                            <div class="button-group">
+                                <a href="?module=profil" class="btn btn-back">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Kembali
+                                </a>
+                                <button type="submit" name="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    Simpan Perubahan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <form method="POST" class="form-horizontal">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Nama Lengkap</label>
-                            <div class="col-sm-8">
-                                <input type="text" name="nama_lengkap" class="form-control" value="<?= htmlspecialchars($data_admin['nama_lengkap']); ?>" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Email</label>
-                            <div class="col-sm-8">
-                                <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($data_admin['email']); ?>" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">No. Telepon</label>
-                            <div class="col-sm-8">
-                                <input type="text" name="no_telp" class="form-control" value="<?= htmlspecialchars($data_admin['no_telp']); ?>" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Alamat</label>
-                            <div class="col-sm-8">
-                                <textarea name="alamat" class="form-control" rows="3" required><?= htmlspecialchars($data_admin['alamat']); ?></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-footer">
-                        <a href="?module=profil" class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</a>
-                        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan Perubahan</button>
-                    </div>
-                </form>
             </div>
             <?php
         }
@@ -344,58 +429,208 @@ switch(@$_GET['act']){
     
     case 'password':
         if ($_SESSION['leveluser']=='admin'){
-            if (isset($_POST['submit'])) {
-                $password_lama = md5($_POST['password_lama']);
-                $password_baru = md5($_POST['password_baru']);
-                $konfirmasi = md5($_POST['konfirmasi']);
+            // Check if this is a POST request with password form data
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password_lama'])) {
+                // Validasi input
+                $errors = array();
                 
-                // Cek password lama
-                $cek = mysqli_query($koneksi, "SELECT password FROM admin WHERE username='$username' AND password='$password_lama'");
-                if (mysqli_num_rows($cek) == 0) {
-                    echo "<script>alert('Password lama tidak sesuai!');</script>";
-                } elseif ($password_baru != $konfirmasi) {
-                    echo "<script>alert('Konfirmasi password tidak sesuai!');</script>";
-                } else {
-                    $update = mysqli_query($koneksi, "UPDATE admin SET password='$password_baru', updated_at=NOW() WHERE username='$username'");
-                    if ($update) {
-                        echo "<script>alert('Password berhasil diubah!'); window.location.href='?module=profil';</script>";
+                if (empty(trim($_POST['password_lama']))) {
+                    $errors[] = "Password lama harus diisi";
+                }
+                if (empty(trim($_POST['password_baru']))) {
+                    $errors[] = "Password baru harus diisi";
+                } elseif (strlen($_POST['password_baru']) < 6) {
+                    $errors[] = "Password baru minimal 6 karakter";
+                }
+                if (empty(trim($_POST['konfirmasi']))) {
+                    $errors[] = "Konfirmasi password harus diisi";
+                } elseif ($_POST['password_baru'] != $_POST['konfirmasi']) {
+                    $errors[] = "Konfirmasi password tidak sesuai";
+                }
+                
+                if (empty($errors)) {
+                    $password_lama = md5($_POST['password_lama']);
+                    $password_baru = md5($_POST['password_baru']);
+                    
+                    // Cek password lama
+                    $check_query = "SELECT password FROM admin WHERE username='$username' AND password='$password_lama'";
+                    $cek = mysqli_query($koneksi, $check_query);
+                    
+                    if (mysqli_num_rows($cek) == 0) {
+                        echo "<script>
+                            alert('Password lama tidak sesuai!');
+                        </script>";
                     } else {
-                        echo "<script>alert('Gagal mengubah password!');</script>";
+                        $update_query = "UPDATE admin SET password='$password_baru', updated_at=NOW() WHERE username='$username'";
+                        $update = mysqli_query($koneksi, $update_query);
+                        
+                        if ($update) {
+                            echo "<script>
+                                alert('Password berhasil diubah!'); 
+                                window.location.href='?module=profil';
+                            </script>";
+                        } else {
+                            echo "<script>
+                                alert('Gagal mengubah password: " . mysqli_error($koneksi) . "');
+                            </script>";
+                        }
                     }
+                } else {
+                    $error_message = implode("\\n", $errors);
+                    echo "<script>
+                        alert('Error:\\n$error_message');
+                    </script>";
                 }
             }
             ?>
-            <div class="box box-warning">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-key"></i> Ubah Password</h3>
+            <style>
+            /* Dark theme styling untuk form ubah password */
+            .password-container { background:#1a1a1a; min-height:100vh; padding:20px; margin:-20px; }
+            .password-wrapper { max-width:700px; margin:0 auto; }
+            .password-card { background:#2a2a2a; border:1px solid #404040; border-radius:10px; padding:25px; box-shadow:0 4px 12px rgba(255,255,255,.05); }
+            .password-header { text-align:center; margin-bottom:25px; color:#ffffff; }
+            .password-title { font-size:1.5rem; font-weight:600; margin:0; color:#ffffff; }
+            .security-info { background:#2d3748; border:1px solid #4a5568; border-radius:8px; padding:15px; margin-bottom:20px; color:#cbd5e0; font-size:0.9rem; }
+            .security-info h4 { color:#f7fafc; margin:0 0 8px; font-size:1rem; }
+            .security-info ul { margin:5px 0 0 20px; }
+            .form-group { margin-bottom:20px; }
+            .form-label { display:block; margin-bottom:8px; font-weight:600; color:#cccccc; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; }
+            .form-control { width:100%; padding:12px 15px; border:1px solid #404040; border-radius:8px; background:#333333; color:#ffffff; font-size:0.95rem; transition:all 0.3s ease; }
+            .form-control:focus { outline:none; border-color:#f39c12; box-shadow:0 0 0 3px rgba(243,156,18,0.1); background:#3a3a3a; }
+            .form-control::placeholder { color:#888888; }
+            .password-strength { margin-top:8px; font-size:0.8rem; }
+            .strength-weak { color:#e74c3c; }
+            .strength-medium { color:#f39c12; }
+            .strength-strong { color:#2ecc71; }
+            .button-group { display:flex; gap:12px; justify-content:center; margin-top:25px; }
+            .btn { padding:12px 24px; border:none; border-radius:8px; font-weight:600; font-size:0.9rem; text-decoration:none; display:inline-flex; align-items:center; gap:8px; transition:all 0.3s ease; cursor:pointer; }
+            .btn-back { background:#666666; color:#ffffff; }
+            .btn-warning { background:linear-gradient(45deg,#f39c12,#e67e22); color:#ffffff; }
+            .btn:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(255,255,255,0.1); }
+            .btn i { font-size:0.9rem; }
+            @media (max-width:768px){ .password-container{padding:15px;} .button-group{flex-direction:column;} .btn{width:100%; justify-content:center;} }
+            </style>
+            
+            <div class="password-container">
+                <div class="password-wrapper">
+                    <div class="password-card">
+                        <div class="password-header">
+                            <h2 class="password-title">
+                                <i class="fas fa-shield-alt"></i>
+                                Ubah Password Administrator
+                            </h2>
+                        </div>
+                        
+                        <div class="security-info">
+                            <h4><i class="fas fa-info-circle"></i> Panduan Keamanan Password</h4>
+                            <ul>
+                                <li>Gunakan minimal 6 karakter</li>
+                                <li>Kombinasikan huruf besar, kecil, dan angka</li>
+                                <li>Hindari menggunakan informasi pribadi</li>
+                                <li>Jangan gunakan password yang sama di tempat lain</li>
+                            </ul>
+                        </div>
+                        
+                        <form method="POST">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-lock"></i> Password Lama
+                                </label>
+                                <input type="password" name="password_lama" class="form-control" 
+                                       placeholder="Masukkan password lama" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-key"></i> Password Baru
+                                </label>
+                                <input type="password" name="password_baru" id="password_baru" class="form-control" 
+                                       placeholder="Masukkan password baru (min. 6 karakter)" required>
+                                <div id="password-strength" class="password-strength"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-check-circle"></i> Konfirmasi Password
+                                </label>
+                                <input type="password" name="konfirmasi" id="konfirmasi" class="form-control" 
+                                       placeholder="Ulangi password baru" required>
+                                <div id="password-match" class="password-strength"></div>
+                            </div>
+                            
+                            <div class="button-group">
+                                <a href="?module=profil" class="btn btn-back">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Kembali
+                                </a>
+                                <button type="submit" name="submit" class="btn btn-warning">
+                                    <i class="fas fa-shield-alt"></i>
+                                    Ubah Password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <form method="POST" class="form-horizontal">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Password Lama</label>
-                            <div class="col-sm-8">
-                                <input type="password" name="password_lama" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Password Baru</label>
-                            <div class="col-sm-8">
-                                <input type="password" name="password_baru" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Konfirmasi Password</label>
-                            <div class="col-sm-8">
-                                <input type="password" name="konfirmasi" class="form-control" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-footer">
-                        <a href="?module=profil" class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</a>
-                        <button type="submit" name="submit" class="btn btn-warning"><i class="fa fa-save"></i> Ubah Password</button>
-                    </div>
-                </form>
             </div>
+            
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const passwordInput = document.getElementById('password_baru');
+                const confirmInput = document.getElementById('konfirmasi');
+                const strengthDiv = document.getElementById('password-strength');
+                const matchDiv = document.getElementById('password-match');
+                
+                // Password strength checker
+                passwordInput.addEventListener('input', function() {
+                    const password = this.value;
+                    let strength = 0;
+                    let feedback = '';
+                    
+                    if (password.length >= 6) strength++;
+                    if (password.match(/[a-z]/)) strength++;
+                    if (password.match(/[A-Z]/)) strength++;
+                    if (password.match(/[0-9]/)) strength++;
+                    if (password.match(/[^A-Za-z0-9]/)) strength++;
+                    
+                    switch(strength) {
+                        case 0:
+                        case 1:
+                            strengthDiv.innerHTML = '<i class="fas fa-times-circle"></i> Password terlalu lemah';
+                            strengthDiv.className = 'password-strength strength-weak';
+                            break;
+                        case 2:
+                        case 3:
+                            strengthDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password sedang';
+                            strengthDiv.className = 'password-strength strength-medium';
+                            break;
+                        case 4:
+                        case 5:
+                            strengthDiv.innerHTML = '<i class="fas fa-check-circle"></i> Password kuat';
+                            strengthDiv.className = 'password-strength strength-strong';
+                            break;
+                    }
+                });
+                
+                // Password match checker
+                confirmInput.addEventListener('input', function() {
+                    const password = passwordInput.value;
+                    const confirm = this.value;
+                    
+                    if (confirm === '') {
+                        matchDiv.innerHTML = '';
+                        return;
+                    }
+                    
+                    if (password === confirm) {
+                        matchDiv.innerHTML = '<i class="fas fa-check-circle"></i> Password cocok';
+                        matchDiv.className = 'password-strength strength-strong';
+                    } else {
+                        matchDiv.innerHTML = '<i class="fas fa-times-circle"></i> Password tidak cocok';
+                        matchDiv.className = 'password-strength strength-weak';
+                    }
+                });
+            });
+            </script>
             <?php
         }
     break;

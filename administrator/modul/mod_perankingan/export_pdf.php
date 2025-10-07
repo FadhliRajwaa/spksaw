@@ -25,6 +25,23 @@ try {
         throw new Exception("Query failed: " . mysqli_error($koneksi));
     }
 
+    // Fetch all rows into an array so we can log and safely iterate later
+    $rows = [];
+    while ($r = mysqli_fetch_assoc($hasil)) {
+        $rows[] = $r;
+    }
+
+    // Log export details (timestamp, generated filename, total rows, exported names)
+    $logDir = __DIR__ . '/../../../logs';
+    if (!is_dir($logDir)) {
+        @mkdir($logDir, 0777, true);
+    }
+    $exportFilename = 'Laporan_Perankingan_PKH_' . date('Y-m-d_H-i-s') . '.pdf';
+    $logFile = rtrim($logDir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'export_log.txt';
+    $exportNames = array_column($rows, 'nama_warga');
+    $logEntry = "[" . date('Y-m-d H:i:s') . "] export_file={$exportFilename}; total=" . count($rows) . "; names=" . implode(', ', $exportNames) . PHP_EOL;
+    @file_put_contents($logFile, $logEntry, FILE_APPEND | LOCK_EX);
+
     $stats = mysqli_query($koneksi, "
         SELECT 
             COUNT(*) as total,
@@ -34,11 +51,10 @@ try {
     ");
     $stat = mysqli_fetch_array($stats);
     
-    // Get criteria information
+    // Get criteria information (use exact columns from app schema)
     $kriteria = mysqli_query($koneksi, "
-        SELECT kode_kriteria, nama_kriteria, bobot 
+        SELECT kode_kriteria, keterangan, nilai 
         FROM tbl_kriteria 
-        WHERE bobot > 0 
         ORDER BY id_kriteria
     ");
     $criteria_info = [];
@@ -103,6 +119,21 @@ try {
                 border-collapse: collapse; 
                 margin-bottom: 20px; 
             }
+            .criteria-table {
+                page-break-inside: avoid;
+            }
+            .criteria-table thead { display: table-header-group; }
+            .criteria-table tr { page-break-inside: avoid; }
+            .criteria-section { page-break-inside: avoid; }
+            .criteria-title {
+                color: #2c5aa0;
+                text-align: left;
+                font-weight: bold;
+                font-size: 14px;
+                margin: 0 0 6px 0;
+                padding: 0 0 5px 0;
+                border-bottom: 2px solid #2c5aa0;
+            }
             th, td { 
                 padding: 8px; 
                 border: 1px solid #ddd; 
@@ -110,12 +141,18 @@ try {
                 font-size: 10px;
             }
             th { 
-                background: linear-gradient(135deg, #2c5aa0 0%, #1e3a8a 100%);
-                color: white; 
+                /* Fallback solid color for PDF renderers that don't support gradients */
+                background-color: #2c5aa0;
+                background-image: linear-gradient(135deg, #2c5aa0 0%, #1e3a8a 100%);
+                color: #ffffff; 
                 text-align: center; 
+                vertical-align: middle;
                 font-weight: bold;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
+                /* Ensure header does not get clipped when spanning pages */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
             .text-center { text-align: center; }
             .rank-1 { background-color: #fff3cd; border-left: 4px solid #ffc107; }
@@ -147,7 +184,7 @@ try {
             }
             .footer { 
                 margin-top: 30px; 
-                text-align: center; 
+                text-align: left; 
                 font-size: 9px; 
                 color: #666;
                 border-top: 1px solid #ddd;
@@ -159,6 +196,8 @@ try {
                 gap: 20px;
                 text-align: center;
             }
+            /* Force criteria section to start on a new page */
+            .page-break-before { page-break-before: always; }
             .summary-item {
                 background: white;
                 padding: 15px;
@@ -218,14 +257,14 @@ try {
             </thead>
             <tbody>";
 
-    while($row = mysqli_fetch_array($hasil)) {
+    foreach($rows as $row) {
         $row_class = '';
         if($row['ranking'] <= 3) {
             $row_class = 'rank-' . $row['ranking'];
         }
-        
+
         $rekomendasi_class = $row['rekomendasi'] == 'Ya' ? 'layak' : 'tidak-layak';
-        
+
         // Build family details
         $family_details = [];
         if($row['jumlah_lansia'] > 0) $family_details[] = "Lansia: {$row['jumlah_lansia']}";
@@ -259,15 +298,15 @@ try {
     $html .= "</tbody>
             </table>
             
-            <div style='margin-top: 25px;'>
-                <h3 style='color: #2c5aa0; border-bottom: 2px solid #2c5aa0; padding-bottom: 5px;'>Penjelasan Kriteria Penilaian</h3>
-                <table style='margin-top: 15px;'>
+            <div class='criteria-section page-break-before' style='margin-top: 0;'>
+                <h3 class='criteria-title'>Penjelasan Kriteria Penilaian</h3>
+                <table class='criteria-table' style='margin-top: 0;'>
                     <thead>
                         <tr>
-                            <th width='15%'>Kode</th>
-                            <th width='45%'>Kriteria</th>
-                            <th width='15%'>Bobot</th>
-                            <th width='25%'>Keterangan</th>
+                            <th width='15%'>KODE</th>
+                            <th width='45%'>KRITERIA</th>
+                            <th width='15%'>BOBOT (%)</th>
+                            <th width='25%'>KETERANGAN</th>
                         </tr>
                     </thead>
                     <tbody>";
@@ -276,8 +315,8 @@ try {
     foreach($criteria_info as $k) {
         $html .= "<tr>
                     <td class='text-center'><strong>{$k['kode_kriteria']}</strong></td>
-                    <td>{$k['nama_kriteria']}</td>
-                    <td class='text-center'>" . number_format($k['bobot'], 2) . "</td>
+                    <td>{$k['keterangan']}</td>
+                    <td class='text-center'>" . intval($k['nilai']*100) . "</td>
                     <td style='font-size: 9px;'>Semakin tinggi nilai, semakin prioritas</td>
                   </tr>";
     }
@@ -291,7 +330,7 @@ try {
                 <p>• Perankingan dilakukan menggunakan metode Simple Additive Weighting (SAW)</p>
                 <p>• Skor tertinggi menunjukkan prioritas utama penerima bantuan PKH</p>
                 <p>• Detail keluarga menunjukkan jumlah anggota keluarga dalam kategori prioritas</p>
-                <p>• Status Prioritas: Tinggi (≥1.5), Sedang (1.0-1.49), Rendah (<1.0)</p>
+                <p>• Status Prioritas: Tinggi (≥1.5), Sedang (1.0-1.49), Rendah (&lt;1.0)</p>
                 <p>• Dokumen ini dibuat secara otomatis oleh Sistem Pendukung Keputusan PKH</p>
                 <hr style='margin: 10px 0; border: none; border-top: 1px solid #ddd;'>
                 <p>© " . date('Y') . " Dinas Sosial Republik Indonesia - Sistem PKH SAW</p>
@@ -313,10 +352,13 @@ try {
 
     // Set proper headers for PDF download
     header('Content-Type: application/pdf');
-    header('Content-Disposition: attachment; filename="Laporan_Perankingan_PKH_' . date('Y-m-d_H-i-s') . '.pdf"');
-    header('Cache-Control: private, max-age=0, must-revalidate');
-    header('Pragma: public');
-    
+    header('Content-Disposition: attachment; filename="' . $exportFilename . '"');
+    // Prevent caching of the generated PDF
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    header('Cache-Control: post-check=0, pre-check=0', false);
+    header('Pragma: no-cache');
+    header('Expires: 0');
+
     // Clear any previous output
     if (ob_get_level()) {
         ob_end_clean();

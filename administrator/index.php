@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="description" content="Sistem Pendukung Keputusan Rekomendasi Penerima Bantuan PKH dengan Metode SAW">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23212529'/%3E%3Cpath d='M38 25c-4 0-7 3-7 7 0 2 1 4 2 5l7 7 7-7c1-1 2-3 2-5 0-4-3-7-7-7zm0 4c1 0 2 1 2 2s-1 2-2 2-2-1-2-2 1-2 2-2zM20 55h8c2 0 4 2 4 4v12c0 2-2 4-4 4h-8c-2 0-4-2-4-4V59c0-2 2-4 4-4zm28 0h28c2 0 4 2 4 4v12c0 2-2 4-4 4H48c-2 0-4-2-4-4V59c0-2 2-4 4-4z' fill='white'/%3E%3C/svg%3E">
+    <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23212529'/%3E%3Cpath d='M38 25c-4 0-7 3-7 7 0 2 1 4 2 5l7 7 7-7c1-1 2-3 2-5 0-4-3-7-7-7zm0 4c1 0 2 1 2 2s-1 2-2 2-2-1-2-2 1-2 2-2zM20 55h8c2 0 4 2 4 4v12c0 2-2 4-4 4h-8c-2 0-4-2-4-4V59c0-2 2-4 4-4zm28 0h28c2 0 4 2 4 4v12c0 2-2 4-4 4H48c-2 0-4-2-4-4V59c0-2 2-4 4-4z' fill='white'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23212529'/%3E%3Cpath d='M38 25c-4 0-7 3-7 7 0 2 1 4 2 5l7 7 7-7c1-1 2-3 2-5 0-4-3-7-7-7zm0 4c1 0 2 1 2 2s-1 2-2 2-2-1-2-2 1-2 2-2zM20 55h8c2 0 4 2 4 4v12c0 2-2 4-4 4h-8c-2 0-4-2-4-4V59c0-2 2-4 4-4zm28 0h28c2 0 4 2 4 4v12c0 2-2 4-4 4H48c-2 0-4-2-4-4V59c0-2 2-4 4-4z' fill='white'/%3E%3C/svg%3E">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +22,10 @@
     
     <!-- Modern Framework CSS -->
     <link rel="stylesheet" href="css/modern-framework.css">
-    
+
+    <!-- Admin custom theme (system-aware) -->
+    <link rel="stylesheet" href="css/admin-theme.css">
+
     <style>
       body {
         background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 50%, var(--accent-blue) 100%);
