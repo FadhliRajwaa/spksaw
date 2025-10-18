@@ -8,20 +8,19 @@ Vercel mendukung PHP via runtime vercel-php (Serverless/Edge). Pola umum:
 - Pastikan koneksi DB memakai environment variables.
 
 Repo ini sudah menyesuaikan koneksi di `configurasi/koneksi.php` untuk membaca ENV.
-
 ## 2) Variabel Lingkungan (ENV)
 Set variabel ini di Vercel Project Settings → Environment Variables:
 
 - DB_HOST = companyinterior-fadhlirajwaarahmana-9486.i.aivencloud.com
 - DB_PORT = 16722
-- DB_USER = avnadmin
-- DB_PASSWORD = <REDACTED>
+ - DB_USER = avnadmin
+ - DB_PASSWORD = <AIVEN_PASSWORD_PLACEHOLDER>
 - DB_NAME = spksaw
 - DB_SSL_MODE = REQUIRED
 - DB_SSL_VERIFY_SERVER = true
 - DB_SSL_CA_BASE64 = (Base64 dari file ca.pem Aiven)
 
-Cara membuat DB_SSL_CA_BASE64:
+{{ ... }}
 - Windows PowerShell:
   ```powershell
   [Convert]::ToBase64String([IO.File]::ReadAllBytes("C:\path\to\ca.pem"))
