@@ -7,5 +7,8 @@
     },
     "config": {
         "platform-check": true
+    },
+    "scripts": {
+        "vercel": "composer dump-autoload -o --no-dev"
     }
 }
