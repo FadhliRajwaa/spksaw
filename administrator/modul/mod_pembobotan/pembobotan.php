@@ -1,11 +1,14 @@
 <?php
-session_start();
+if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])){
     echo "<link href=../css/style.css rel=stylesheet type=text/css>";
     echo "<div class='error msg'>Untuk mengakses Modul anda harus login.</div>";
     exit;
 }
-include "../../../configurasi/koneksi.php";
+// Pastikan koneksi tersedia; gunakan path absolut dari file modul ini agar tidak gagal saat di-include
+if (!isset($koneksi)) {
+    require_once __DIR__ . "/../../../configurasi/koneksi.php";
+}
 $aksi="modul/mod_kriteria/aksi_pembobotan.php";
 
 switch(@$_GET['act']){

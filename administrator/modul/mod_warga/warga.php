@@ -1,18 +1,21 @@
 <?php
-session_start();
+if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 if (empty($_SESSION['namauser']) AND empty($_SESSION['passuser'])){
     echo "<link href=../css/style.css rel=stylesheet type=text/css>";
     echo "<div class='error msg'>Untuk mengakses Modul anda harus login.</div>";
 }
 else{
 
-include "../../../configurasi/koneksi.php";
-include "../../../configurasi/library.php";
-include "../../../configurasi/fungsi_indotgl.php";
-include "../../../configurasi/class_paging.php";
+// Pastikan koneksi & libs tersedia (gunakan path absolut relatif file modul)
+if (!isset($koneksi)) { require_once __DIR__ . "/../../../configurasi/koneksi.php"; }
+require_once __DIR__ . "/../../../configurasi/library.php";
+require_once __DIR__ . "/../../../configurasi/fungsi_indotgl.php";
+require_once __DIR__ . "/../../../configurasi/class_paging.php";
 
 $aksi="modul/mod_warga/aksi_warga.php";
-switch($_GET['act']){
+// Hindari warning bila parameter act tidak ada
+$__act = isset($_GET['act']) ? $_GET['act'] : '';
+switch($__act){
     // Tampil Data Warga
     default:
         if ($_SESSION['leveluser']=='admin'){
@@ -44,33 +47,46 @@ switch($_GET['act']){
                     
                     <div class="table-scroll-wrap">
                     <style>
-                        /* Scope styling only for Data Warga table */
+                        /* Light theme overrides for Data Warga table */
                         .table-scroll-wrap { overflow-x: auto; }
                         .warga-table { 
                             width: 100%; 
                             border-collapse: collapse; 
-                            border: 1px solid rgba(255, 255, 255, 0.12);
+                            background: #ffffff; 
+                            border: 1px solid #e2e8f0;
                         }
                         .warga-table thead th {
-                            color: #e5e7eb !important;
-                            background: rgba(255, 255, 255, 0.06);
-                            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+                            color: #1e293b !important;
+                            background: #f3f6fb !important;
+                            border: 1px solid #e2e8f0 !important;
                             white-space: nowrap;
                             vertical-align: middle;
                             font-weight: 600;
                         }
-                        .warga-table tbody tr { background: rgba(255,255,255,0.02); }
-                        .warga-table tbody tr:hover { background: rgba(255,255,255,0.05); }
+                        .warga-table tbody tr { background: #ffffff; }
+                        .warga-table tbody tr:hover { background: #fafbff; }
                         .warga-table th, .warga-table td { 
                             vertical-align: middle; 
-                            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+                            border: 1px solid #e2e8f0 !important;
                         }
-                        .warga-table td { color: #e5e7eb !important; }
+                        .warga-table td { color: #1a202c !important; }
                         /* Center numeric columns (Lansia..Ibu Hamil) -> columns 4..10 */
                         .warga-table td:nth-child(n+4):nth-child(-n+10),
                         .warga-table th:nth-child(n+4):nth-child(-n+10) { text-align: center; }
                         /* Keep action column aligned center */
                         .warga-table th:last-child, .warga-table td:last-child { text-align: center; white-space: nowrap; }
+
+                        /* Module-scoped: force ONLY DataTables areas to white (Edge/system dark override) */
+                        #example1_wrapper,
+                        #example1_wrapper > .row,
+                        #example1_wrapper .dataTables_length,
+                        #example1_wrapper .dataTables_filter,
+                        #example1_wrapper .dataTables_info,
+                        #example1_wrapper .dataTables_paginate,
+                        #example1_wrapper .dataTables_scroll,
+                        #example1_wrapper .dataTables_scrollHead,
+                        #example1_wrapper .dataTables_scrollBody,
+                        #example1_wrapper .dataTables_scrollFoot { background: #ffffff !important; }
                     </style>
                     <table id="example1" class="table table-bordered table-striped warga-table">
                         <thead>

@@ -2,6 +2,14 @@
 session_start();
 error_reporting(0);
 include "timeout.php";
+// Local debug: show errors when running on localhost
+if ((isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'localhost') || (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] === 'localhost')) {
+    @ini_set('display_errors', 1);
+    @error_reporting(E_ALL);
+    @putenv('DEBUG_LOCAL=1');
+}
+// Pastikan koneksi DB tersedia untuk sidebar (menu.php, report.php)
+include "../configurasi/koneksi.php";
 
 if($_SESSION['login']==1){
 	if(!cek_login()){
@@ -57,6 +65,8 @@ else{
 
     <!-- Admin custom theme (system-aware) -->
     <link rel="stylesheet" href="css/admin-theme.css">
+    <!-- Jarvis Modern Palette Theme -->
+    <link rel="stylesheet" href="css/theme-modern-palette.css">
     
     <style>
         /* Fix DataTables table duplication issues */
@@ -132,10 +142,10 @@ else{
             box-shadow: none !important;
         }
 
-        /* Custom Sidebar Styling */
+        /* Custom Sidebar Styling (aligned with theme) */
         .modern-sidebar {
-            background: var(--gradient-primary);
-            box-shadow: 4px 0 20px rgba(12, 24, 33, 0.1);
+            background: var(--gradient-sidebar) !important;
+            box-shadow: none !important; /* prevent dark seam */
             color: white !important;
         }
 
@@ -721,7 +731,7 @@ else{
     </style>
 </head>
 
-<body>
+<body class="theme-modern">
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-content">
@@ -881,6 +891,11 @@ elseif ($_SESSION['leveluser']=='pengajar'){
                         drawCallback: function() {
                             $('.pagination').addClass('modern-pagination');
                             $('.page-link').addClass('modern-pagination-btn');
+                            // Ensure cloned tables use light theme
+                            $('#example1_wrapper .dataTables_scrollHead table, #example1_wrapper .dataTables_scrollBody table').addClass('modern-table');
+                            // Enforce light backgrounds on scroll containers
+                            $('#example1_wrapper .dataTables_scroll, #example1_wrapper .dataTables_scrollHead, #example1_wrapper .dataTables_scrollBody, #example1_wrapper .dataTables_scrollFoot')
+                              .css({background:'#fff'});
                         }
                     });
                 }
@@ -898,12 +913,20 @@ elseif ($_SESSION['leveluser']=='pengajar'){
                     drawCallback: function() {
                         $('.pagination').addClass('modern-pagination');
                         $('.page-link').addClass('modern-pagination-btn');
+                        // Apply class to cloned header/body tables as well
+                        $('.dataTables_wrapper .dataTables_scrollHead table, .dataTables_wrapper .dataTables_scrollBody table').addClass('modern-table');
+                        $('.dataTables_wrapper .dataTables_scroll, .dataTables_wrapper .dataTables_scrollHead, .dataTables_wrapper .dataTables_scrollBody, .dataTables_wrapper .dataTables_scrollFoot')
+                          .css({background:'#fff'});
                     }
                 });
             }
 
             // Add modern styling to existing elements
             $('table').addClass('modern-table');
+            // Initial pass for any existing DataTables structures (if loaded before this script)
+            $('.dataTables_wrapper .dataTables_scrollHead table, .dataTables_wrapper .dataTables_scrollBody table').addClass('modern-table');
+            $('.dataTables_wrapper .dataTables_scroll, .dataTables_wrapper .dataTables_scrollHead, .dataTables_wrapper .dataTables_scrollBody, .dataTables_wrapper .dataTables_scrollFoot')
+              .css({background:'#fff'});
             
             // Enhanced button styling
             $('.btn-primary').removeClass('btn-primary').addClass('modern-btn modern-btn-primary');

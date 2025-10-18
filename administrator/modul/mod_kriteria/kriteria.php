@@ -1,5 +1,5 @@
 <?php
-session_start();
+if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])){
     echo "<link href=../css/style.css rel=stylesheet type=text/css>";
     echo "<div class='error msg'>Untuk mengakses Modul anda harus login.</div>";
@@ -7,7 +7,13 @@ if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])){
 else{
 
 $aksi="modul/mod_kriteria/aksi_kriteria.php";
-switch($_GET['act']){
+// Pastikan koneksi tersedia saat file di-include dari media_admin.php
+if (!isset($koneksi)) {
+    require_once __DIR__ . "/../../../configurasi/koneksi.php";
+}
+// Hindari warning ketika parameter act tidak ada
+$__act = isset($_GET['act']) ? $_GET['act'] : '';
+switch($__act){
     // Tampil Data Kriteria (Himpunan) Saja
     default:
         if ($_SESSION['leveluser']=='admin'){
@@ -18,6 +24,19 @@ switch($_GET['act']){
                     <h3 class="box-title"><i class="fa fa-list"></i> Data Kriteria</h3>
                 </div>
                 <div class="box-body">
+                    <style>
+                    /* Module-scoped: force ONLY DataTables areas to white (Edge/system dark override) */
+                    #example1_wrapper,
+                    #example1_wrapper > .row,
+                    #example1_wrapper .dataTables_length,
+                    #example1_wrapper .dataTables_filter,
+                    #example1_wrapper .dataTables_info,
+                    #example1_wrapper .dataTables_paginate,
+                    #example1_wrapper .dataTables_scroll,
+                    #example1_wrapper .dataTables_scrollHead,
+                    #example1_wrapper .dataTables_scrollBody,
+                    #example1_wrapper .dataTables_scrollFoot { background: #ffffff !important; }
+                    </style>
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -34,7 +53,7 @@ switch($_GET['act']){
                                         <td>$no</td>
                                         <td>$r[keterangan]</td>
                                         <td>
-                                            <button class='btn btn-sm' style='background-color: #000; color: #fff; border: none;' onclick=\"window.location.href='?module=kriteria&act=input&id=$r[id_kriteria]'\">
+                                            <button class='btn btn-sm btn-primary' onclick=\"window.location.href='?module=kriteria&act=input&id=$r[id_kriteria]'\">
                                                 Input Data Kriteria
                                             </button>
                                         </td>
@@ -87,8 +106,8 @@ switch($_GET['act']){
                       </div>
                     </div>
                     <div class='buttons'>
-                      <button type='submit' class='btn' style='background-color: #000; color: #fff; border: none;'>Simpan</button>
-                      <a href='?module=kriteria' class='btn' style='background-color: #000; color: #fff; border: none; text-decoration: none;'>Batal</a>
+                      <button type='submit' class='btn btn-primary'>Simpan</button>
+                      <a href='?module=kriteria' class='btn btn-default' style='text-decoration: none;'>Batal</a>
                     </div>
                   </form>
                 </div>
@@ -157,10 +176,10 @@ switch($_GET['act']){
                                             <td>$h[keterangan]</td>
                                             <td>$h[nilai]</td>
                                             <td>
-                                                <button class='btn btn-xs' style='background-color: #000; color: #fff; border: none; margin-right: 5px;' onclick=\"window.location.href='?module=kriteria&act=edithimpunan&id=$h[id_himpunan]&kriteria_id=$_GET[id]'\">
+                                                <button class='btn btn-xs btn-primary' style='margin-right: 5px;' onclick=\"window.location.href='?module=kriteria&act=edithimpunan&id=$h[id_himpunan]&kriteria_id=$_GET[id]'\">
                                                     Edit
                                                 </button>
-                                                <button class='btn btn-xs' style='background-color: #000; color: #fff; border: none;' onclick=\"deleteData($h[id_himpunan])\">
+                                                <button class='btn btn-xs btn-danger' onclick=\"deleteData($h[id_himpunan])\">
                                                     Hapus
                                                 </button>
                                             </td>
@@ -175,7 +194,7 @@ switch($_GET['act']){
                     </table>
                 </div>
                 <div class="box-footer">
-                    <button type="button" class="btn" style="background-color: #000; color: #fff; border: none;" onclick="window.location.href='?module=kriteria'">
+                    <button type="button" class="btn btn-default" onclick="window.location.href='?module=kriteria'">
                         <i class="fa fa-arrow-left"></i> Kembali
                     </button>
                 </div>
@@ -222,8 +241,8 @@ switch($_GET['act']){
                       </div>
                     </div>
                     <div class='buttons'>
-                      <button type='submit' class='btn' style='background-color: #000; color: #fff; border: none;'>Update</button>
-                      <a href='?module=kriteria&act=input&id=<?= $himpunan['id_kriteria']; ?>' class='btn' style='background-color: #000; color: #fff; border: none; text-decoration: none;'>Batal</a>
+                      <button type='submit' class='btn btn-primary'>Update</button>
+                      <a href='?module=kriteria&act=input&id=<?= $himpunan['id_kriteria']; ?>' class='btn btn-default' style='text-decoration: none;'>Batal</a>
                     </div>
                   </form>
                 </div>

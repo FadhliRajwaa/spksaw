@@ -25,6 +25,8 @@
 
     <!-- Admin custom theme (system-aware) -->
     <link rel="stylesheet" href="css/admin-theme.css">
+    <!-- Jarvis Modern Palette Theme -->
+    <link rel="stylesheet" href="css/theme-modern-palette.css">
 
     <style>
       body {
@@ -389,7 +391,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>
+  <body class="theme-modern">
     
     <!-- Floating Shapes Background -->
     <div class="floating-shapes">

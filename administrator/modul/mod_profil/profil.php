@@ -1,11 +1,14 @@
 <?php
-session_start();
+if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 if (empty($_SESSION['namauser']) AND empty($_SESSION['passuser'])){
     echo "<link href=../css/style.css rel=stylesheet type=text/css>";
     echo "<div class='error msg'>Untuk mengakses Modul anda harus login.</div>";
     exit;
 }
-include "../../configurasi/koneksi.php";
+// Pastikan koneksi tersedia menggunakan path absolut terhadap file modul ini
+if (!isset($koneksi)) {
+    require_once __DIR__ . "/../../configurasi/koneksi.php";
+}
 
 // Ambil data admin dari session dan database dengan sanitasi
 $username = mysqli_real_escape_string($koneksi, $_SESSION['namauser']);
@@ -29,35 +32,35 @@ switch(@$_GET['act']){
         if ($_SESSION['leveluser']=='admin'){
             ?>
             <style>
-            /* Dark theme: black background with white text */
-            .profil-container { background:#1a1a1a; min-height:100vh; padding:10px 15px; margin:-20px; }
+            /* Light theme aligned with modern palette */
+            .profil-container { background:transparent; min-height:auto; padding:10px 0; margin:0; }
             .profil-wrapper { max-width:1250px; margin:0 auto; background:transparent; box-shadow:none; padding:0; }
-            .profil-header { text-align:center; margin:15px 0 25px; color:#ffffff; }
-            .profil-avatar { width:110px; height:110px; margin:0 auto 10px; border-radius:50%; background:linear-gradient(45deg,#2980b9,#2ecc71); display:flex; align-items:center; justify-content:center; font-size:38px; color:#fff; box-shadow:0 6px 18px rgba(255,255,255,.1); }
-            .profil-name { font-size:1.65rem; font-weight:600; margin:4px 0 2px; color:#ffffff; }
-            .profil-role { font-size:.85rem; color:#cccccc; background:#333333; padding:5px 14px; border-radius:20px; display:inline-block; border:1px solid #444444; }
+            .profil-header { text-align:center; margin:15px 0 25px; color:#1f2937; }
+            .profil-avatar { width:110px; height:110px; margin:0 auto 10px; border-radius:50%; background:linear-gradient(135deg,var(--c-accent,#FF2E63),var(--c-cyan,#08D9D6)); display:flex; align-items:center; justify-content:center; font-size:38px; color:#fff; box-shadow:0 6px 18px rgba(37,42,52,.08); }
+            .profil-name { font-size:1.65rem; font-weight:600; margin:4px 0 2px; color:#111827; }
+            .profil-role { font-size:.85rem; color:#0b1220; background:#EAF8F8; padding:5px 14px; border-radius:20px; display:inline-block; border:1px solid rgba(37,42,52,.12); }
             .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin:0 0 22px; }
-            .stat-card { background:#2a2a2a; color:#fff; border-radius:10px; padding:16px 14px; text-align:center; box-shadow:0 4px 12px rgba(255,255,255,.05); border:1px solid #333333; }
+            .stat-card { background:#ffffff; color:#111827; border-radius:12px; padding:16px 14px; text-align:center; box-shadow:0 2px 8px rgba(37,42,52,.08); border:1px solid rgba(37,42,52,.08); }
             .stat-number { font-size:1.9rem; font-weight:700; margin-bottom:4px; }
             .stat-label { letter-spacing:.5px; font-size:.75rem; text-transform:uppercase; font-weight:600; opacity:.85; }
             .profil-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:18px; margin-bottom:20px; }
-            .profil-card { background:#2a2a2a; border:1px solid #404040; border-radius:10px; padding:18px 20px 14px; box-shadow:0 3px 10px rgba(255,255,255,.02); transition:box-shadow .25s ease,transform .25s ease; }
-            .profil-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(255,255,255,.05); }
+            .profil-card { background:#ffffff; border:1px solid rgba(37,42,52,.08); border-radius:12px; padding:18px 20px 14px; box-shadow:0 3px 10px rgba(37,42,52,.06); transition:box-shadow .25s ease,transform .25s ease; }
+            .profil-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(37,42,52,.12); }
             .card-header { display:flex; align-items:center; margin-bottom:12px; }
             .card-icon { width:44px; height:44px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff; margin-right:12px; }
-            .card-title { font-size:1rem; font-weight:600; color:#ffffff; margin:0; letter-spacing:.3px; }
-            .card-content { color:#cccccc; line-height:1.5; font-size:.9rem; }
-            .info-item { display:flex; justify-content:space-between; margin:0 0 8px; padding:6px 0; border-bottom:1px solid #404040; }
+            .card-title { font-size:1rem; font-weight:600; color:#111827; margin:0; letter-spacing:.3px; }
+            .card-content { color:#334155; line-height:1.5; font-size:.9rem; }
+            .info-item { display:flex; justify-content:space-between; margin:0 0 8px; padding:6px 0; border-bottom:1px solid rgba(37,42,52,.08); }
             .info-item:last-child { border-bottom:none; margin-bottom:0; }
-            .info-label { font-weight:600; color:#999999; font-size:.8rem; text-transform:uppercase; letter-spacing:.5px; }
-            .info-value { font-weight:500; color:#ffffff; }
+            .info-label { font-weight:600; color:#64748b; font-size:.8rem; text-transform:uppercase; letter-spacing:.5px; }
+            .info-value { font-weight:500; color:#111827; }
             .action-buttons { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:6px 0 25px; }
-            .action-btn { padding:9px 18px; border:none; border-radius:20px; font-weight:600; font-size:.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:7px; transition:all .22s ease; box-shadow:0 3px 10px rgba(255,255,255,.1); }
+            .action-btn { padding:9px 18px; border:1px solid rgba(37,42,52,.12); border-radius:20px; font-weight:600; font-size:.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:7px; transition:all .22s ease; box-shadow:0 3px 10px rgba(37,42,52,.06); }
             .action-btn i { font-size:.95rem; }
-            .btn-primary { background:linear-gradient(45deg,#2980b9,#3498db); color:#fff; }
-            .btn-success { background:linear-gradient(45deg,#2ecc71,#27ae60); color:#fff; }
-            .btn-warning { background:linear-gradient(45deg,#f39c12,#e67e22); color:#fff; }
-            .action-btn:hover { transform:translateY(-2px); box-shadow:0 7px 20px rgba(255,255,255,.15); color:#fff; }
+            .btn-primary { background:linear-gradient(135deg,#FF2E63,#08D9D6); color:#fff; }
+            .btn-success { background:#08D9D6; color:#0b1220; }
+            .btn-warning { background:#FFD166; color:#1f2937; }
+            .action-btn:hover { transform:translateY(-2px); box-shadow:0 7px 20px rgba(37,42,52,.12); }
             @media (max-width:768px){ .profil-grid{grid-template-columns:1fr;} .stats-grid{grid-template-columns:repeat(2,1fr);} .profil-avatar{width:90px;height:90px;font-size:30px;} .profil-name{font-size:1.35rem;} .action-buttons{flex-direction:column;} .action-btn{width:100%; justify-content:center;} }
             </style>
             
@@ -342,17 +345,17 @@ switch(@$_GET['act']){
             }
             ?>
             <style>
-            /* Dark theme styling untuk form edit */
-            .edit-container { background:#1a1a1a; min-height:100vh; padding:20px; margin:-20px; }
+            /* Light theme styling untuk form edit */
+            .edit-container { background:transparent; min-height:auto; padding:20px; margin:0; }
             .edit-wrapper { max-width:800px; margin:0 auto; }
-            .edit-card { background:#2a2a2a; border:1px solid #404040; border-radius:10px; padding:25px; box-shadow:0 4px 12px rgba(255,255,255,.05); }
-            .edit-header { text-align:center; margin-bottom:25px; color:#ffffff; }
-            .edit-title { font-size:1.5rem; font-weight:600; margin:0; color:#ffffff; }
+            .edit-card { background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:25px; box-shadow:0 4px 12px rgba(37,42,52,.06); }
+            .edit-header { text-align:center; margin-bottom:25px; color:#1f2937; }
+            .edit-title { font-size:1.5rem; font-weight:600; margin:0; color:#111827; }
             .form-group { margin-bottom:20px; }
-            .form-label { display:block; margin-bottom:8px; font-weight:600; color:#cccccc; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; }
-            .form-control { width:100%; padding:12px 15px; border:1px solid #404040; border-radius:8px; background:#333333; color:#ffffff; font-size:0.95rem; transition:all 0.3s ease; }
-            .form-control:focus { outline:none; border-color:#3498db; box-shadow:0 0 0 3px rgba(52,152,219,0.1); background:#3a3a3a; }
-            .form-control::placeholder { color:#888888; }
+            .form-label { display:block; margin-bottom:8px; font-weight:600; color:#64748b; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; }
+            .form-control { width:100%; padding:12px 15px; border:1px solid #e2e8f0; border-radius:8px; background:#ffffff; color:#111827; font-size:0.95rem; transition:all 0.3s ease; }
+            .form-control:focus { outline:none; border-color:#08D9D6; box-shadow:0 0 0 3px rgba(8,217,214,0.15); background:#ffffff; }
+            .form-control::placeholder { color:#94a3b8; }
             textarea.form-control { resize:vertical; min-height:80px; }
             .button-group { display:flex; gap:12px; justify-content:center; margin-top:25px; }
             .btn { padding:12px 24px; border:none; border-radius:8px; font-weight:600; font-size:0.9rem; text-decoration:none; display:inline-flex; align-items:center; gap:8px; transition:all 0.3s ease; cursor:pointer; }
@@ -484,20 +487,20 @@ switch(@$_GET['act']){
             }
             ?>
             <style>
-            /* Dark theme styling untuk form ubah password */
-            .password-container { background:#1a1a1a; min-height:100vh; padding:20px; margin:-20px; }
+            /* Light theme styling untuk form ubah password */
+            .password-container { background:transparent; min-height:auto; padding:20px; margin:0; }
             .password-wrapper { max-width:700px; margin:0 auto; }
-            .password-card { background:#2a2a2a; border:1px solid #404040; border-radius:10px; padding:25px; box-shadow:0 4px 12px rgba(255,255,255,.05); }
-            .password-header { text-align:center; margin-bottom:25px; color:#ffffff; }
-            .password-title { font-size:1.5rem; font-weight:600; margin:0; color:#ffffff; }
-            .security-info { background:#2d3748; border:1px solid #4a5568; border-radius:8px; padding:15px; margin-bottom:20px; color:#cbd5e0; font-size:0.9rem; }
-            .security-info h4 { color:#f7fafc; margin:0 0 8px; font-size:1rem; }
+            .password-card { background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:25px; box-shadow:0 4px 12px rgba(37,42,52,.06); }
+            .password-header { text-align:center; margin-bottom:25px; color:#1f2937; }
+            .password-title { font-size:1.5rem; font-weight:600; margin:0; color:#111827; }
+            .security-info { background:#eef7ff; border:1px solid #bfdbfe; border-radius:8px; padding:15px; margin-bottom:20px; color:#1e3a8a; font-size:0.9rem; }
+            .security-info h4 { color:#1e3a8a; margin:0 0 8px; font-size:1rem; }
             .security-info ul { margin:5px 0 0 20px; }
             .form-group { margin-bottom:20px; }
             .form-label { display:block; margin-bottom:8px; font-weight:600; color:#cccccc; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; }
-            .form-control { width:100%; padding:12px 15px; border:1px solid #404040; border-radius:8px; background:#333333; color:#ffffff; font-size:0.95rem; transition:all 0.3s ease; }
-            .form-control:focus { outline:none; border-color:#f39c12; box-shadow:0 0 0 3px rgba(243,156,18,0.1); background:#3a3a3a; }
-            .form-control::placeholder { color:#888888; }
+            .form-control { width:100%; padding:12px 15px; border:1px solid #e2e8f0; border-radius:8px; background:#ffffff; color:#111827; font-size:0.95rem; transition:all 0.3s ease; }
+            .form-control:focus { outline:none; border-color:#FF2E63; box-shadow:0 0 0 3px rgba(255,46,99,0.12); background:#ffffff; }
+            .form-control::placeholder { color:#94a3b8; }
             .password-strength { margin-top:8px; font-size:0.8rem; }
             .strength-weak { color:#e74c3c; }
             .strength-medium { color:#f39c12; }

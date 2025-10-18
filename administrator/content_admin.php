@@ -9,11 +9,20 @@ document.location = delUrl;
 
 
 <?php
-include "../configurasi/koneksi.php";
-include "../configurasi/library.php";
-include "../configurasi/fungsi_indotgl.php";
-include "../configurasi/fungsi_combobox.php";
-include "../configurasi/class_paging.php";
+// DEBUG aid: when running locally, enable error display to diagnose blank content
+if (getenv('DEBUG_LOCAL')) {
+    @ini_set('display_errors', 1);
+    @error_reporting(E_ALL);
+}
+if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
+echo "<!-- DEBUG: module=" . htmlspecialchars($_GET['module'] ?? 'null') . ", leveluser=" . htmlspecialchars($_SESSION['leveluser'] ?? 'null') . " -->\n";
+?>
+<?php
+require_once "../configurasi/koneksi.php";
+require_once "../configurasi/library.php";
+require_once "../configurasi/fungsi_indotgl.php";
+require_once "../configurasi/fungsi_combobox.php";
+require_once "../configurasi/class_paging.php";
 
 $aksi_kelas="modul/mod_kelas/aksi_kelas.php";
 $aksi_mapel="modul/mod_matapelajaran/aksi_matapelajaran.php";
@@ -22,6 +31,7 @@ $aksi_mapel="modul/mod_matapelajaran/aksi_matapelajaran.php";
 if ($_GET['module']=='home' || !isset($_GET['module'])){
   if ($_SESSION['leveluser']=='admin'){
 	?>
+	<!-- DBG: entered home/admin branch -->
 	
 	<!-- Modern Welcome Section with Profile -->
 	<div class="welcome-section">

@@ -1,0 +1,348 @@
+/*
+  Theme: Jarvis Modern Palette
+  Palette:
+  - Cyan: #08D9D6
+  - Dark: #252A34
+  - Accent: #FF2E63
+  - Light: #EAEAEA
+  Scope: apply to any page with body.theme-modern
+*/
+
+.theme-modern {
+  --c-accent: #FF2E63;
+  --c-cyan: #08D9D6;
+  --c-dark: #252A34;
+  --c-light: #EAEAEA;
+  --white: #ffffff;
+
+  /* Map to existing framework variables */
+  --primary-black: var(--c-dark);
+  --sidebar-dark: var(--c-dark);
+  --card-background: var(--white);
+  --border-accent: var(--c-cyan);
+  /* Compatibility variables used by legacy CSS */
+  --primary-dark: var(--c-dark);
+  --secondary-dark: #2B3040;
+  --accent-blue: var(--c-cyan);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  --gradient-primary: linear-gradient(135deg, var(--c-accent) 0%, var(--c-cyan) 100%);
+  --gradient-sidebar: linear-gradient(180deg, #252A34 0%, #2B3040 100%);
+  --gradient-accent: linear-gradient(135deg, var(--c-cyan) 0%, var(--c-accent) 100%);
+
+  --shadow-sm: 0 2px 6px rgba(37, 42, 52, 0.08);
+  --shadow-md: 0 10px 20px rgba(37, 42, 52, 0.15);
+  --shadow-lg: 0 20px 40px rgba(37, 42, 52, 0.18);
+  --radius-sm: 10px;
+  --radius: 16px;
+  --transition: all 0.25s ease;
+}
+
+/* Base canvas */
+.theme-modern html, .theme-modern body {
+  background: #f5f7fb;
+  color: var(--text-primary);
+  margin: 0; /* avoid browser default gaps */
+}
+
+/* Sidebar */
+.theme-modern .modern-sidebar {
+  background: var(--gradient-sidebar) !important;
+  color: var(--c-light) !important;
+  box-shadow: none !important; /* remove dark sliver */
+  border-right: 1px solid rgba(37,42,52,.08) !important;
+  overflow-y: auto; /* allow vertical scroll */
+  overflow-x: hidden; /* prevent 1px seam from inner shadows */
+}
+.theme-modern .modern-sidebar-header { border-bottom: 1px solid rgba(234,234,234,.08); }
+.theme-modern .modern-sidebar-logo { color: var(--c-light) !important; }
+.theme-modern .modern-sidebar-icon,
+.theme-modern .modern-sidebar-text { color: var(--c-light) !important; }
+.theme-modern .modern-sidebar-link { color: rgba(234,234,234,.9) !important; transition: var(--transition); }
+.theme-modern .modern-sidebar-link:hover,
+.theme-modern .modern-sidebar-link.active {
+  background: rgba(255,255,255,.10) !important;
+  color: #fff !important;
+}
+
+/* Header */
+.theme-modern .modern-header {
+  background: var(--white) !important;
+  border-bottom: 1px solid rgba(37,42,52,.08);
+  box-shadow: var(--shadow-sm);
+}
+.theme-modern .modern-header-title {
+  color: var(--c-dark) !important;
+}
+.theme-modern .modern-header-avatar { background: var(--gradient-primary) !important; color: #fff !important; }
+/* Ensure user text in header is always readable */
+.theme-modern .modern-header-user,
+.theme-modern .modern-header-user *,
+.theme-modern .modern-header-right,
+.theme-modern .modern-header-right * {
+  color: #1f2937 !important;
+}
+
+/* White mask for header-left seam (covers sidebar area without changing layout) */
+.theme-modern .modern-header {
+  background: #ffffff !important;
+  left: 260px !important; /* align with sidebar width from admin-theme.css */
+}
+.theme-modern .modern-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -260px; /* sidebar width */
+  width: 260px;
+  height: 100%;
+  background: #ffffff !important;
+  pointer-events: none; /* keep sidebar clickable underneath if overlapped */
+}
+/* When sidebar collapsed */
+.theme-modern .modern-header.sidebar-collapsed::before {
+  left: -80px;
+  width: 80px;
+}
+
+/* Main */
+.theme-modern .modern-main { background: #f5f7fb !important; }
+/* Align main content offset with actual sidebar width (260px) */
+.theme-modern .modern-main { margin-left: 260px !important; }
+
+/* Legacy containers and content wrappers */
+.theme-modern .content-wrapper,
+.theme-modern .content,
+.theme-modern .main-content,
+.theme-modern .content-admin,
+.theme-modern .container-fluid {
+  background: #f5f7fb !important;
+  color: var(--text-primary) !important;
+}
+
+/* Legacy boxes/panels/cards */
+.theme-modern .box,
+.theme-modern .panel,
+.theme-modern .card,
+.theme-modern .widget-box {
+  background: var(--white) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(37,42,52,.08) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+.theme-modern .box-header,
+.theme-modern .panel-heading,
+.theme-modern .card-header,
+.theme-modern .box-title,
+.theme-modern .panel-title,
+.theme-modern .card-title {
+  background: #fff !important;
+  color: var(--c-dark) !important;
+  border-bottom: 1px solid rgba(37,42,52,.08) !important;
+}
+.theme-modern .box-body,
+.theme-modern .panel-body,
+.theme-modern .card-body {
+  background: #fff !important;
+  color: var(--text-primary) !important;
+}
+
+/* Links inside legacy containers */
+.theme-modern .box a,
+.theme-modern .panel a,
+.theme-modern .card a,
+.theme-modern .content a {
+  color: var(--c-accent) !important;
+}
+.theme-modern .box a:hover,
+.theme-modern .panel a:hover,
+.theme-modern .card a:hover,
+.theme-modern .content a:hover { color: #ff547f !important; }
+
+/* Labels & badges */
+.theme-modern .label,
+.theme-modern .badge { color: #0b1220 !important; background: #EAF8F8 !important; border: 1px solid rgba(37,42,52,.1) !important; }
+.theme-modern .label-danger,
+.theme-modern .badge-danger { background: #FF2E63 !important; color: #ffffff !important; border-color: #FF2E63 !important; }
+.theme-modern .label-success,
+.theme-modern .badge-success { background: #08D9D6 !important; color: #0b1220 !important; border-color: #08D9D6 !important; }
+.theme-modern .label-primary,
+.theme-modern .badge-primary { background: #252A34 !important; color: #ffffff !important; border-color: #252A34 !important; }
+.theme-modern .label-info,
+.theme-modern .badge-info { background: #3B82F6 !important; color: #ffffff !important; border-color: #3B82F6 !important; }
+.theme-modern .label-warning,
+.theme-modern .badge-warning { background: #F59E0B !important; color: #1f2937 !important; border-color: #F59E0B !important; }
+
+/* Tables in legacy containers and generic tables */
+.theme-modern .table,
+.theme-modern .box .table,
+.theme-modern .panel .table,
+.theme-modern .card .table { background: #fff !important; color: var(--text-primary) !important; }
+.theme-modern .table thead th,
+.theme-modern .box .table thead th,
+.theme-modern .panel .table thead th,
+.theme-modern .card .table thead th { background: #f3f6fb !important; color: var(--c-dark) !important; }
+.theme-modern .table a { color: var(--c-accent) !important; }
+.theme-modern .table a:hover { color: #ff547f !important; }
+
+/* Cards */
+.theme-modern .modern-card,
+.theme-modern .stat-card { background: var(--white) !important; border-radius: var(--radius) !important; border: 1px solid rgba(37,42,52,.08) !important; box-shadow: var(--shadow-sm) !important; }
+.theme-modern .modern-card:hover,
+.theme-modern .stat-card:hover { box-shadow: var(--shadow-md) !important; transform: translateY(-2px); }
+.theme-modern .modern-card-title { color: var(--c-dark) !important; }
+
+/* Buttons */
+.theme-modern .modern-btn-primary { background: var(--gradient-primary) !important; color: #fff !important; box-shadow: var(--shadow-sm); }
+.theme-modern .modern-btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.theme-modern .modern-btn-secondary { background: var(--c-cyan) !important; color: #0b1220 !important; }
+.theme-modern .modern-btn-outline { border: 2px solid var(--c-cyan) !important; color: var(--c-cyan) !important; }
+.theme-modern .modern-btn-outline:hover { background: var(--c-cyan) !important; color: #0b1220 !important; }
+.theme-modern .modern-btn-danger { background: var(--c-accent) !important; color: #fff !important; }
+
+/* Links */
+.theme-modern a { color: var(--c-accent) !important; transition: var(--transition); }
+.theme-modern a:hover { color: #ff547f !important; }
+
+/* Tables */
+.theme-modern .modern-table { background: #fff !important; border: 1px solid rgba(37,42,52,.08) !important; }
+.theme-modern .modern-table thead th { background: #f3f6fb !important; color: var(--c-dark) !important; border-color: rgba(37,42,52,.08) !important; }
+.theme-modern .modern-table tbody tr:hover { background: #fafbff !important; }
+
+/* DataTables wrapper: keep light always */
+.theme-modern .dataTables_wrapper {
+  background: #ffffff !important;
+  color: #1a202c !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+/* ID-level override: some themes set #example*_wrapper using dark-mode variables */
+.theme-modern #example1_wrapper,
+.theme-modern #example2_wrapper,
+.theme-modern #example3_wrapper,
+.theme-modern #example4_wrapper {
+  background: #ffffff !important;
+}
+.theme-modern #example1_wrapper > .row,
+.theme-modern #example2_wrapper > .row,
+.theme-modern #example3_wrapper > .row,
+.theme-modern #example4_wrapper > .row,
+.theme-modern #example1_wrapper .dataTables_length,
+.theme-modern #example1_wrapper .dataTables_filter,
+.theme-modern #example1_wrapper .dataTables_info,
+.theme-modern #example1_wrapper .dataTables_paginate,
+.theme-modern #example2_wrapper .dataTables_length,
+.theme-modern #example2_wrapper .dataTables_filter,
+.theme-modern #example2_wrapper .dataTables_info,
+.theme-modern #example2_wrapper .dataTables_paginate,
+.theme-modern #example3_wrapper .dataTables_length,
+.theme-modern #example3_wrapper .dataTables_filter,
+.theme-modern #example3_wrapper .dataTables_info,
+.theme-modern #example3_wrapper .dataTables_paginate,
+.theme-modern #example4_wrapper .dataTables_length,
+.theme-modern #example4_wrapper .dataTables_filter,
+.theme-modern #example4_wrapper .dataTables_info,
+.theme-modern #example4_wrapper .dataTables_paginate {
+  background: #ffffff !important;
+}
+.theme-modern .dataTables_scrollHead,
+.theme-modern .dataTables_scrollBody,
+.theme-modern .dataTables_scrollFoot,
+.theme-modern .dataTables_scroll {
+  background: #ffffff !important;
+}
+/* Module-level wrapper (warga) */
+.theme-modern .table-scroll-wrap { background:#ffffff !important; }
+.theme-modern .dataTables_length label,
+.theme-modern .dataTables_filter label,
+.theme-modern .dataTables_info,
+.theme-modern .dataTables_paginate {
+  color: #1a202c !important;
+}
+.theme-modern .dataTables_length select,
+.theme-modern .dataTables_filter input {
+  background: #ffffff !important;
+  color: #1a202c !important;
+  border: 1px solid #e2e8f0 !important;
+}
+.theme-modern .dataTables_wrapper .dataTables_paginate .paginate_button {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+.theme-modern .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.theme-modern .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: var(--c-cyan) !important;
+  color: #0b1220 !important;
+  border-color: var(--c-cyan) !important;
+}
+
+/* Break legacy white-text enforcement for tables inside theme-modern */
+.theme-modern table,
+.theme-modern table *,
+.theme-modern .table,
+.theme-modern .table *,
+.theme-modern .dataTable,
+.theme-modern .dataTable *,
+.theme-modern .dataTables_wrapper,
+.theme-modern .dataTables_wrapper *,
+.theme-modern thead, .theme-modern thead *,
+.theme-modern tbody, .theme-modern tbody *,
+.theme-modern tfoot, .theme-modern tfoot *,
+.theme-modern th, .theme-modern th *,
+.theme-modern td, .theme-modern td *,
+.theme-modern tr, .theme-modern tr * {
+  color: #1a202c !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Forms */
+.theme-modern .modern-form-control { border: 2px solid rgba(37,42,52,.12) !important; border-radius: var(--radius-sm) !important; background: #fff !important; color: var(--c-dark) !important; transition: var(--transition); }
+.theme-modern .modern-form-control:focus { border-color: var(--c-cyan) !important; box-shadow: 0 0 0 4px rgba(8,217,214,0.15); }
+.theme-modern .modern-form-label { color: var(--text-secondary) !important; }
+
+/* Alerts */
+.theme-modern .modern-alert-success { background: rgba(8,217,214,.1) !important; border-color: var(--c-cyan) !important; color: #0b7070 !important; }
+.theme-modern .modern-alert-danger { background: rgba(255,46,99,.1) !important; border-color: var(--c-accent) !important; color: #7c112b !important; }
+.theme-modern .modern-alert-info { background: #eef7ff !important; border-color: #64a3ff !important; color: #1e3a8a !important; }
+
+/* Welcome section */
+.theme-modern .welcome-section { background: var(--gradient-primary) !important; color: #fff !important; box-shadow: var(--shadow-md); }
+.theme-modern .welcome-section * { color: #fff !important; }
+
+/* Quick actions */
+.theme-modern .action-btn { border: 1px solid rgba(37,42,52,.12) !important; }
+.theme-modern .action-btn:hover { border-color: var(--c-cyan) !important; box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.theme-modern .action-icon { background: var(--c-cyan) !important; color: #0b1220 !important; }
+
+/* DataTables overrides (basic) */
+.theme-modern .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.theme-modern .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: var(--c-cyan) !important; color: #0b1220 !important; border: 1px solid var(--c-cyan) !important;
+}
+.theme-modern .dataTables_wrapper .dataTables_filter input { border: 2px solid rgba(37,42,52,.12) !important; color: #111827 !important; background:#fff !important; }
+
+/* Smooth animations */
+.theme-modern .modern-sidebar-link,
+.theme-modern .modern-card,
+.theme-modern .stat-card,
+.theme-modern .modern-btn,
+.theme-modern .dropdown-item,
+.theme-modern .action-btn,
+.theme-modern .modern-table tbody tr { transition: var(--transition); }
+
+/* Page fade-in */
+.theme-modern .modern-main { opacity: 0; transform: translateY(8px); animation: fadeUp .4s ease forwards; }
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+/* Login page enhancements */
+.theme-modern .login-card { border-radius: 22px; box-shadow: var(--shadow-lg); }
+.theme-modern .login-logo { background: var(--gradient-primary) !important; }
+.theme-modern .login-btn { background: var(--gradient-primary) !important; }
+
+/* Mobile */
+@media (max-width: 1024px) {
+  .theme-modern .modern-sidebar { transform: translateX(-100%); }
+  .theme-modern .modern-sidebar.show { transform: translateX(0); }
+}

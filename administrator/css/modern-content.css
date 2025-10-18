@@ -83,8 +83,10 @@ th, th *, td, td *, tr, tr *,
     margin: 0;
 }
 
-/* Override old AdminLTE box styling */
-.box, .box-primary, .box-solid {
+/* Override old AdminLTE box styling (disabled under theme-modern) */
+body:not(.theme-modern) .box,
+body:not(.theme-modern) .box-primary,
+body:not(.theme-modern) .box-solid {
     background: var(--card-background) !important;
     border: 1px solid var(--border-accent) !important;
     border-radius: var(--border-radius) !important;
@@ -236,7 +238,7 @@ th, th *, td, td *, tr, tr *,
 }
 
 /* Modern tables */
-.table {
+body:not(.theme-modern) .table {
     background: var(--card-background) !important;
     border-radius: var(--border-radius) !important;
     overflow: hidden !important;
@@ -245,7 +247,7 @@ th, th *, td, td *, tr, tr *,
     color: var(--text-primary) !important;
 }
 
-.table thead th {
+body:not(.theme-modern) .table thead th {
     background: var(--gradient-primary) !important;
     color: var(--white) !important;
     border: none !important;
@@ -256,7 +258,7 @@ th, th *, td, td *, tr, tr *,
     letter-spacing: 0.025em !important;
 }
 
-.table tbody td {
+body:not(.theme-modern) .table tbody td {
     padding: 1rem !important;
     border-bottom: 1px solid rgba(204, 201, 220, 0.2) !important;
     vertical-align: middle !important;
@@ -265,16 +267,16 @@ th, th *, td, td *, tr, tr *,
     color: var(--text-primary) !important;
 }
 
-.table tbody tr:hover {
+body:not(.theme-modern) .table tbody tr:hover {
     background: rgba(204, 201, 220, 0.05) !important;
 }
 
-.table tbody tr:last-child td {
+body:not(.theme-modern) .table tbody tr:last-child td {
     border-bottom: none !important;
 }
 
 /* DataTables modern styling */
-.dataTables_wrapper {
+body:not(.theme-modern) .dataTables_wrapper {
     background: var(--card-background) !important;
     border-radius: var(--border-radius) !important;
     padding: 1.5rem !important;
@@ -283,8 +285,8 @@ th, th *, td, td *, tr, tr *,
     color: var(--text-primary) !important;
 }
 
-.dataTables_length select,
-.dataTables_filter input {
+body:not(.theme-modern) .dataTables_length select,
+body:not(.theme-modern) .dataTables_filter input {
     border: 2px solid rgba(204, 201, 220, 0.3) !important;
     border-radius: var(--border-radius-sm) !important;
     padding: 0.5rem 0.75rem !important;
@@ -294,8 +296,8 @@ th, th *, td, td *, tr, tr *,
     color: var(--text-primary) !important;
 }
 
-.dataTables_length select:focus,
-.dataTables_filter input:focus {
+body:not(.theme-modern) .dataTables_length select:focus,
+body:not(.theme-modern) .dataTables_filter input:focus {
     outline: none !important;
     border-color: var(--border-accent) !important;
     box-shadow: 0 0 0 3px rgba(50, 74, 95, 0.1) !important;
@@ -965,79 +967,79 @@ th, th *, td, td *, tr, tr *,
     opacity: 1 !important;
 }
 
-/* ULTIMATE TABLE TEXT COLOR ENFORCEMENT - FORCE ALL TABLE TEXT TO WHITE */
-table, table *,
-.table, .table *,
-.dataTable, .dataTable *,
-.dataTables_wrapper, .dataTables_wrapper *,
-thead, thead *, th, th *,
-tbody, tbody *, td, td *,
-tfoot, tfoot *, tr, tr *,
-.sorting, .sorting_asc, .sorting_desc, .sorting_disabled,
-.dataTables_info, .dataTables_length, .dataTables_filter,
-.dataTables_paginate, .paginate_button,
-.table-striped, .table-bordered, .table-hover,
-.table-responsive, .table-responsive *,
-#DataTables_Table_0, #DataTables_Table_0 *,
-.DTFC_LeftWrapper *, .DTFC_RightWrapper *,
-.dataTables_scrollHead *, .dataTables_scrollBody *,
-.dataTables_scrollFoot *, .dataTables_scroll *,
-.table thead th, .table tbody td, .table tfoot td,
-.dataTable thead th, .dataTable tbody td, .dataTable tfoot td {
+/* ULTIMATE TABLE TEXT COLOR ENFORCEMENT - apply ONLY when not using theme-modern */
+body:not(.theme-modern) table, body:not(.theme-modern) table *,
+body:not(.theme-modern) .table, body:not(.theme-modern) .table *,
+body:not(.theme-modern) .dataTable, body:not(.theme-modern) .dataTable *,
+body:not(.theme-modern) .dataTables_wrapper, body:not(.theme-modern) .dataTables_wrapper *,
+body:not(.theme-modern) thead, body:not(.theme-modern) thead *, body:not(.theme-modern) th, body:not(.theme-modern) th *,
+body:not(.theme-modern) tbody, body:not(.theme-modern) tbody *, body:not(.theme-modern) td, body:not(.theme-modern) td *,
+body:not(.theme-modern) tfoot, body:not(.theme-modern) tfoot *, body:not(.theme-modern) tr, body:not(.theme-modern) tr *,
+body:not(.theme-modern) .sorting, body:not(.theme-modern) .sorting_asc, body:not(.theme-modern) .sorting_desc, body:not(.theme-modern) .sorting_disabled,
+body:not(.theme-modern) .dataTables_info, body:not(.theme-modern) .dataTables_length, body:not(.theme-modern) .dataTables_filter,
+body:not(.theme-modern) .dataTables_paginate, body:not(.theme-modern) .paginate_button,
+body:not(.theme-modern) .table-striped, body:not(.theme-modern) .table-bordered, body:not(.theme-modern) .table-hover,
+body:not(.theme-modern) .table-responsive, body:not(.theme-modern) .table-responsive *,
+body:not(.theme-modern) #DataTables_Table_0, body:not(.theme-modern) #DataTables_Table_0 *,
+body:not(.theme-modern) .DTFC_LeftWrapper *, body:not(.theme-modern) .DTFC_RightWrapper *,
+body:not(.theme-modern) .dataTables_scrollHead *, body:not(.theme-modern) .dataTables_scrollBody *,
+body:not(.theme-modern) .dataTables_scrollFoot *, body:not(.theme-modern) .dataTables_scroll *,
+body:not(.theme-modern) .table thead th, body:not(.theme-modern) .table tbody td, body:not(.theme-modern) .table tfoot td,
+body:not(.theme-modern) .dataTable thead th, body:not(.theme-modern) .dataTable tbody td, body:not(.theme-modern) .dataTable tfoot td {
     color: #ffffff !important;
     text-decoration-color: #ffffff !important;
     border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-/* Force table header text to be white with maximum specificity */
-table thead th,
-table thead th *,
-.table thead th,
-.table thead th *,
-.dataTable thead th,
-.dataTable thead th *,
-.sorting,
-.sorting_asc,
-.sorting_desc,
-.sorting_disabled {
+/* Force table header text to be white with maximum specificity (not under theme-modern) */
+body:not(.theme-modern) table thead th,
+body:not(.theme-modern) table thead th *,
+body:not(.theme-modern) .table thead th,
+body:not(.theme-modern) .table thead th *,
+body:not(.theme-modern) .dataTable thead th,
+body:not(.theme-modern) .dataTable thead th *,
+body:not(.theme-modern) .sorting,
+body:not(.theme-modern) .sorting_asc,
+body:not(.theme-modern) .sorting_desc,
+body:not(.theme-modern) .sorting_disabled {
     color: #ffffff !important;
     text-decoration-color: #ffffff !important;
 }
 
-/* Force table body text to be white */
-table tbody td,
-table tbody td *,
-.table tbody td,
-.table tbody td *,
-.dataTable tbody td,
-.dataTable tbody td * {
+/* Force table body text to be white (not under theme-modern) */
+body:not(.theme-modern) table tbody td,
+body:not(.theme-modern) table tbody td *,
+body:not(.theme-modern) .table tbody td,
+body:not(.theme-modern) .table tbody td *,
+body:not(.theme-modern) .dataTable tbody td,
+body:not(.theme-modern) .dataTable tbody td * {
     color: #ffffff !important;
     text-decoration-color: #ffffff !important;
 }
 
 /* DataTables specific overrides */
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter,
-.dataTables_wrapper .dataTables_info,
-.dataTables_wrapper .dataTables_processing,
-.dataTables_wrapper .dataTables_paginate {
+body:not(.theme-modern) .dataTables_wrapper .dataTables_length,
+body:not(.theme-modern) .dataTables_wrapper .dataTables_filter,
+body:not(.theme-modern) .dataTables_wrapper .dataTables_info,
+body:not(.theme-modern) .dataTables_wrapper .dataTables_processing,
+body:not(.theme-modern) .dataTables_wrapper .dataTables_paginate {
     color: #ffffff !important;
 }
 
-.dataTables_wrapper .dataTables_length select,
-.dataTables_wrapper .dataTables_filter input {
+body:not(.theme-modern) .dataTables_wrapper .dataTables_length select,
+body:not(.theme-modern) .dataTables_wrapper .dataTables_filter input {
     color: #ffffff !important;
     background-color: rgba(255, 255, 255, 0.1) !important;
     border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 /* Pagination buttons */
-.dataTables_wrapper .dataTables_paginate .paginate_button {
+body:not(.theme-modern) .dataTables_wrapper .dataTables_paginate .paginate_button {
     color: #ffffff !important;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+body:not(.theme-modern) .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+body:not(.theme-modern) .dataTables_wrapper .dataTables_paginate .paginate_button.current {
     color: #ffffff !important;
     background: rgba(255, 255, 255, 0.1) !important;
 }
