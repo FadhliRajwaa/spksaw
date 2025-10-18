@@ -1,5 +1,6 @@
 <?php
-include "../configurasi/koneksi.php";
+// Koneksi sudah di-include di media_admin.php, tidak perlu include lagi
+// include "../configurasi/koneksi.php";
 
 if ($_SESSION['leveluser']=='admin'){
   $sql=mysqli_query($koneksi, "select * from modul where aktif='Y' and type = 'Report' order by urutan");

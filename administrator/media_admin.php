@@ -88,8 +88,13 @@ else{
         }
         
         body {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
             font-family: 'Inter', sans-serif;
+        }
+        
+        /* FORCE WHITE BACKGROUND for main content */
+        .modern-main {
+            background: #f8fafc !important;
         }
 
         /* TEMPORARY DISABLED - Remove white boxes from all admin sections */
