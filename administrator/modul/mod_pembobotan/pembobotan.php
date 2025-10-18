@@ -15,7 +15,7 @@ switch(@$_GET['act']){
             ?>
             <div class="box box-primary box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-balance-scale"></i> Pembobotan Kriteria</h3>
+                    <h3 class="box-title"><i class="fa fa-balance-scale"></i> Data Kriteria</h3>
                     <div class="box-tools pull-right">
                         <a href="?module=pembobotan&act=tambah" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Data</a>
                     </div>

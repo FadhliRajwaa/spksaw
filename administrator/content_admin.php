@@ -50,7 +50,7 @@ if ($_GET['module']=='home' || !isset($_GET['module'])){
 			</div>
 			<p class="welcome-subtitle">
 				Anda berada di Sistem Pendukung Keputusan Program Keluarga Harapan (PKH) 
-				menggunakan metode Simple Additive Weighting (SAW). Kelola data warga, kriteria penilaian, 
+				menggunakan metode <strong>MFEP (Multi Factor Evaluation Process)</strong>. Kelola data warga, kriteria penilaian, 
 				dan lakukan perhitungan ranking untuk menentukan penerima bantuan PKH.
 			</p>
 		</div>
@@ -520,24 +520,27 @@ elseif ($_GET['module']=='pembobotan'){
     include "modul/mod_pembobotan/pembobotan.php";
   }
 }
-// Bagian Data Klasifikasi PKH
+// Bagian Data Klasifikasi PKH - DEPRECATED (MFEP v3.0)
+// Data klasifikasi sekarang terintegrasi di Data Warga
 elseif ($_GET['module']=='klasifikasi'){
   if ($_SESSION['leveluser']=='admin'){
-    include "modul/mod_klasifikasi/klasifikasi.php";
+    // Redirect to warga module
+    echo "<script>alert('Fitur Data Klasifikasi sudah tidak digunakan.\\nInput kriteria sekarang langsung di Data Warga.');
+          window.location.href='?module=warga';</script>";
   }
 }
 
-// Bagian Laporan Hasil Analisa PKH
+// Bagian Laporan Hasil Perhitungan PKH (MFEP)
 elseif ($_GET['module']=='laporan'){
   if ($_SESSION['leveluser']=='admin'){
-    include "modul/mod_laporan/laporan.php";
+    include "modul/mod_laporan/laporan_mfep.php";
   }
 }
 
-// Bagian Perankingan PKH
+// Bagian Perankingan PKH (MFEP)
 elseif ($_GET['module']=='perankingan'){
   if ($_SESSION['leveluser']=='admin'){
-    include "modul/mod_perankingan/perankingan.php";
+    include "modul/mod_perankingan/perankingan_mfep.php";
   }
 }
 

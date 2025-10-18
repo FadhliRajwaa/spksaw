@@ -1,4 +1,4 @@
-# 🏆 SPK-SAW: Sistem Pendukung Keputusan Program Keluarga Harapan
+# 🏆 SPK-MFEP: Sistem Pendukung Keputusan Program Keluarga Harapan
 
 <div align="center">
   <img src="https://img.shields.io/badge/PHP-7.4+-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
@@ -9,8 +9,8 @@
 </div>
 
 <div align="center">
-  <h3>🎯 Decision Support System for Family Hope Program Recipients using Simple Additive Weighting (SAW) Method</h3>
-  <p><em>A comprehensive web-based application for determining PKH (Program Keluarga Harapan) beneficiaries with advanced ranking algorithms and modern UI design.</em></p>
+  <h3>🎯 Decision Support System for Family Hope Program Recipients using MFEP (Multi Factor Evaluation Process) Method</h3>
+  <p><em>A comprehensive web-based application for determining PKH (Program Keluarga Harapan) beneficiaries with advanced MFEP ranking algorithms and modern UI design.</em></p>
 </div>
 
 ---
@@ -18,12 +18,13 @@
 ## 🌟 Features Overview
 
 ### 🔧 Core Functionality
-- **📊 Multi-Criteria Decision Analysis** - Advanced SAW algorithm implementation
-- **👥 Citizen Data Management** - Comprehensive family profile management
-- **🎯 Criteria Management** - Flexible weighting system for evaluation criteria
-- **📈 Ranking System** - Automated ranking with detailed scoring breakdown
-- **📄 PDF Export** - Professional reports with detailed analysis
+- **📊 Multi-Criteria Decision Analysis** - Advanced MFEP algorithm implementation
+- **👥 Citizen Data Management** - Comprehensive family profile with integrated criteria input
+- **🎯 Data Kriteria & Sub Kriteria** - Flexible weighting system for evaluation criteria
+- **📈 Ranking System** - Automated ranking with MFEP formula (∑WE - WP)
+- **📄 PDF Export** - Professional reports with detailed MFEP analysis
 - **🔐 User Authentication** - Secure admin panel with session management
+- **📋 Audit Trail** - Complete logging system for criteria weight changes
 
 ### 🎨 Modern UI/UX
 - **🌙 Dark Theme Design** - Modern dark interface with high contrast
@@ -37,7 +38,7 @@
 ## 🏗️ System Architecture
 
 ```
-SPK-SAW System
+SPK-MFEP System
 ├── 🎨 Frontend Layer
 │   ├── Modern AdminLTE Interface
 │   ├── Custom CSS Framework
@@ -45,35 +46,41 @@ SPK-SAW System
 │   └── Responsive Design
 ├── ⚙️ Backend Layer
 │   ├── PHP Core Logic
-│   ├── SAW Algorithm Engine
+│   ├── MFEP Algorithm Engine
 │   ├── PDF Generation (DOMPDF)
 │   └── Session Management
 ├── 🗃️ Database Layer
 │   ├── MySQL Database
-│   ├── Citizen Records
+│   ├── Citizen Records (with integrated criteria)
 │   ├── Criteria Management
-│   └── Calculation Results
+│   ├── Calculation Results (MFEP)
+│   └── Audit Trail (tbl_log_bobot)
 └── 📊 Reporting Layer
     ├── PDF Export System
-    ├── Statistical Analysis
+    ├── MFEP Statistical Analysis
     └── Ranking Reports
 ```
 
 ---
 
-## 🔬 SAW Algorithm Implementation
+## 🔬 MFEP Algorithm Implementation
 
-The Simple Additive Weighting (SAW) method evaluates alternatives based on multiple criteria:
+The Multi Factor Evaluation Process (MFEP) method evaluates alternatives based on multiple criteria with weight evaluation and problem consideration:
 
 ### 📐 Mathematical Formula
 ```
-Score(Ai) = Σ(j=1 to n) wj × rij
+1. Factor Evaluation (E):  E = X / X_max
+2. Weight Evaluation (WE): WE = Weight × E
+3. Total WE:               ∑WE = WE1 + WE2 + ... + WEn
+4. Weight Problem (WP):    WP = Σ((1-Weight) × (1-E))
+5. MFEP Score:            MFEP = ∑WE - WP
 ```
 Where:
-- `Score(Ai)` = Final score for alternative i
-- `wj` = Weight of criteria j
-- `rij` = Normalized rating of alternative i on criteria j
-- `n` = Number of criteria
+- `E` = Normalized factor (0-1)
+- `WE` = Weighted evaluation for each criteria
+- `∑WE` = Total weighted evaluation
+- `WP` = Total weighted problem
+- `MFEP` = Final Multi Factor Evaluation Process score
 
 ### 🎯 Evaluation Criteria (PKH Standards)
 1. **👴 C1**: Number of elderly family members
@@ -225,16 +232,25 @@ CREATE TABLE tbl_kriteria (
 );
 ```
 
-#### 📈 `tbl_hasil_saw` - SAW Calculation Results
+#### 📈 `tbl_hasil_mfep` - MFEP Calculation Results
 ```sql
-CREATE TABLE tbl_hasil_saw (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE tbl_hasil_mfep (
+    id_hasil INT PRIMARY KEY AUTO_INCREMENT,
     id_warga INT NOT NULL,
-    total_nilai DECIMAL(10,4) NOT NULL,
+    nama_warga VARCHAR(100) NOT NULL,
+    -- Matriks Keputusan (X)
+    C1 INT, C2 INT, C3 INT, C4 INT, C5 INT, C6 INT, C7 INT, C8 INT,
+    -- Nilai Evaluasi Factor (E)
+    E1 DECIMAL(5,4), E2 DECIMAL(5,4), ... E8 DECIMAL(5,4),
+    -- Nilai Bobot Evaluasi (WE)
+    WE1 DECIMAL(6,4), WE2 DECIMAL(6,4), ... WE8 DECIMAL(6,4),
+    -- Hasil Akhir
+    total_we DECIMAL(6,4),
+    nilai_mfep DECIMAL(6,4),
     ranking INT NOT NULL,
     rekomendasi ENUM('Ya', 'Tidak') NOT NULL,
-    tanggal_hitung TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_warga) REFERENCES data_warga(id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_warga) REFERENCES data_warga(id_warga)
 );
 ```
 
@@ -242,9 +258,12 @@ CREATE TABLE tbl_hasil_saw (
 
 ## 🔧 Advanced Features
 
-### 📊 SAW Calculation Engine
-- **Normalization Process** - Automatic data normalization for all criteria
-- **Weight Distribution** - Flexible criteria weighting system
+### 📊 MFEP Calculation Engine
+- **Factor Evaluation (E)** - Automatic normalization: E = X / X_max
+- **Weight Evaluation (WE)** - Weighted calculation: WE = Weight × E
+- **Total WE Calculation** - Sum of all weighted evaluations
+- **Weight Problem (WP)** - Problem consideration formula
+- **MFEP Score** - Final score: MFEP = ∑WE - WP
 - **Ranking Algorithm** - Automated ranking with tie-breaking mechanisms
 - **Real-time Updates** - Dynamic recalculation when data changes
 
@@ -430,7 +449,20 @@ We welcome contributions! Please follow these guidelines:
 
 ## 📋 Changelog
 
-### Version 2.0.0 (Current)
+### Version 3.0.0 (Current - MFEP)
+- ✨ **New**: MFEP (Multi Factor Evaluation Process) algorithm
+- ✨ **New**: Integrated criteria input in Data Warga form
+- ✨ **New**: Data Kriteria & Sub Kriteria management
+- ✨ **New**: Audit trail system (tbl_log_bobot)
+- ✨ **New**: Comprehensive MFEP calculation report
+- ✨ **New**: 5-step calculation breakdown display
+- 🔧 **Changed**: Removed separate Data Klasifikasi module
+- 🔧 **Changed**: Menu structure reorganization
+- 🔧 **Improved**: Database structure with MFEP tables
+- 🔧 **Improved**: PDF export with MFEP details
+- 🔒 **Security**: Enhanced audit trail logging
+
+### Version 2.0.0
 - ✨ **New**: Modern dark theme UI
 - ✨ **New**: Enhanced PDF export with detailed family information
 - ✨ **New**: Responsive design for mobile devices
@@ -533,5 +565,5 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ---
 
 <div align="center">
-  <sub>📅 Last updated: September 2025 | 🔄 Version 2.0.0</sub>
+  <sub>📅 Last updated: October 2025 | 🔄 Version 3.0.0 (MFEP)</sub>
 </div>
