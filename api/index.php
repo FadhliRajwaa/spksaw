@@ -47,8 +47,9 @@ function run_php_entry($target)
 // Routing rules
 $entry = null;
 if ($uri === '/' || $uri === '/index.php' || $uri === '/api' || $uri === '/api/' || $uri === '/api/index.php') {
-    // Home → admin dashboard
-    $entry = $ROOT . '/administrator/index.php';
+    // Redirect root to /administrator/ so relative URLs resolve properly
+    header('Location: /administrator/');
+    exit;
 } elseif (strpos($uri, '/administrator') === 0) {
     $path = $ROOT . $uri;
     if (is_dir($path)) {

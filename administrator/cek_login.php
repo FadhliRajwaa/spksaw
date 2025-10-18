@@ -11,7 +11,7 @@ $pass     = anti_injection(md5($_POST['password']), $koneksi);
 
 // pastikan username dan password adalah berupa huruf atau angka.
 if (!ctype_alnum($username) || !ctype_alnum($pass)) {
-    echo "<link href=css/style.css rel=stylesheet type=text/css>";
+    echo "<link href=/administrator/css/style.css rel=stylesheet type=text/css>";
     echo "<div class='error msg'>Input tidak valid</div>";
 } else {
     $login = mysqli_query($koneksi, "SELECT * FROM admin WHERE username='$username' AND password='$pass'");
@@ -37,7 +37,7 @@ if (!ctype_alnum($username) || !ctype_alnum($pass)) {
         header('location:media_admin.php?module=home');
 
     } else {
-        echo "<link href=css/style.css rel=stylesheet type=text/css>";
+        echo "<link href=/administrator/css/style.css rel=stylesheet type=text/css>";
         echo "<div class='error msg'>Login Gagal! Username atau Password salah. ";
         echo "<a href=index.php><b>ULANGI LAGI</b></a></div>";
     }

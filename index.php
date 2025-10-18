@@ -1,3 +1,4 @@
 <?php
-header ('location:administrator');
+header('Location: /administrator/');
+exit;
 ?>
