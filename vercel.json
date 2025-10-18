@@ -5,6 +5,8 @@
     }
   },
   "routes": [
+    { "src": "/(administrator/(css|js|images|img|fonts|plugins)/.*)", "dest": "/$1" },
+    { "src": "/(assets|css|js|images|img|fonts)/(.*)", "dest": "/$1/$2" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ]
 }

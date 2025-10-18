@@ -220,52 +220,52 @@ if ($_GET['module']=='home' || !isset($_GET['module'])){
 	</style>
 
 	<div class="modern-stats-grid">
-		<div class="stat-card">
+		<div class="stat-card" style="background: white !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;">
 			<div class="stat-header">
 				<div class="stat-icon">
 					<i class="fas fa-users"></i>
 				</div>
 			</div>
 			<?php $warga = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM data_warga")); ?>
-			<div class="stat-value"><?php echo number_format($warga); ?></div>
-			<div class="stat-label">Total Data Warga</div>
-			<a href="?module=warga" class="stat-link">
+			<div class="stat-value" style="color: #2d3748 !important;"><?php echo number_format($warga); ?></div>
+			<div class="stat-label" style="color: #718096 !important;">Total Data Warga</div>
+			<a href="?module=warga" class="stat-link" style="color: #4a5568 !important;">
 				<span>Kelola Data Warga</span>
 				<i class="fas fa-arrow-right"></i>
 			</a>
 		</div>
 
-		<div class="stat-card">
+		<div class="stat-card" style="background: white !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;">
 			<div class="stat-header">
 				<div class="stat-icon">
 					<i class="fas fa-clipboard-list"></i>
 				</div>
 			</div>
 			<?php $kriteria = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM tbl_kriteria")); ?>
-			<div class="stat-value"><?php echo number_format($kriteria); ?></div>
-			<div class="stat-label">Kriteria Penilaian</div>
-			<a href="?module=kriteria" class="stat-link">
+			<div class="stat-value" style="color: #2d3748 !important;"><?php echo number_format($kriteria); ?></div>
+			<div class="stat-label" style="color: #718096 !important;">Kriteria Penilaian</div>
+			<a href="?module=kriteria" class="stat-link" style="color: #4a5568 !important;">
 				<span>Kelola Kriteria</span>
 				<i class="fas fa-arrow-right"></i>
 			</a>
 		</div>
 
-		<div class="stat-card">
+		<div class="stat-card" style="background: white !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;">
 			<div class="stat-header">
 				<div class="stat-icon">
 					<i class="fas fa-chart-line"></i>
 				</div>
 			</div>
 			<?php $hasil = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM tbl_hasil_saw")); ?>
-			<div class="stat-value"><?php echo number_format($hasil); ?></div>
-			<div class="stat-label">Hasil Perhitungan</div>
-			<a href="?module=perankingan" class="stat-link">
+			<div class="stat-value" style="color: #2d3748 !important;"><?php echo number_format($hasil); ?></div>
+			<div class="stat-label" style="color: #718096 !important;">Hasil Perhitungan</div>
+			<a href="?module=perankingan" class="stat-link" style="color: #4a5568 !important;">
 				<span>Lihat Ranking</span>
 				<i class="fas fa-arrow-right"></i>
 			</a>
 		</div>
 
-		<div class="stat-card">
+		<div class="stat-card" style="background: white !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;">
 			<div class="stat-header">
 				<div class="stat-icon">
 					<i class="fas fa-calculator"></i>
@@ -276,9 +276,9 @@ if ($_GET['module']=='home' || !isset($_GET['module'])){
 			$lastCalculation = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM tbl_hasil_saw WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY)");
 			$recentCalc = mysqli_fetch_array($lastCalculation);
 			?>
-			<div class="stat-value"><?php echo number_format($recentCalc['total']); ?></div>
-			<div class="stat-label">Perhitungan Hari Ini</div>
-			<a href="?module=laporan" class="stat-link">
+			<div class="stat-value" style="color: #2d3748 !important;"><?php echo number_format($recentCalc['total']); ?></div>
+			<div class="stat-label" style="color: #718096 !important;">Perhitungan Hari Ini</div>
+			<a href="?module=laporan" class="stat-link" style="color: #4a5568 !important;">
 				<span>Hitung SAW</span>
 				<i class="fas fa-arrow-right"></i>
 			</a>

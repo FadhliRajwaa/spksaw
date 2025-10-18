@@ -9,6 +9,24 @@ $ROOT = dirname(__DIR__);
 $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 $uri = $uri ?: '/';
 
+// Serve static assets directly (fallback in case routing rules miss them)
+$staticExts = ['css','js','png','jpg','jpeg','gif','svg','webp','ico','ttf','otf','woff','woff2','map','json'];
+$path = realpath($ROOT . $uri);
+if ($path && is_file($path)) {
+    $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+    if (in_array($ext, $staticExts, true)) {
+        $types = [
+            'css'=>'text/css', 'js'=>'application/javascript', 'png'=>'image/png', 'jpg'=>'image/jpeg', 'jpeg'=>'image/jpeg',
+            'gif'=>'image/gif', 'svg'=>'image/svg+xml', 'webp'=>'image/webp', 'ico'=>'image/x-icon', 'ttf'=>'font/ttf',
+            'otf'=>'font/otf', 'woff'=>'font/woff', 'woff2'=>'font/woff2', 'map'=>'application/json', 'json'=>'application/json'
+        ];
+        header('Cache-Control: public, max-age=31536000, immutable');
+        header('Content-Type: ' . ($types[$ext] ?? 'application/octet-stream'));
+        readfile($path);
+        return;
+    }
+}
+
 // Helper to execute a PHP entry file as if it was requested directly
 function run_php_entry($target)
 {

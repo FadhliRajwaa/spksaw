@@ -92,13 +92,16 @@ else{
             font-family: 'Inter', sans-serif;
         }
 
-        /* Remove white boxes from all admin sections */
+        /* TEMPORARY DISABLED - Remove white boxes from all admin sections */
+        /* Uncomment jika ingin theme flat/transparan */
+        /*
         .box, .panel, .card, .widget-box {
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
             border-radius: 0 !important;
         }
+        */
         
         .box-header, .panel-heading, .card-header {
             background: transparent !important;
@@ -107,8 +110,9 @@ else{
         }
         
         .box-body, .panel-body, .card-body {
-            background: transparent !important;
-            padding: 1rem 0 !important;
+            background: rgba(255, 255, 255, 0.98) !important;
+            padding: 1.5rem !important;
+            color: #1a202c !important;
         }
         
         /* Flatten form elements */
@@ -530,41 +534,70 @@ else{
             background: rgba(50, 74, 95, 0.05);
         }
 
-        /* White text for information boxes and alerts in admin sections */
-        .alert-info,
-        .alert-info *,
-        .box-body .alert,
-        .box-body .alert *,
-        .alert,
-        .alert * {
-            color: white !important;
+        /* Alert text colors */
+        .alert-info {
+            background: #dbeafe !important;
+            border-color: #3b82f6 !important;
+            color: #1e3a8a !important;
+        }
+        
+        .alert-success {
+            background: #d1fae5 !important;
+            border-color: #10b981 !important;
+            color: #065f46 !important;
         }
 
-        /* Specific white text for perankingan and other admin content */
-        .box-body p,
-        .box-body div,
-        .box-body span,
-        .box-body strong,
-        .content p,
-        .content div,
-        .content span,
-        .content strong {
+        /* FIXED - Force readable text colors */
+        /* Welcome section - white text */
+        .welcome-section,
+        .welcome-section * {
             color: white !important;
+        }
+        
+        /* Main content area - dark text on light background */
+        .modern-main .box,
+        .modern-main .box *:not(.label):not(.badge),
+        .modern-main .card,
+        .modern-main .card *:not(.label):not(.badge),
+        .box-body,
+        .box-body *:not(.label):not(.badge),
+        .card-body,
+        .card-body *:not(.label):not(.badge) {
+            color: #1a202c !important;
+        }
+        
+        /* Stat cards - ensure visibility */
+        .stat-card,
+        .stat-card * {
+            color: #1a202c !important;
+        }
+        
+        .stat-value {
+            color: #1e293b !important;
         }
 
         /* Information text elements */
         .alert-info strong,
-        .alert strong,
+        .alert strong {
+            color: inherit !important;
+        }
+        
         .box-body strong {
-            color: white !important;
+            color: #1a202c !important;
         }
 
-        /* Target specific informational content */
-        .modern-main p,
-        .modern-main div:not(.btn):not(.label):not(.badge),
-        .modern-main span:not(.btn):not(.label):not(.badge),
-        .modern-main strong {
-            color: white !important;
+        /* Dashboard content visibility */
+        .modern-stats-grid,
+        .modern-stats-grid * {
+            color: #1a202c !important;
+        }
+        
+        .stat-label {
+            color: #64748b !important;
+        }
+        
+        .stat-link {
+            color: #4a5568 !important;
         }
 
         /* Table content text - keep readable */
@@ -575,23 +608,30 @@ else{
             color: #1a202c !important;
         }
 
-        /* Modern table visual fixes - unify header/body and borders in dark theme */
+        /* Modern table visual fixes - light theme for readability */
         .modern-main .table {
             border-collapse: collapse !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid #e2e8f0 !important;
+            background: white !important;
         }
         .modern-main .table thead th {
-            background: rgba(255, 255, 255, 0.06);
-            color: #e5e7eb !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            background: #f1f5f9 !important;
+            color: #1e293b !important;
+            border: 1px solid #e2e8f0 !important;
             white-space: nowrap;
             vertical-align: middle;
             font-weight: 600;
+            padding: 0.75rem !important;
         }
         .modern-main .table th,
         .modern-main .table td {
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            color: #e5e7eb !important;
+            border: 1px solid #e2e8f0 !important;
+            color: #1e293b !important;
+            padding: 0.75rem !important;
+        }
+        
+        .modern-main .table tbody tr:hover {
+            background: #f8fafc !important;
         }
 
         /* Button text should remain readable */

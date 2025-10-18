@@ -32,7 +32,7 @@ $port     = getenv('DB_PORT') ? (int)getenv('DB_PORT') : 3306;
 
 // SSL options for Aiven (optional)
 $sslMode        = getenv('DB_SSL_MODE') ?: '';
-$sslCaBase64    = getenv('DB_SSL_CA_BASE64') ?: '';
+$sslCaInput     = getenv('DB_SSL_CA_BASE64') ?: getenv('DB_SSL_CA_PEM') ?: '';
 $sslVerify      = getenv('DB_SSL_VERIFY_SERVER') ? filter_var(getenv('DB_SSL_VERIFY_SERVER'), FILTER_VALIDATE_BOOLEAN) : false;
 
 $mysqli = mysqli_init();
@@ -41,16 +41,23 @@ mysqli_options($mysqli, MYSQLI_OPT_CONNECT_TIMEOUT, 10);
 $flags = 0;
 if (!empty($sslMode)) {
     // If CA is provided (recommended by Aiven), persist it to a temp file and enable verification when requested
-    if (!empty($sslCaBase64)) {
+    if (!empty($sslCaInput)) {
         $caFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'aiven-ca.pem';
+        // Detect if input is raw PEM (starts with BEGIN CERTIFICATE) or base64
+        $pemContent = (strpos($sslCaInput, 'BEGIN CERTIFICATE') !== false) ? $sslCaInput : base64_decode($sslCaInput);
         if (!file_exists($caFile)) {
-            @file_put_contents($caFile, base64_decode($sslCaBase64));
+            @file_put_contents($caFile, $pemContent);
         }
         if (function_exists('mysqli_ssl_set')) {
             @mysqli_ssl_set($mysqli, null, null, $caFile, null, null);
         }
         if (defined('MYSQLI_OPT_SSL_VERIFY_SERVER_CERT')) {
             @mysqli_options($mysqli, MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, $sslVerify);
+        }
+    } else {
+        // No CA provided: avoid strict verification to prevent handshake failure
+        if (defined('MYSQLI_OPT_SSL_VERIFY_SERVER_CERT')) {
+            @mysqli_options($mysqli, MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, false);
         }
     }
     $flags |= MYSQLI_CLIENT_SSL; // Require encrypted connection
